@@ -3,15 +3,20 @@
 # OpenSCAD Intellij plugin ChangeLog
 
 ## Unreleased
+Main repository is transferred from https://github.com/ncsaba/idea-openscad to https://github.com/ldenisey/idea-openscad.
+After this version, issues and PR numbers will reference new repository.
+
 ### Added
 
 ### Changed
+- Dependency updates, cleaning build configuration
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- PR-102 Limit documentation provider for language OpenSCAD only (from kadhonn)
 
 ### Security
 ## 2.1.1

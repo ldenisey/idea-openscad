@@ -1,11 +1,12 @@
 <idea-plugin>
   <id>com.javampire.idea-openscad</id>
   <name>OpenSCAD Language Support</name>
-  <vendor email="idea-openscad@javampire.com" url="http://github.com/ncsaba/idea-openscad">Csaba Nagy</vendor>
+  <vendor url="https://github.com/ldenisey/idea-openscad">Lucien Denisey</vendor>
 
   <description><![CDATA[
-    OpenSCAD language support plugin. Provide highlighting, completion, code folding, structure views, completion, navigation, color edition,
-    library support, actions for opening OpenSCAD and exporting model.
+    OpenSCAD language support plugin.
+    <p>Provides highlighting, completion, code folding, structure views, completion, navigation, color edition,
+    library support, actions for opening OpenSCAD and exporting model.</p>
     ]]></description>
 
   <extensions defaultExtensionNs="com.intellij">
