@@ -4,7 +4,6 @@
 
 ## Unreleased
 Main repository is transferred from https://github.com/ncsaba/idea-openscad to https://github.com/ldenisey/idea-openscad.
-After this version, issues and PR numbers will reference new repository.
 
 ### Added
 
@@ -16,7 +15,7 @@ After this version, issues and PR numbers will reference new repository.
 ### Removed
 
 ### Fixed
-- PR-102 Limit documentation provider for language OpenSCAD only (from kadhonn)
+- Issue-97 / PR-102 Limit documentation provider for language OpenSCAD only (from kadhonn)
 
 ### Security
 ## 2.1.1
