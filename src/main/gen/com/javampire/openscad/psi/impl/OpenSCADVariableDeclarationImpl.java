@@ -27,15 +27,10 @@ public class OpenSCADVariableDeclarationImpl extends OpenSCADVariableDeclaration
     visitor.visitVariableDeclaration(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADEchoObj getEchoObj() {
-    return findChildByClass(OpenSCADEchoObj.class);
   }
 
   @Override

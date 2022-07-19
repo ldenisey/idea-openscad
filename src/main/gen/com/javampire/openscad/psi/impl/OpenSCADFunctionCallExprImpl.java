@@ -16,10 +16,12 @@ public class OpenSCADFunctionCallExprImpl extends OpenSCADExprImpl implements Op
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
     visitor.visitFunctionCallExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
@@ -27,8 +29,8 @@ public class OpenSCADFunctionCallExprImpl extends OpenSCADExprImpl implements Op
 
   @Override
   @NotNull
-  public OpenSCADArgAssignmentList getArgAssignmentList() {
-    return findNotNullChildByClass(OpenSCADArgAssignmentList.class);
+  public List<OpenSCADArgAssignmentList> getArgAssignmentListList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADArgAssignmentList.class);
   }
 
   @Override

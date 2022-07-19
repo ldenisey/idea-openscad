@@ -22,6 +22,7 @@ public class OpenSCADIncludeItemImpl extends ASTWrapperPsiElement implements Ope
     visitor.visitIncludeItem(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

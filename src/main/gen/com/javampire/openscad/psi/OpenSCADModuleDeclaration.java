@@ -10,7 +10,7 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBasedPsiElement<OpenSCADModuleStub> {
 
-  @NotNull
+  @Nullable
   OpenSCADArgDeclarationList getArgDeclarationList();
 
   @Nullable

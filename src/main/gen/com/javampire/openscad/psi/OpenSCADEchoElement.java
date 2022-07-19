@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADEchoObj extends OpenSCADObject {
+public interface OpenSCADEchoElement extends PsiElement {
 
   @NotNull
-  OpenSCADArgAssignmentList getArgAssignmentList();
-
-  @NotNull
-  OpenSCADEchoObjRef getEchoObjRef();
+  OpenSCADEchoArgList getEchoArgList();
 
 }

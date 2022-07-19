@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADFunctionCallExpr extends OpenSCADExpr {
 
   @NotNull
-  OpenSCADArgAssignmentList getArgAssignmentList();
+  List<OpenSCADArgAssignmentList> getArgAssignmentListList();
 
   @NotNull
   OpenSCADFunctionNameRef getFunctionNameRef();

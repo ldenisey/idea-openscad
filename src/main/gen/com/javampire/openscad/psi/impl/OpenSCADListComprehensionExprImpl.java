@@ -16,13 +16,27 @@ public class OpenSCADListComprehensionExprImpl extends OpenSCADExprImpl implemen
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
     visitor.visitListComprehensionExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADAssertElement> getAssertElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADAssertElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADEchoElement> getEchoElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADEchoElement.class);
   }
 
   @Override

@@ -5,10 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADEchoObjRef extends OpenSCADResolvableElement {
+public interface OpenSCADAssertExpr extends OpenSCADExpr {
 
-  PsiElement setName(String newName);
+  @NotNull
+  OpenSCADAssertElement getAssertElement();
 
-  PsiElement getNameIdentifier();
+  @Nullable
+  OpenSCADExpr getExpr();
 
 }

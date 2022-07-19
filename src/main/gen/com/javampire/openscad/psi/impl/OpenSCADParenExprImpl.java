@@ -16,10 +16,12 @@ public class OpenSCADParenExprImpl extends OpenSCADExprImpl implements OpenSCADP
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
     visitor.visitParenExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

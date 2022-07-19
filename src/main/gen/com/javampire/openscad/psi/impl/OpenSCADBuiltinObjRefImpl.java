@@ -20,6 +20,7 @@ public class OpenSCADBuiltinObjRefImpl extends OpenSCADResolvableElementImpl imp
     visitor.visitBuiltinObjRef(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

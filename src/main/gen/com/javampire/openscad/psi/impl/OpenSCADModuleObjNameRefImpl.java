@@ -21,6 +21,7 @@ public class OpenSCADModuleObjNameRefImpl extends OpenSCADResolvableElementImpl 
     visitor.visitModuleObjNameRef(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

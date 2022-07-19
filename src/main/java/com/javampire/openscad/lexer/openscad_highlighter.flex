@@ -29,7 +29,7 @@ END_OF_LINE_COMMENT="/""/"[^\r\n]*
 BLOCK_COMMENT_BODY={BLANK}*{END_OF_LINE_COMMENT}(\R{BLANK}*{END_OF_LINE_COMMENT})*
 BLOCK_COMMENT_END=\R{BLANK}*("module"|"function"|{IDENTIFIER}{WHITE_SPACE}*"=")
 
-IDENTIFIER = [a-zA-Z0-9_]*
+IDENTIFIER = [a-zA-Z0-9_$]*
 
 DIGIT = [0-9]
 DECIMAL = {DIGIT}+ "."? | {DIGIT}* "." {DIGIT}+
@@ -101,6 +101,12 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "import_dxf"                |
     "import_stl"                { return OpenSCADTypes.BUILTIN_OBJ; }
 
+    "is_undef"                  |
+    "is_list"                   |
+    "is_num"                    |
+    "is_bool"                   |
+    "is_string"                 |
+    "is_function"               |
     "cos"                       |
     "sin"                       |
     "tan"                       |
@@ -121,6 +127,7 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "max"                       |
     "min"                       |
     "norm"                      |
+    "ord"                       |
     "pow"                       |
     "rands"                     |
     "round"                     |

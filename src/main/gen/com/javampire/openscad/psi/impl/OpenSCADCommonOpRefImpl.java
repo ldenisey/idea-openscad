@@ -20,6 +20,7 @@ public class OpenSCADCommonOpRefImpl extends OpenSCADResolvableElementImpl imple
     visitor.visitCommonOpRef(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class ParsingTest extends ParsingTestCase {
-    public ParsingTest() {
+public class MainParsingTest extends ParsingTestCase {
+    public MainParsingTest() {
         super("", "scad", new OpenSCADParserDefinition());
     }
 

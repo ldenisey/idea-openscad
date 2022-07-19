@@ -16,10 +16,12 @@ public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCA
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
     visitor.visitBuiltinExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
@@ -35,12 +37,6 @@ public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCA
   @Nullable
   public OpenSCADBuiltinExprRef getBuiltinExprRef() {
     return findChildByClass(OpenSCADBuiltinExprRef.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADEchoObj getEchoObj() {
-    return findChildByClass(OpenSCADEchoObj.class);
   }
 
   @Override

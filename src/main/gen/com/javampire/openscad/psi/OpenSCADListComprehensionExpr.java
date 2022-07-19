@@ -7,6 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface OpenSCADListComprehensionExpr extends OpenSCADExpr {
 
+  @NotNull
+  List<OpenSCADAssertElement> getAssertElementList();
+
+  @NotNull
+  List<OpenSCADEchoElement> getEchoElementList();
+
   @Nullable
   OpenSCADExpr getExpr();
 

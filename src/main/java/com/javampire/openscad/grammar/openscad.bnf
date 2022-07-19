@@ -50,7 +50,6 @@ object ::= builtin_obj
          | block_obj
          | compound_obj
          | empty_obj
-         | echo_call_obj
 
 builtin_obj ::= (builtin_obj_ref arg_assignment_list SEMICOLON)
                 | (builtin_op block_obj)
@@ -58,6 +57,7 @@ builtin_obj ::= (builtin_obj_ref arg_assignment_list SEMICOLON)
 builtin_obj_ref ::= "cube"
                   | "cylinder"
                   | "assert"
+                  | "echo"
                   | "sphere"
                   | "polyhedron"
                   | "square"
@@ -70,14 +70,6 @@ builtin_obj_ref ::= "cube"
                   | "import"
                   | "import_dxf"
                   | "import_stl" {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
-    implements=["com.javampire.openscad.psi.OpenSCADResolvableElement"]
-    methods=[setName getNameIdentifier]
-}
-
-echo_call_obj ::= echo_obj [block_obj | statement | SEMICOLON]
-echo_obj ::= echo_obj_ref arg_assignment_list
-echo_obj_ref ::= "echo" {
     mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
     implements=["com.javampire.openscad.psi.OpenSCADResolvableElement"]
     methods=[setName getNameIdentifier]
@@ -100,7 +92,7 @@ private statement ::= object | declaration
 
 private declaration ::= variable_declaration | module_declaration | function_declaration
 
-variable_declaration ::= IDENTIFIER EQUALS [ echo_obj ] expr SEMICOLON {
+variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
     pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADVariableDeclarationStubElementImpl"
     implements=[
@@ -120,7 +112,7 @@ module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement 
     methods=[getPresentation getNameIdentifier]
 }
 
-function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS [ echo_obj ] expr SEMICOLON {
+function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
     pin=1
     mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
     implements=[
@@ -183,6 +175,7 @@ private full_arg_op_identifier ::= "intersection_for"
                                  | LET_KEYWORD
 
 
+
 expr ::= conditional_group
        | boolean_group
        | add_group
@@ -191,19 +184,23 @@ expr ::= conditional_group
        | primary_group
 
 // private rules to define operators with the same priority
-private boolean_group ::= and_expr | or_expr
 private conditional_group ::= elvis_expr | conditional_expr
-private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
-private mul_group ::= mul_expr | div_expr | modulo_expr
+private boolean_group ::= and_expr | or_expr
 private add_group ::= plus_expr | minus_expr
+private mul_group ::= mul_expr | div_expr | modulo_expr
+private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
 private primary_group ::= paren_expr
                         | list_comprehension_expr
                         | range_expr
                         | vector_expr
                         | literal_expr
+                        | assert_expr
+                        | echo_expr
+                        | test_expr
+                        | function_expr
                         | builtin_expr
-                        | function_call_expr
                         | index_expr
+                        | function_call_expr
                         | qualification_expr
                         | variable_ref_expr
 
@@ -218,19 +215,26 @@ modulo_expr ::= expr PERC expr
 minus_expr ::= expr MINUS expr
 plus_expr ::= expr PLUS expr
 conditional_expr ::= expr ( LT | GT | LE | GE | EQ | NE ) expr
+echo_arg_list ::= LPARENTH ((IDENTIFIER EQUALS expr) | expr | IDENTIFIER | STRING_LITERAL) (COMMA ((IDENTIFIER EQUALS expr) | expr | IDENTIFIER |  STRING_LITERAL))* RPARENTH
+echo_element ::= "echo" echo_arg_list
+echo_expr ::= echo_element expr
+assert_element ::= "assert" LPARENTH expr (',' STRING_LITERAL)? RPARENTH
+assert_expr ::= assert_element expr
 elvis_expr ::= expr QUERY expr COLON expr
+test_expr ::= ("is_undef" | "is_list" | "is_num" | "is_bool" | "is_string" | "is_function") LPARENTH expr RPARENTH
+function_expr ::= FUNCTION_KEYWORD arg_declaration_list expr
 paren_expr ::= LPARENTH expr RPARENTH
 vector_expr ::= LBRACKET [ vector_item ( COMMA+ (vector_item | &RBRACKET) )* ] RBRACKET { pin(".*")=1 }
 private vector_item ::= expr { recoverWhile=recover_vector }
 private recover_vector ::= ! (COMMA | RBRACKET)
 index_expr ::= expr LBRACKET <<innerExpression>> RBRACKET
 range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
-list_comprehension_expr ::= LBRACKET for_element (for_element | if_element | let_element)* expr RBRACKET
+list_comprehension_expr ::= LBRACKET for_element (for_element | if_element | let_element | echo_element | assert_element)* expr RBRACKET
 for_element ::= FOR_KEYWORD full_arg_declaration_list
 if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
 let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= builtin_expr_ref arg_assignment_list
-               | LET_KEYWORD full_arg_declaration_list [ echo_obj ] expr
+               | LET_KEYWORD full_arg_declaration_list expr
 builtin_expr_ref ::= "cos"
                    | "sin"
                    | "tan"
@@ -251,6 +255,7 @@ builtin_expr_ref ::= "cos"
                    | "max"
                    | "min"
                    | "norm"
+                   | "ord"
                    | "pow"
                    | "rands"
                    | "round"
@@ -280,12 +285,13 @@ literal_expr ::= TRUE_KEYWORD
                | NUMBER_LITERAL
                | STRING_LITERAL
 
-function_call_expr ::= function_name_ref arg_assignment_list
+function_call_expr ::= function_name_ref arg_assignment_list+
 function_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
+
 arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
 arg_assignment ::= [ parameter_reference EQUALS ] expr {
     recoverWhile=recover_arg

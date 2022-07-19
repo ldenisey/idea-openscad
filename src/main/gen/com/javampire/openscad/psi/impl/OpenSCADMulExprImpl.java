@@ -16,10 +16,12 @@ public class OpenSCADMulExprImpl extends OpenSCADExprImpl implements OpenSCADMul
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
     visitor.visitMulExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

@@ -27,6 +27,7 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
     visitor.visitFunctionDeclaration(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
@@ -36,12 +37,6 @@ public class OpenSCADFunctionDeclarationImpl extends OpenSCADFunctionDeclaration
   @Nullable
   public OpenSCADArgDeclarationList getArgDeclarationList() {
     return findChildByClass(OpenSCADArgDeclarationList.class);
-  }
-
-  @Override
-  @Nullable
-  public OpenSCADEchoObj getEchoObj() {
-    return findChildByClass(OpenSCADEchoObj.class);
   }
 
   @Override

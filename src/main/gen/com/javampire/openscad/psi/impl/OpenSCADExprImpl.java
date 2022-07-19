@@ -21,6 +21,7 @@ public abstract class OpenSCADExprImpl extends ASTWrapperPsiElement implements O
     visitor.visitExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);

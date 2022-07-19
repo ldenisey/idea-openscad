@@ -31,6 +31,14 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAssertElement(@NotNull OpenSCADAssertElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAssertExpr(@NotNull OpenSCADAssertExpr o) {
+    visitExpr(o);
+  }
+
   public void visitBackgroundOp(@NotNull OpenSCADBackgroundOp o) {
     visitOperator(o);
   }
@@ -79,16 +87,16 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitEchoCallObj(@NotNull OpenSCADEchoCallObj o) {
-    visitObject(o);
+  public void visitEchoArgList(@NotNull OpenSCADEchoArgList o) {
+    visitPsiElement(o);
   }
 
-  public void visitEchoObj(@NotNull OpenSCADEchoObj o) {
-    visitObject(o);
+  public void visitEchoElement(@NotNull OpenSCADEchoElement o) {
+    visitPsiElement(o);
   }
 
-  public void visitEchoObjRef(@NotNull OpenSCADEchoObjRef o) {
-    visitResolvableElement(o);
+  public void visitEchoExpr(@NotNull OpenSCADEchoExpr o) {
+    visitExpr(o);
   }
 
   public void visitElvisExpr(@NotNull OpenSCADElvisExpr o) {
@@ -126,6 +134,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
   public void visitFunctionDeclaration(@NotNull OpenSCADFunctionDeclaration o) {
     visitNamedElement(o);
     // visitStubBasedPsiElement(o);
+  }
+
+  public void visitFunctionExpr(@NotNull OpenSCADFunctionExpr o) {
+    visitExpr(o);
   }
 
   public void visitFunctionNameRef(@NotNull OpenSCADFunctionNameRef o) {
@@ -236,6 +248,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitRootOp(@NotNull OpenSCADRootOp o) {
     visitOperator(o);
+  }
+
+  public void visitTestExpr(@NotNull OpenSCADTestExpr o) {
+    visitExpr(o);
   }
 
   public void visitUnaryMinExpr(@NotNull OpenSCADUnaryMinExpr o) {

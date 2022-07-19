@@ -10,29 +10,33 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADEchoObjRefImpl extends OpenSCADResolvableElementImpl implements OpenSCADEchoObjRef {
+public class OpenSCADFunctionExprImpl extends OpenSCADExprImpl implements OpenSCADFunctionExpr {
 
-  public OpenSCADEchoObjRefImpl(@NotNull ASTNode node) {
+  public OpenSCADFunctionExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitEchoObjRef(this);
+    visitor.visitFunctionExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
   }
 
   @Override
-  public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
+  @NotNull
+  public OpenSCADArgDeclarationList getArgDeclarationList() {
+    return findNotNullChildByClass(OpenSCADArgDeclarationList.class);
   }
 
   @Override
-  public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
+  @Nullable
+  public OpenSCADExpr getExpr() {
+    return findChildByClass(OpenSCADExpr.class);
   }
 
 }

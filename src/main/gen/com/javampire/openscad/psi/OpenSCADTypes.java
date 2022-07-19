@@ -13,6 +13,8 @@ public interface OpenSCADTypes {
   IElementType ARG_ASSIGNMENT_LIST = OpenSCADElementFactory.getElementType("ARG_ASSIGNMENT_LIST");
   IElementType ARG_DECLARATION = OpenSCADElementFactory.getElementType("ARG_DECLARATION");
   IElementType ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("ARG_DECLARATION_LIST");
+  IElementType ASSERT_ELEMENT = OpenSCADElementFactory.getElementType("ASSERT_ELEMENT");
+  IElementType ASSERT_EXPR = OpenSCADElementFactory.getElementType("ASSERT_EXPR");
   IElementType BACKGROUND_OP = OpenSCADElementFactory.getElementType("BACKGROUND_OP");
   IElementType BLOCK_OBJ = OpenSCADElementFactory.getElementType("BLOCK_OBJ");
   IElementType BUILTIN_EXPR = OpenSCADElementFactory.getElementType("BUILTIN_EXPR");
@@ -25,9 +27,9 @@ public interface OpenSCADTypes {
   IElementType DEBUG_OP = OpenSCADElementFactory.getElementType("DEBUG_OP");
   IElementType DISABLE_OP = OpenSCADElementFactory.getElementType("DISABLE_OP");
   IElementType DIV_EXPR = OpenSCADElementFactory.getElementType("DIV_EXPR");
-  IElementType ECHO_CALL_OBJ = OpenSCADElementFactory.getElementType("ECHO_CALL_OBJ");
-  IElementType ECHO_OBJ = OpenSCADElementFactory.getElementType("ECHO_OBJ");
-  IElementType ECHO_OBJ_REF = OpenSCADElementFactory.getElementType("ECHO_OBJ_REF");
+  IElementType ECHO_ARG_LIST = OpenSCADElementFactory.getElementType("ECHO_ARG_LIST");
+  IElementType ECHO_ELEMENT = OpenSCADElementFactory.getElementType("ECHO_ELEMENT");
+  IElementType ECHO_EXPR = OpenSCADElementFactory.getElementType("ECHO_EXPR");
   IElementType ELVIS_EXPR = OpenSCADElementFactory.getElementType("ELVIS_EXPR");
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
   IElementType EXPR = OpenSCADElementFactory.getElementType("EXPR");
@@ -37,6 +39,7 @@ public interface OpenSCADTypes {
   IElementType FULL_ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION_LIST");
   IElementType FUNCTION_CALL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_CALL_EXPR");
   IElementType FUNCTION_DECLARATION = OpenSCADElementFactory.getElementType("FUNCTION_DECLARATION");
+  IElementType FUNCTION_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_EXPR");
   IElementType FUNCTION_NAME_REF = OpenSCADElementFactory.getElementType("FUNCTION_NAME_REF");
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
   IElementType IF_OBJ = OpenSCADElementFactory.getElementType("IF_OBJ");
@@ -64,6 +67,7 @@ public interface OpenSCADTypes {
   IElementType QUALIFICATION_EXPR = OpenSCADElementFactory.getElementType("QUALIFICATION_EXPR");
   IElementType RANGE_EXPR = OpenSCADElementFactory.getElementType("RANGE_EXPR");
   IElementType ROOT_OP = OpenSCADElementFactory.getElementType("ROOT_OP");
+  IElementType TEST_EXPR = OpenSCADElementFactory.getElementType("TEST_EXPR");
   IElementType UNARY_MIN_EXPR = OpenSCADElementFactory.getElementType("UNARY_MIN_EXPR");
   IElementType UNARY_NEGATE_EXPR = OpenSCADElementFactory.getElementType("UNARY_NEGATE_EXPR");
   IElementType UNARY_PLUS_EXPR = OpenSCADElementFactory.getElementType("UNARY_PLUS_EXPR");
@@ -139,6 +143,12 @@ public interface OpenSCADTypes {
       else if (type == ARG_DECLARATION_LIST) {
         return new OpenSCADArgDeclarationListImpl(node);
       }
+      else if (type == ASSERT_ELEMENT) {
+        return new OpenSCADAssertElementImpl(node);
+      }
+      else if (type == ASSERT_EXPR) {
+        return new OpenSCADAssertExprImpl(node);
+      }
       else if (type == BACKGROUND_OP) {
         return new OpenSCADBackgroundOpImpl(node);
       }
@@ -175,14 +185,14 @@ public interface OpenSCADTypes {
       else if (type == DIV_EXPR) {
         return new OpenSCADDivExprImpl(node);
       }
-      else if (type == ECHO_CALL_OBJ) {
-        return new OpenSCADEchoCallObjImpl(node);
+      else if (type == ECHO_ARG_LIST) {
+        return new OpenSCADEchoArgListImpl(node);
       }
-      else if (type == ECHO_OBJ) {
-        return new OpenSCADEchoObjImpl(node);
+      else if (type == ECHO_ELEMENT) {
+        return new OpenSCADEchoElementImpl(node);
       }
-      else if (type == ECHO_OBJ_REF) {
-        return new OpenSCADEchoObjRefImpl(node);
+      else if (type == ECHO_EXPR) {
+        return new OpenSCADEchoExprImpl(node);
       }
       else if (type == ELVIS_EXPR) {
         return new OpenSCADElvisExprImpl(node);
@@ -207,6 +217,9 @@ public interface OpenSCADTypes {
       }
       else if (type == FUNCTION_DECLARATION) {
         return new OpenSCADFunctionDeclarationImpl(node);
+      }
+      else if (type == FUNCTION_EXPR) {
+        return new OpenSCADFunctionExprImpl(node);
       }
       else if (type == FUNCTION_NAME_REF) {
         return new OpenSCADFunctionNameRefImpl(node);
@@ -282,6 +295,9 @@ public interface OpenSCADTypes {
       }
       else if (type == ROOT_OP) {
         return new OpenSCADRootOpImpl(node);
+      }
+      else if (type == TEST_EXPR) {
+        return new OpenSCADTestExprImpl(node);
       }
       else if (type == UNARY_MIN_EXPR) {
         return new OpenSCADUnaryMinExprImpl(node);

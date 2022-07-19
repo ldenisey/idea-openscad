@@ -21,6 +21,7 @@ public class OpenSCADQualificationExprImpl extends OpenSCADResolvableElementImpl
     visitor.visitQualificationExpr(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
