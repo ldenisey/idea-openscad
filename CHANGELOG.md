@@ -15,7 +15,8 @@ Main repository is transferred from https://github.com/ncsaba/idea-openscad to h
 ### Removed
 
 ### Fixed
-- Issue-97 / PR-102 Limit documentation provider for language OpenSCAD only (from kadhonn)
+- Issue-97 / PR-102 - Limit documentation provider for language OpenSCAD only (from kadhonn)
+- Issue-80 / Issue-89 - Identifiers can start with digits
 
 ### Security
 ## 2.1.1
