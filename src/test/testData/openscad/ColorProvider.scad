@@ -12,4 +12,4 @@ module colorProvide() {
 
 var1 = 200;
 var2 = var1;
-var2 = "toto";
+var4 = "toto";

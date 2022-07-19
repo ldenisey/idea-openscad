@@ -38,7 +38,7 @@ dependencies {
 intellij {
     version.set("221-EAP-SNAPSHOT")
 
-    //plugins.set(['psiviewer:203-SNAPSHOT']) // For debugging the parser only
+    //plugins.set(['psiviewer:221-SNAPSHOT']) // For debugging the parser only
 
     updateSinceUntilBuild.set(false)
 
