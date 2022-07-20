@@ -27,6 +27,5 @@ module t2module(t2arg1, t2arg2) {
 
 t2module("a1", "a2"); // code completion should work
 
-
 // assert and echo can be chained
 x = assert(true,"xx") assert(true,"yy") echo("first") echo("second") 3+3;

@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADForElement extends PsiElement {
+public interface OpenSCADForDeclarationList extends PsiElement {
 
-  @NotNull
-  OpenSCADForDeclarationList getForDeclarationList();
+  @Nullable
+  OpenSCADForDeclaration getForDeclaration();
 
 }

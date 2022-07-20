@@ -11,14 +11,14 @@ import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADIfElementImpl extends ASTWrapperPsiElement implements OpenSCADIfElement {
+public class OpenSCADForDeclarationCstyleImpl extends ASTWrapperPsiElement implements OpenSCADForDeclarationCstyle {
 
-  public OpenSCADIfElementImpl(@NotNull ASTNode node) {
+  public OpenSCADForDeclarationCstyleImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitIfElement(this);
+    visitor.visitForDeclarationCstyle(this);
   }
 
   @Override

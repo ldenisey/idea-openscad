@@ -8,6 +8,27 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADVectorExpr extends OpenSCADExpr {
 
   @NotNull
+  List<OpenSCADAssertElement> getAssertElementList();
+
+  @NotNull
+  List<OpenSCADBindElseElement> getBindElseElementList();
+
+  @NotNull
+  List<OpenSCADEchoElement> getEchoElementList();
+
+  @NotNull
+  List<OpenSCADElseElement> getElseElementList();
+
+  @NotNull
   List<OpenSCADExpr> getExprList();
+
+  @NotNull
+  List<OpenSCADForElement> getForElementList();
+
+  @NotNull
+  List<OpenSCADIfElement> getIfElementList();
+
+  @NotNull
+  List<OpenSCADLetElement> getLetElementList();
 
 }

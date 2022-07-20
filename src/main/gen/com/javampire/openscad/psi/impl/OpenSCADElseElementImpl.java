@@ -11,14 +11,14 @@ import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADIfElementImpl extends ASTWrapperPsiElement implements OpenSCADIfElement {
+public class OpenSCADElseElementImpl extends ASTWrapperPsiElement implements OpenSCADElseElement {
 
-  public OpenSCADIfElementImpl(@NotNull ASTNode node) {
+  public OpenSCADElseElementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitIfElement(this);
+    visitor.visitElseElement(this);
   }
 
   @Override
@@ -28,9 +28,9 @@ public class OpenSCADIfElementImpl extends ASTWrapperPsiElement implements OpenS
   }
 
   @Override
-  @NotNull
-  public List<OpenSCADExpr> getExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADExpr.class);
+  @Nullable
+  public OpenSCADIfElement getIfElement() {
+    return findChildByClass(OpenSCADIfElement.class);
   }
 
 }

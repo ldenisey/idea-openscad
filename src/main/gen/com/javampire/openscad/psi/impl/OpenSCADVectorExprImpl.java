@@ -29,8 +29,50 @@ public class OpenSCADVectorExprImpl extends OpenSCADExprImpl implements OpenSCAD
 
   @Override
   @NotNull
+  public List<OpenSCADAssertElement> getAssertElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADAssertElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADBindElseElement> getBindElseElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADBindElseElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADEchoElement> getEchoElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADEchoElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADElseElement> getElseElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADElseElement.class);
+  }
+
+  @Override
+  @NotNull
   public List<OpenSCADExpr> getExprList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADExpr.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADForElement> getForElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADForElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADIfElement> getIfElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADIfElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADLetElement> getLetElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADLetElement.class);
   }
 
 }

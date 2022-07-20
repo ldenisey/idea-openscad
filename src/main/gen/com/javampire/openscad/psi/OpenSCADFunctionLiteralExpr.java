@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADForElement extends PsiElement {
+public interface OpenSCADFunctionLiteralExpr extends OpenSCADExpr {
 
   @NotNull
-  OpenSCADForDeclarationList getForDeclarationList();
+  OpenSCADArgDeclarationList getArgDeclarationList();
+
+  @Nullable
+  OpenSCADExpr getExpr();
 
 }

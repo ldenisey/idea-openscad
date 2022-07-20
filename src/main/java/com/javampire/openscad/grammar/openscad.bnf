@@ -170,7 +170,7 @@ common_op_ref ::= "linear_extrude"
 }
 
 private full_arg_op_identifier ::= "intersection_for"
-                                 | "assign"
+                                 | ASSIGN_KEYWORD
                                  | FOR_KEYWORD
                                  | LET_KEYWORD
 
@@ -189,20 +189,19 @@ private boolean_group ::= and_expr | or_expr
 private add_group ::= plus_expr | minus_expr
 private mul_group ::= mul_expr | div_expr | modulo_expr
 private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
-private primary_group ::= paren_expr
-                        | list_comprehension_expr
-                        | range_expr
-                        | vector_expr
-                        | literal_expr
-                        | assert_expr
+private primary_group ::= range_expr
                         | echo_expr
+                        | assert_expr
                         | test_expr
-                        | function_expr
                         | builtin_expr
-                        | index_expr
                         | function_call_expr
-                        | qualification_expr
                         | variable_ref_expr
+                        | vector_expr
+                        | paren_expr
+                        | literal_expr
+                        | function_literal_expr
+                        | index_expr
+                        | qualification_expr
 
 and_expr ::= expr AND expr
 or_expr ::= expr OR expr
@@ -218,20 +217,25 @@ conditional_expr ::= expr ( LT | GT | LE | GE | EQ | NE ) expr
 echo_arg_list ::= LPARENTH ((IDENTIFIER EQUALS expr) | expr | IDENTIFIER | STRING_LITERAL) (COMMA ((IDENTIFIER EQUALS expr) | expr | IDENTIFIER |  STRING_LITERAL))* RPARENTH
 echo_element ::= "echo" echo_arg_list
 echo_expr ::= echo_element expr
-assert_element ::= "assert" LPARENTH expr (',' STRING_LITERAL)? RPARENTH
 assert_expr ::= assert_element expr
+assert_element ::= "assert" LPARENTH expr (',' STRING_LITERAL)? RPARENTH
 elvis_expr ::= expr QUERY expr COLON expr
 test_expr ::= ("is_undef" | "is_list" | "is_num" | "is_bool" | "is_string" | "is_function") LPARENTH expr RPARENTH
-function_expr ::= FUNCTION_KEYWORD arg_declaration_list expr
+function_literal_expr ::= FUNCTION_KEYWORD arg_declaration_list expr
 paren_expr ::= LPARENTH expr RPARENTH
-vector_expr ::= LBRACKET [ vector_item ( COMMA+ (vector_item | &RBRACKET) )* ] RBRACKET { pin(".*")=1 }
-private vector_item ::= expr { recoverWhile=recover_vector }
-private recover_vector ::= ! (COMMA | RBRACKET)
 index_expr ::= expr LBRACKET <<innerExpression>> RBRACKET
-range_expr ::= LBRACKET expr COLON expr [ COLON expr ] RBRACKET
-list_comprehension_expr ::= LBRACKET for_element (for_element | if_element | let_element | echo_element | assert_element)* expr RBRACKET
-for_element ::= FOR_KEYWORD full_arg_declaration_list
-if_element ::= IF_KEYWORD LPARENTH expr RPARENTH
+range_expr ::= [EACH_KEYWORD] LBRACKET expr COLON expr [ COLON expr ] RBRACKET
+list_expr ::= LPARENTH expr (COMMA expr)* RPARENTH
+vector_expr ::= [EACH_KEYWORD] LBRACKET [vector_item ( COMMA+ (vector_item | &RBRACKET) )*] RBRACKET { pin(".*")=2 }
+private vector_item ::= (for_element | if_element | bind_else_element | else_element | let_element | echo_element | assert_element)* expr { recoverWhile=recover_vector }
+private recover_vector ::= ! (COMMA | RBRACKET)
+for_element ::= FOR_KEYWORD for_declaration_list
+for_declaration_list ::= LPARENTH for_declaration RPARENTH {pin(".*")=1}
+for_declaration ::= for_declaration_cstyle | (IDENTIFIER EQUALS (list_expr | range_expr | expr) (COMMA IDENTIFIER EQUALS (list_expr | range_expr | expr))*) {recoverWhile=recover_arg}
+for_declaration_cstyle ::= IDENTIFIER EQUALS expr (COMMA IDENTIFIER EQUALS expr)* SEMICOLON conditional_expr (COMA conditional_expr)* SEMICOLON IDENTIFIER EQUALS expr (COMMA IDENTIFIER EQUALS expr)*
+if_element ::= IF_KEYWORD LPARENTH expr RPARENTH [expr &ELSE_KEYWORD]
+bind_else_element ::= LPARENTH if_element expr RPARENTH
+else_element ::= ELSE_KEYWORD [if_element]
 let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= builtin_expr_ref arg_assignment_list
                | LET_KEYWORD full_arg_declaration_list expr

@@ -55,6 +55,8 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "for"                       { return OpenSCADTypes.FOR_KEYWORD; }
     "if"                        { return OpenSCADTypes.IF_KEYWORD; }
     "let"                       { return OpenSCADTypes.LET_KEYWORD; }
+    "assign"                    { return OpenSCADTypes.ASSIGN_KEYWORD; }
+    "each"                      { return OpenSCADTypes.EACH_KEYWORD; }
 
     "include"
      / {INCLUDE_COND}           { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD; }

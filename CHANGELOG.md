@@ -6,6 +6,8 @@
 Main repository is transferred from https://github.com/ncsaba/idea-openscad to https://github.com/ldenisey/idea-openscad.
 
 ### Added
+- Issue-34 - 2019.05 features not fully supported
+- Issue-38 - 2019.05 list comprehensions does not parse
 
 ### Changed
 - Dependency updates, cleaning build configuration
@@ -17,7 +19,6 @@ Main repository is transferred from https://github.com/ncsaba/idea-openscad to h
 ### Fixed
 - Issue-97 / PR-102 - Limit documentation provider for language OpenSCAD only (from kadhonn)
 - Issue-80 / Issue-89 - Identifiers can start with digits
-- Issue-34 - 2019.05 features not fully supported
 
 ### Security
 ## 2.1.1

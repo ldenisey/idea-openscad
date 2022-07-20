@@ -16,6 +16,7 @@ public interface OpenSCADTypes {
   IElementType ASSERT_ELEMENT = OpenSCADElementFactory.getElementType("ASSERT_ELEMENT");
   IElementType ASSERT_EXPR = OpenSCADElementFactory.getElementType("ASSERT_EXPR");
   IElementType BACKGROUND_OP = OpenSCADElementFactory.getElementType("BACKGROUND_OP");
+  IElementType BIND_ELSE_ELEMENT = OpenSCADElementFactory.getElementType("BIND_ELSE_ELEMENT");
   IElementType BLOCK_OBJ = OpenSCADElementFactory.getElementType("BLOCK_OBJ");
   IElementType BUILTIN_EXPR = OpenSCADElementFactory.getElementType("BUILTIN_EXPR");
   IElementType BUILTIN_EXPR_REF = OpenSCADElementFactory.getElementType("BUILTIN_EXPR_REF");
@@ -30,16 +31,20 @@ public interface OpenSCADTypes {
   IElementType ECHO_ARG_LIST = OpenSCADElementFactory.getElementType("ECHO_ARG_LIST");
   IElementType ECHO_ELEMENT = OpenSCADElementFactory.getElementType("ECHO_ELEMENT");
   IElementType ECHO_EXPR = OpenSCADElementFactory.getElementType("ECHO_EXPR");
+  IElementType ELSE_ELEMENT = OpenSCADElementFactory.getElementType("ELSE_ELEMENT");
   IElementType ELVIS_EXPR = OpenSCADElementFactory.getElementType("ELVIS_EXPR");
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
   IElementType EXPR = OpenSCADElementFactory.getElementType("EXPR");
+  IElementType FOR_DECLARATION = OpenSCADElementFactory.getElementType("FOR_DECLARATION");
+  IElementType FOR_DECLARATION_CSTYLE = OpenSCADElementFactory.getElementType("FOR_DECLARATION_CSTYLE");
+  IElementType FOR_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FOR_DECLARATION_LIST");
   IElementType FOR_ELEMENT = OpenSCADElementFactory.getElementType("FOR_ELEMENT");
   IElementType FOR_OBJ = OpenSCADElementFactory.getElementType("FOR_OBJ");
   IElementType FULL_ARG_DECLARATION = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION");
   IElementType FULL_ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("FULL_ARG_DECLARATION_LIST");
   IElementType FUNCTION_CALL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_CALL_EXPR");
   IElementType FUNCTION_DECLARATION = OpenSCADElementFactory.getElementType("FUNCTION_DECLARATION");
-  IElementType FUNCTION_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_EXPR");
+  IElementType FUNCTION_LITERAL_EXPR = OpenSCADElementFactory.getElementType("FUNCTION_LITERAL_EXPR");
   IElementType FUNCTION_NAME_REF = OpenSCADElementFactory.getElementType("FUNCTION_NAME_REF");
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
   IElementType IF_OBJ = OpenSCADElementFactory.getElementType("IF_OBJ");
@@ -47,7 +52,7 @@ public interface OpenSCADTypes {
   IElementType INCLUDE_PATH_REF = OpenSCADElementFactory.getElementType("INCLUDE_PATH_REF");
   IElementType INDEX_EXPR = OpenSCADElementFactory.getElementType("INDEX_EXPR");
   IElementType LET_ELEMENT = OpenSCADElementFactory.getElementType("LET_ELEMENT");
-  IElementType LIST_COMPREHENSION_EXPR = OpenSCADElementFactory.getElementType("LIST_COMPREHENSION_EXPR");
+  IElementType LIST_EXPR = OpenSCADElementFactory.getElementType("LIST_EXPR");
   IElementType LITERAL_EXPR = OpenSCADElementFactory.getElementType("LITERAL_EXPR");
   IElementType MINUS_EXPR = OpenSCADElementFactory.getElementType("MINUS_EXPR");
   IElementType MODIFIER_OP = OpenSCADElementFactory.getElementType("MODIFIER_OP");
@@ -77,13 +82,16 @@ public interface OpenSCADTypes {
   IElementType VECTOR_EXPR = OpenSCADElementFactory.getElementType("VECTOR_EXPR");
 
   IElementType AND = new OpenSCADTokenType("AND");
+  IElementType ASSIGN_KEYWORD = new OpenSCADTokenType("ASSIGN_KEYWORD");
   IElementType BLOCK_COMMENT = new OpenSCADTokenType("BLOCK_COMMENT");
   IElementType COLON = new OpenSCADTokenType("COLON");
+  IElementType COMA = new OpenSCADTokenType("COMA");
   IElementType COMMA = new OpenSCADTokenType("COMMA");
   IElementType C_STYLE_COMMENT = new OpenSCADTokenType("C_STYLE_COMMENT");
   IElementType DIV = new OpenSCADTokenType("DIV");
   IElementType DOC_COMMENT = new OpenSCADTokenType("DOC_COMMENT");
   IElementType DOT = new OpenSCADTokenType("DOT");
+  IElementType EACH_KEYWORD = new OpenSCADTokenType("EACH_KEYWORD");
   IElementType ELSE_KEYWORD = new OpenSCADTokenType("ELSE_KEYWORD");
   IElementType END_OF_LINE_COMMENT = new OpenSCADTokenType("END_OF_LINE_COMMENT");
   IElementType EQ = new OpenSCADTokenType("EQ");
@@ -152,6 +160,9 @@ public interface OpenSCADTypes {
       else if (type == BACKGROUND_OP) {
         return new OpenSCADBackgroundOpImpl(node);
       }
+      else if (type == BIND_ELSE_ELEMENT) {
+        return new OpenSCADBindElseElementImpl(node);
+      }
       else if (type == BLOCK_OBJ) {
         return new OpenSCADBlockObjImpl(node);
       }
@@ -194,11 +205,23 @@ public interface OpenSCADTypes {
       else if (type == ECHO_EXPR) {
         return new OpenSCADEchoExprImpl(node);
       }
+      else if (type == ELSE_ELEMENT) {
+        return new OpenSCADElseElementImpl(node);
+      }
       else if (type == ELVIS_EXPR) {
         return new OpenSCADElvisExprImpl(node);
       }
       else if (type == EMPTY_OBJ) {
         return new OpenSCADEmptyObjImpl(node);
+      }
+      else if (type == FOR_DECLARATION) {
+        return new OpenSCADForDeclarationImpl(node);
+      }
+      else if (type == FOR_DECLARATION_CSTYLE) {
+        return new OpenSCADForDeclarationCstyleImpl(node);
+      }
+      else if (type == FOR_DECLARATION_LIST) {
+        return new OpenSCADForDeclarationListImpl(node);
       }
       else if (type == FOR_ELEMENT) {
         return new OpenSCADForElementImpl(node);
@@ -218,8 +241,8 @@ public interface OpenSCADTypes {
       else if (type == FUNCTION_DECLARATION) {
         return new OpenSCADFunctionDeclarationImpl(node);
       }
-      else if (type == FUNCTION_EXPR) {
-        return new OpenSCADFunctionExprImpl(node);
+      else if (type == FUNCTION_LITERAL_EXPR) {
+        return new OpenSCADFunctionLiteralExprImpl(node);
       }
       else if (type == FUNCTION_NAME_REF) {
         return new OpenSCADFunctionNameRefImpl(node);
@@ -242,8 +265,8 @@ public interface OpenSCADTypes {
       else if (type == LET_ELEMENT) {
         return new OpenSCADLetElementImpl(node);
       }
-      else if (type == LIST_COMPREHENSION_EXPR) {
-        return new OpenSCADListComprehensionExprImpl(node);
+      else if (type == LIST_EXPR) {
+        return new OpenSCADListExprImpl(node);
       }
       else if (type == LITERAL_EXPR) {
         return new OpenSCADLiteralExprImpl(node);

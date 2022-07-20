@@ -29,8 +29,8 @@ public class OpenSCADForElementImpl extends ASTWrapperPsiElement implements Open
 
   @Override
   @NotNull
-  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
-    return findNotNullChildByClass(OpenSCADFullArgDeclarationList.class);
+  public OpenSCADForDeclarationList getForDeclarationList() {
+    return findNotNullChildByClass(OpenSCADForDeclarationList.class);
   }
 
 }

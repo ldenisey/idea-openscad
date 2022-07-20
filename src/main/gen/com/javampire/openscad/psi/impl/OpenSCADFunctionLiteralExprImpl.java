@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADFunctionExprImpl extends OpenSCADExprImpl implements OpenSCADFunctionExpr {
+public class OpenSCADFunctionLiteralExprImpl extends OpenSCADExprImpl implements OpenSCADFunctionLiteralExpr {
 
-  public OpenSCADFunctionExprImpl(@NotNull ASTNode node) {
+  public OpenSCADFunctionLiteralExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitFunctionExpr(this);
+    visitor.visitFunctionLiteralExpr(this);
   }
 
   @Override

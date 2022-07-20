@@ -43,6 +43,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitOperator(o);
   }
 
+  public void visitBindElseElement(@NotNull OpenSCADBindElseElement o) {
+    visitPsiElement(o);
+  }
+
   public void visitBlockObj(@NotNull OpenSCADBlockObj o) {
     visitObject(o);
   }
@@ -99,6 +103,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
+  public void visitElseElement(@NotNull OpenSCADElseElement o) {
+    visitPsiElement(o);
+  }
+
   public void visitElvisExpr(@NotNull OpenSCADElvisExpr o) {
     visitExpr(o);
   }
@@ -108,6 +116,18 @@ public class OpenSCADVisitor extends PsiElementVisitor {
   }
 
   public void visitExpr(@NotNull OpenSCADExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForDeclaration(@NotNull OpenSCADForDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForDeclarationCstyle(@NotNull OpenSCADForDeclarationCstyle o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForDeclarationList(@NotNull OpenSCADForDeclarationList o) {
     visitPsiElement(o);
   }
 
@@ -136,7 +156,7 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     // visitStubBasedPsiElement(o);
   }
 
-  public void visitFunctionExpr(@NotNull OpenSCADFunctionExpr o) {
+  public void visitFunctionLiteralExpr(@NotNull OpenSCADFunctionLiteralExpr o) {
     visitExpr(o);
   }
 
@@ -168,7 +188,7 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitListComprehensionExpr(@NotNull OpenSCADListComprehensionExpr o) {
+  public void visitListExpr(@NotNull OpenSCADListExpr o) {
     visitExpr(o);
   }
 

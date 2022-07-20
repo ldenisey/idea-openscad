@@ -25,12 +25,32 @@ public class BaseParsingTest extends ParsingTestCase {
     }
 
     @Test
+    public void testassign() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
     public void testecho() throws IOException {
         doTest("_psidump");
     }
 
     @Test
+    public void testfor() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
     public void testfunction_literal() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
+    public void testif() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
+    public void testintersection_for() throws IOException {
         doTest("_psidump");
     }
 
@@ -71,6 +91,11 @@ public class BaseParsingTest extends ParsingTestCase {
 
     @Test
     public void testord() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
+    public void testvector_expressions() throws IOException {
         doTest("_psidump");
     }
 }

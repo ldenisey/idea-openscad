@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADIfElementImpl extends ASTWrapperPsiElement implements OpenSCADIfElement {
+public class OpenSCADListExprImpl extends OpenSCADExprImpl implements OpenSCADListExpr {
 
-  public OpenSCADIfElementImpl(@NotNull ASTNode node) {
+  public OpenSCADListExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitIfElement(this);
+    visitor.visitListExpr(this);
   }
 
   @Override
