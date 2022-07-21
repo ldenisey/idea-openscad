@@ -1529,7 +1529,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // Expression root: expr
   // Operator priority table:
-  // 0: BINARY(elvis_expr) BINARY(conditional_expr)
+  // 0: POSTFIX(elvis_expr) BINARY(conditional_expr)
   // 1: BINARY(and_expr) BINARY(or_expr)
   // 2: BINARY(plus_expr) BINARY(minus_expr)
   // 3: BINARY(mul_expr) BINARY(div_expr) BINARY(modulo_expr)
@@ -1568,9 +1568,8 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     boolean r = true;
     while (true) {
       Marker m = enter_section_(b, l, _LEFT_, null);
-      if (g < 0 && consumeTokenSmart(b, QUERY)) {
-        r = report_error_(b, expr(b, l, 0));
-        r = elvis_expr_1(b, l + 1) && r;
+      if (g < 0 && elvis_expr_0(b, l + 1)) {
+        r = true;
         exit_section_(b, l, m, ELVIS_EXPR, r, true, null);
       }
       else if (g < 0 && conditional_expr_0(b, l + 1)) {
@@ -1621,14 +1620,34 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // COLON expr
-  private static boolean elvis_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "elvis_expr_1")) return false;
+  // QUERY (elvis_expr | expr) COLON (elvis_expr | expr)
+  private static boolean elvis_expr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elvis_expr_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COLON);
-    r = r && expr(b, l + 1, -1);
+    r = consumeTokenSmart(b, QUERY);
+    r = r && elvis_expr_0_1(b, l + 1);
+    r = r && consumeToken(b, COLON);
+    r = r && elvis_expr_0_3(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // elvis_expr | expr
+  private static boolean elvis_expr_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elvis_expr_0_1")) return false;
+    boolean r;
+    r = expr(b, l + 1, -1);
+    if (!r) r = expr(b, l + 1, -1);
+    return r;
+  }
+
+  // elvis_expr | expr
+  private static boolean elvis_expr_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elvis_expr_0_3")) return false;
+    boolean r;
+    r = expr(b, l + 1, -1);
+    if (!r) r = expr(b, l + 1, -1);
     return r;
   }
 
