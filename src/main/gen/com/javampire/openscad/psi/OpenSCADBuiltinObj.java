@@ -20,6 +20,9 @@ public interface OpenSCADBuiltinObj extends OpenSCADObject {
   OpenSCADFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
+  OpenSCADImport getImport();
+
+  @Nullable
   OpenSCADModuleDeclaration getModuleDeclaration();
 
   @Nullable

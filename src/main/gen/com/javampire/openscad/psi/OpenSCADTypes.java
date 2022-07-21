@@ -48,8 +48,9 @@ public interface OpenSCADTypes {
   IElementType FUNCTION_NAME_REF = OpenSCADElementFactory.getElementType("FUNCTION_NAME_REF");
   IElementType IF_ELEMENT = OpenSCADElementFactory.getElementType("IF_ELEMENT");
   IElementType IF_OBJ = OpenSCADElementFactory.getElementType("IF_OBJ");
-  IElementType INCLUDE_ITEM = OpenSCADElementFactory.getElementType("INCLUDE_ITEM");
-  IElementType INCLUDE_PATH_REF = OpenSCADElementFactory.getElementType("INCLUDE_PATH_REF");
+  IElementType IMPORT = OpenSCADElementFactory.getElementType("IMPORT");
+  IElementType IMPORT_PATH_REF = OpenSCADElementFactory.getElementType("IMPORT_PATH_REF");
+  IElementType INCLUDE_IMPORT = OpenSCADElementFactory.getElementType("INCLUDE_IMPORT");
   IElementType INDEX_EXPR = OpenSCADElementFactory.getElementType("INDEX_EXPR");
   IElementType LET_ELEMENT = OpenSCADElementFactory.getElementType("LET_ELEMENT");
   IElementType LIST_EXPR = OpenSCADElementFactory.getElementType("LIST_EXPR");
@@ -76,7 +77,7 @@ public interface OpenSCADTypes {
   IElementType UNARY_MIN_EXPR = OpenSCADElementFactory.getElementType("UNARY_MIN_EXPR");
   IElementType UNARY_NEGATE_EXPR = OpenSCADElementFactory.getElementType("UNARY_NEGATE_EXPR");
   IElementType UNARY_PLUS_EXPR = OpenSCADElementFactory.getElementType("UNARY_PLUS_EXPR");
-  IElementType USE_ITEM = OpenSCADElementFactory.getElementType("USE_ITEM");
+  IElementType USE_IMPORT = OpenSCADElementFactory.getElementType("USE_IMPORT");
   IElementType VARIABLE_DECLARATION = OpenSCADElementFactory.getElementType("VARIABLE_DECLARATION");
   IElementType VARIABLE_REF_EXPR = OpenSCADElementFactory.getElementType("VARIABLE_REF_EXPR");
   IElementType VECTOR_EXPR = OpenSCADElementFactory.getElementType("VECTOR_EXPR");
@@ -105,10 +106,10 @@ public interface OpenSCADTypes {
   IElementType HASH = new OpenSCADTokenType("HASH");
   IElementType IDENTIFIER = new OpenSCADTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new OpenSCADTokenType("IF_KEYWORD");
-  IElementType INCLUDE_END = new OpenSCADTokenType("INCLUDE_END");
+  IElementType IMPORT_END = new OpenSCADTokenType("IMPORT_END");
+  IElementType IMPORT_PATH = new OpenSCADTokenType("IMPORT_PATH");
+  IElementType IMPORT_START = new OpenSCADTokenType("IMPORT_START");
   IElementType INCLUDE_KEYWORD = new OpenSCADTokenType("INCLUDE_KEYWORD");
-  IElementType INCLUDE_PATH = new OpenSCADTokenType("INCLUDE_PATH");
-  IElementType INCLUDE_START = new OpenSCADTokenType("INCLUDE_START");
   IElementType LBRACE = new OpenSCADTokenType("LBRACE");
   IElementType LBRACKET = new OpenSCADTokenType("LBRACKET");
   IElementType LE = new OpenSCADTokenType("LE");
@@ -253,11 +254,14 @@ public interface OpenSCADTypes {
       else if (type == IF_OBJ) {
         return new OpenSCADIfObjImpl(node);
       }
-      else if (type == INCLUDE_ITEM) {
-        return new OpenSCADIncludeItemImpl(node);
+      else if (type == IMPORT) {
+        return new OpenSCADImportImpl(node);
       }
-      else if (type == INCLUDE_PATH_REF) {
-        return new OpenSCADIncludePathRefImpl(node);
+      else if (type == IMPORT_PATH_REF) {
+        return new OpenSCADImportPathRefImpl(node);
+      }
+      else if (type == INCLUDE_IMPORT) {
+        return new OpenSCADIncludeImportImpl(node);
       }
       else if (type == INDEX_EXPR) {
         return new OpenSCADIndexExprImpl(node);
@@ -331,8 +335,8 @@ public interface OpenSCADTypes {
       else if (type == UNARY_PLUS_EXPR) {
         return new OpenSCADUnaryPlusExprImpl(node);
       }
-      else if (type == USE_ITEM) {
-        return new OpenSCADUseItemImpl(node);
+      else if (type == USE_IMPORT) {
+        return new OpenSCADUseImportImpl(node);
       }
       else if (type == VARIABLE_DECLARATION) {
         return new OpenSCADVariableDeclarationImpl(node);

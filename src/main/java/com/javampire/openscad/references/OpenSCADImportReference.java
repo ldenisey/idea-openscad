@@ -5,20 +5,20 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.javampire.openscad.psi.OpenSCADImportElement;
+import com.javampire.openscad.psi.OpenSCADImportPathRefElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenSCADImportReference extends PsiReferenceBase<OpenSCADImportElement> implements PsiPolyVariantReference {
+public class OpenSCADImportReference extends PsiReferenceBase<OpenSCADImportPathRefElement> implements PsiPolyVariantReference {
 
     private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADImportReference");
 
-    private String importPath;
+    private final String importPath;
 
-    public OpenSCADImportReference(@NotNull OpenSCADImportElement element, TextRange textRange) {
+    public OpenSCADImportReference(@NotNull OpenSCADImportPathRefElement element, TextRange textRange) {
         super(element, textRange);
         importPath = element.getImportPath();
     }

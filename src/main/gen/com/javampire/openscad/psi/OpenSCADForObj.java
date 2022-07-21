@@ -14,6 +14,9 @@ public interface OpenSCADForObj extends OpenSCADObject {
   OpenSCADFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
+  OpenSCADImport getImport();
+
+  @Nullable
   OpenSCADModuleDeclaration getModuleDeclaration();
 
   @Nullable

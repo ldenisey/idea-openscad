@@ -1,3 +1,5 @@
+include <assign.scad>
+
 module vase1() {
     include <modules/vase.scad>
     vase_h = 20;

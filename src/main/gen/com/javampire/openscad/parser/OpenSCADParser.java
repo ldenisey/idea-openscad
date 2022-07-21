@@ -1163,42 +1163,52 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INCLUDE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END
-  public static boolean include_item(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "include_item")) return false;
-    if (!nextTokenIs(b, INCLUDE_KEYWORD)) return false;
+  // include_import
+  //     | use_import
+  public static boolean import_$(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_$")) return false;
+    if (!nextTokenIs(b, "<import $>", INCLUDE_KEYWORD, USE_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, INCLUDE_KEYWORD, INCLUDE_START);
-    r = r && include_path_ref(b, l + 1);
-    r = r && consumeToken(b, INCLUDE_END);
-    exit_section_(b, m, INCLUDE_ITEM, r);
+    Marker m = enter_section_(b, l, _NONE_, IMPORT, "<import $>");
+    r = include_import(b, l + 1);
+    if (!r) r = use_import(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // INCLUDE_PATH
-  public static boolean include_path_ref(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "include_path_ref")) return false;
-    if (!nextTokenIs(b, INCLUDE_PATH)) return false;
+  // IMPORT_PATH
+  public static boolean import_path_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_path_ref")) return false;
+    if (!nextTokenIs(b, IMPORT_PATH)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, INCLUDE_PATH);
-    exit_section_(b, m, INCLUDE_PATH_REF, r);
+    r = consumeToken(b, IMPORT_PATH);
+    exit_section_(b, m, IMPORT_PATH_REF, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // INCLUDE_KEYWORD IMPORT_START import_path_ref IMPORT_END
+  public static boolean include_import(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "include_import")) return false;
+    if (!nextTokenIs(b, INCLUDE_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, INCLUDE_KEYWORD, IMPORT_START);
+    r = r && import_path_ref(b, l + 1);
+    r = r && consumeToken(b, IMPORT_END);
+    exit_section_(b, m, INCLUDE_IMPORT, r);
     return r;
   }
 
   /* ********************************************************** */
   // statement
-  //     | include_item
-  //     | use_item
   //     | comment_item
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
     boolean r;
     r = statement(b, l + 1);
-    if (!r) r = include_item(b, l + 1);
-    if (!r) r = use_item(b, l + 1);
     if (!r) r = comment_item(b, l + 1);
     return r;
   }
@@ -1451,26 +1461,27 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // object | declaration
+  // object | declaration | import
   static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
     r = object(b, l + 1);
     if (!r) r = declaration(b, l + 1);
+    if (!r) r = import_$(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // USE_KEYWORD INCLUDE_START include_path_ref INCLUDE_END
-  public static boolean use_item(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_item")) return false;
+  // USE_KEYWORD IMPORT_START import_path_ref IMPORT_END
+  public static boolean use_import(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_import")) return false;
     if (!nextTokenIs(b, USE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, USE_KEYWORD, INCLUDE_START);
-    r = r && include_path_ref(b, l + 1);
-    r = r && consumeToken(b, INCLUDE_END);
-    exit_section_(b, m, USE_ITEM, r);
+    r = consumeTokens(b, 0, USE_KEYWORD, IMPORT_START);
+    r = r && import_path_ref(b, l + 1);
+    r = r && consumeToken(b, IMPORT_END);
+    exit_section_(b, m, USE_IMPORT, r);
     return r;
   }
 

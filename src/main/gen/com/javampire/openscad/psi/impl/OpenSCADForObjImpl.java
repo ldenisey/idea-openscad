@@ -41,6 +41,12 @@ public class OpenSCADForObjImpl extends OpenSCADObjectImpl implements OpenSCADFo
 
   @Override
   @Nullable
+  public OpenSCADImport getImport() {
+    return findChildByClass(OpenSCADImport.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADModuleDeclaration getModuleDeclaration() {
     return findChildByClass(OpenSCADModuleDeclaration.class);
   }

@@ -70,8 +70,10 @@ public class OpenSCADStructureViewElement implements StructureViewTreeElement, S
             final List<TreeElement> treeElements = new ArrayList<>();
             final List<PsiElement> navigatableElements = PsiTreeUtil.getChildrenOfAnyType(
                     element,
-                    OpenSCADModuleDeclaration.class, OpenSCADFunctionDeclaration.class,
-                    OpenSCADUseItem.class, OpenSCADIncludeItem.class, OpenSCADVariableDeclaration.class
+                    OpenSCADImport.class,
+                    OpenSCADFunctionDeclaration.class,
+                    OpenSCADModuleDeclaration.class,
+                    OpenSCADVariableDeclaration.class
             );
             LOG.debug("navigatable elements: " + navigatableElements);
             for (PsiElement element : navigatableElements) {

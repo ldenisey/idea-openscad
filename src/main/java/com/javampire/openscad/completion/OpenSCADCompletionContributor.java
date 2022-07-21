@@ -196,7 +196,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         final Module module = ModuleUtil.findModuleForPsiElement(element);
 
         // Loop through declarations
-        final List<PsiElement> includes = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADIncludeItem.class);
+        final List<PsiElement> includes = PsiTreeUtil.getChildrenOfTypeAsList(element.getContainingFile(), OpenSCADIncludeImport.class);
         for (PsiElement include : includes) {
             // Get relative paths
             final String importPath = OpenSCADPsiImplUtil.getPresentation(include).getPresentableText();
@@ -300,8 +300,8 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
 
         // Loop through declarations
         final List<PsiElement> declarations = new ArrayList<>();
-        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADUseItem.class));
-        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADIncludeItem.class));
+        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADUseImport.class));
+        declarations.addAll(PsiTreeUtil.getChildrenOfTypeAsList(file, OpenSCADIncludeImport.class));
         final Module module = ModuleUtil.findModuleForFile(file.getOriginalFile());
         for (PsiElement declaration : declarations) {
             // Get relative paths

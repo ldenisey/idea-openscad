@@ -13,9 +13,7 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.OpenSCADNamedElement;
-import com.javampire.openscad.psi.OpenSCADTypes;
-import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
+import com.javampire.openscad.psi.*;
 import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,10 +39,10 @@ public class OpenSCADPsiImplUtil {
                     if (nameNode != null) {
                         return nameNode.getText();
                     }
-                } else if (OpenSCADParserDefinition.IMPORT_TOKENS.contains(element.getNode().getElementType())) {
-                    final ASTNode pathNode = element.getNode().findChildByType(OpenSCADTypes.INCLUDE_PATH_REF);
-                    if (pathNode != null) {
-                        return pathNode.getText().replaceAll("^.*/([^/]*)$", "$1");
+                } else if (element.getNode().getElementType() == OpenSCADTypes.IMPORT) {
+                    final PsiElement pathElement = PsiTreeUtil.findChildOfType(element, OpenSCADImportPathRef.class);
+                    if (pathElement != null) {
+                        return pathElement.getNode().getText().replaceAll("^.*/([^/]*)$", "$1");
                     }
                 }
                 return null;
@@ -67,7 +65,7 @@ public class OpenSCADPsiImplUtil {
                 if (element.getNode().getElementType() == OpenSCADTypes.VARIABLE_DECLARATION) {
                     return PlatformIcons.VARIABLE_ICON;
                 }
-                if (OpenSCADParserDefinition.IMPORT_TOKENS.contains(element.getNode().getElementType())) {
+                if (element.getNode().getElementType() == OpenSCADTypes.IMPORT) {
                     return OpenSCADIcons.FILE;
                 }
                 return null;

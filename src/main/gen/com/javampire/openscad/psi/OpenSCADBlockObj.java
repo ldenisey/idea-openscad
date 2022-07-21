@@ -11,6 +11,9 @@ public interface OpenSCADBlockObj extends OpenSCADObject {
   List<OpenSCADFunctionDeclaration> getFunctionDeclarationList();
 
   @NotNull
+  List<OpenSCADImport> getImportList();
+
+  @NotNull
   List<OpenSCADModuleDeclaration> getModuleDeclarationList();
 
   @NotNull

@@ -47,6 +47,12 @@ public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStub
 
   @Override
   @Nullable
+  public OpenSCADImport getImport() {
+    return findChildByClass(OpenSCADImport.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADModuleDeclaration getModuleDeclaration() {
     return findChildByClass(OpenSCADModuleDeclaration.class);
   }

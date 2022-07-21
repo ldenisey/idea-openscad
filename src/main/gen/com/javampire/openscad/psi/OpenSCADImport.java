@@ -6,10 +6,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface OpenSCADUseItem extends PsiElement {
+public interface OpenSCADImport extends PsiElement {
 
-  @NotNull
-  OpenSCADIncludePathRef getIncludePathRef();
+  @Nullable
+  OpenSCADIncludeImport getIncludeImport();
+
+  @Nullable
+  OpenSCADUseImport getUseImport();
 
   ItemPresentation getPresentation();
 

@@ -55,6 +55,11 @@ public class BaseParsingTest extends ParsingTestCase {
     }
 
     @Test
+    public void testinclude() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
     public void testintersection_for() throws IOException {
         doTest("_psidump");
     }

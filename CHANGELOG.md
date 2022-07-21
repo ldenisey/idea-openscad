@@ -8,6 +8,7 @@ Main repository is transferred from https://github.com/ncsaba/idea-openscad to h
 ### Added
 - Issue-34 - 2019.05 features not fully supported
 - Issue-38 - 2019.05 list comprehensions does not parse
+- Issue-91 - "include" can be included in a block object
 
 ### Changed
 - Dependency updates, cleaning build configuration

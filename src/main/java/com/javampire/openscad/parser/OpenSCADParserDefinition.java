@@ -65,7 +65,7 @@ public class OpenSCADParserDefinition implements ParserDefinition {
     );
 
     public static final TokenSet ANGLE_BRACKETS_TOKENS = TokenSet.create(
-            INCLUDE_START, INCLUDE_END
+            IMPORT_START, IMPORT_END
     );
 
     public static final TokenSet PARENTHESES_TOKENS = TokenSet.create(
@@ -90,16 +90,16 @@ public class OpenSCADParserDefinition implements ParserDefinition {
      * Used for folding import section (can include comments too)
      */
     public static final TokenSet IMPORT_FOLDING_TOKENS = TokenSet.create(
-            END_OF_LINE_COMMENT, INCLUDE_ITEM, USE_ITEM
+            END_OF_LINE_COMMENT, INCLUDE_IMPORT, USE_IMPORT
     );
 
     // The sets below are used for element naming/renaming
 
     /**
-     * These elements have their name in the first child with INCLUDE_PATH token type
+     * These elements have their name in the first child with IMPORT_PATH token type
      */
     public static final TokenSet IMPORT_TOKENS = TokenSet.create(
-            INCLUDE_ITEM, USE_ITEM
+            INCLUDE_IMPORT, USE_IMPORT
     );
 
     /**

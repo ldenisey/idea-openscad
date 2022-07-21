@@ -82,7 +82,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
             return ANGLE_BRACKETS_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.USE_KEYWORD) || tokenType.equals(OpenSCADTypes.INCLUDE_KEYWORD)) {
             return IMPORT_KEYS;
-        } else if (tokenType.equals(OpenSCADTypes.INCLUDE_PATH)) {
+        } else if (tokenType.equals(OpenSCADTypes.IMPORT_PATH)) {
             return IMPORT_PATH_KEYS;
         } else if (tokenType.equals(OpenSCADTypes.IDENTIFIER)) {
             return IDENTIFIER_KEYS;

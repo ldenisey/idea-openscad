@@ -17,6 +17,9 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBas
   OpenSCADFunctionDeclaration getFunctionDeclaration();
 
   @Nullable
+  OpenSCADImport getImport();
+
+  @Nullable
   OpenSCADModuleDeclaration getModuleDeclaration();
 
   @Nullable

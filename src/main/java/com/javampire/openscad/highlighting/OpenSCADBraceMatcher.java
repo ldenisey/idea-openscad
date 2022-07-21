@@ -14,7 +14,7 @@ public class OpenSCADBraceMatcher implements PairedBraceMatcher {
             new BracePair(OpenSCADTypes.LPARENTH, OpenSCADTypes.RPARENTH, false),
             new BracePair(OpenSCADTypes.LBRACKET, OpenSCADTypes.RBRACKET, false),
             new BracePair(OpenSCADTypes.LBRACE, OpenSCADTypes.RBRACE, true),
-            new BracePair(OpenSCADTypes.INCLUDE_START, OpenSCADTypes.INCLUDE_END, false)};
+            new BracePair(OpenSCADTypes.IMPORT_START, OpenSCADTypes.IMPORT_END, false)};
 
 
     @NotNull

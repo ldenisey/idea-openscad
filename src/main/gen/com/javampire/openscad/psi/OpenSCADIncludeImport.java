@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface OpenSCADIncludePathRef extends PsiElement {
+public interface OpenSCADIncludeImport extends PsiElement {
+
+  @NotNull
+  OpenSCADImportPathRef getImportPathRef();
 
 }

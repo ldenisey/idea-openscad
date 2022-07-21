@@ -35,6 +35,12 @@ public class OpenSCADIfObjImpl extends OpenSCADObjectImpl implements OpenSCADIfO
 
   @Override
   @NotNull
+  public List<OpenSCADImport> getImportList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADImport.class);
+  }
+
+  @Override
+  @NotNull
   public List<OpenSCADModuleDeclaration> getModuleDeclarationList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADModuleDeclaration.class);
   }

@@ -19,8 +19,8 @@ CRLF=\R
 BLANK=[ \t\f]
 WHITE_SPACE={CRLF} | {BLANK}
 
-INCLUDE_COND={WHITE_SPACE}*"<"
-INCLUDE_PATH=[^<>]+
+IMPORT_COND={WHITE_SPACE}*"<"
+IMPORT_PATH=[^<>]+
 
 C_STYLE_COMMENT=("/*"[^"*"]{COMMENT_TAIL})|"/*"
 DOC_COMMENT="/*""*"+("/"|([^"/""*"]{COMMENT_TAIL}))?
@@ -38,7 +38,7 @@ NUMBER_LITERAL = {DECIMAL} ([Ee] [+-]? {DIGIT}+)?
 ESCAPE_SEQUENCE = \\[^]
 STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 
-%state INCLUDE_PATH
+%state IMPORT_PATH
 
 %%
 
@@ -59,9 +59,9 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "each"                      { return OpenSCADTypes.EACH_KEYWORD; }
 
     "include"
-     / {INCLUDE_COND}           { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD; }
+     / {IMPORT_COND}           { yybegin(IMPORT_PATH); return OpenSCADTypes.INCLUDE_KEYWORD; }
     "use"
-     / {INCLUDE_COND}           { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_KEYWORD; }
+     / {IMPORT_COND}           { yybegin(IMPORT_PATH); return OpenSCADTypes.USE_KEYWORD; }
 
     "."                         { return OpenSCADTypes.DOT; }
     "="                         { return OpenSCADTypes.EQUALS; }
@@ -107,10 +107,10 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 
 {WHITE_SPACE}+                  { return TokenType.WHITE_SPACE; }
 
-<INCLUDE_PATH> {
-    "<"                         { return OpenSCADTypes.INCLUDE_START; }
-    {INCLUDE_PATH}              { return OpenSCADTypes.INCLUDE_PATH; }
-    ">"                         { yybegin(YYINITIAL); return OpenSCADTypes.INCLUDE_END; }
+<IMPORT_PATH> {
+    "<"                         { return OpenSCADTypes.IMPORT_START; }
+    {IMPORT_PATH}              { return OpenSCADTypes.IMPORT_PATH; }
+    ">"                         { yybegin(YYINITIAL); return OpenSCADTypes.IMPORT_END; }
 }
 
 [^]                             { return TokenType.BAD_CHARACTER; }

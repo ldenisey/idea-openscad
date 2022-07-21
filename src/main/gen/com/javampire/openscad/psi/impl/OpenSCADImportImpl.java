@@ -8,22 +8,41 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
-public class OpenSCADIncludePathRefImpl extends OpenSCADImportElementImpl implements OpenSCADIncludePathRef {
+public class OpenSCADImportImpl extends ASTWrapperPsiElement implements OpenSCADImport {
 
-  public OpenSCADIncludePathRefImpl(@NotNull ASTNode node) {
+  public OpenSCADImportImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitIncludePathRef(this);
+    visitor.visitImport(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADIncludeImport getIncludeImport() {
+    return findChildByClass(OpenSCADIncludeImport.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADUseImport getUseImport() {
+    return findChildByClass(OpenSCADUseImport.class);
+  }
+
+  @Override
+  public ItemPresentation getPresentation() {
+    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
 }

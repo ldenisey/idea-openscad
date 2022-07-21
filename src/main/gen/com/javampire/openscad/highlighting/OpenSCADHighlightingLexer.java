@@ -23,7 +23,7 @@ class OpenSCADHighlightingLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int INCLUDE_PATH = 2;
+  public static final int IMPORT_PATH = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -1180,17 +1180,17 @@ class OpenSCADHighlightingLexer implements FlexLexer {
             // fall through
           case 81: break;
           case 27: 
-            { return OpenSCADTypes.INCLUDE_PATH;
+            { return OpenSCADTypes.IMPORT_PATH;
             } 
             // fall through
           case 82: break;
           case 28: 
-            { return OpenSCADTypes.INCLUDE_START;
+            { return OpenSCADTypes.IMPORT_START;
             } 
             // fall through
           case 83: break;
           case 29: 
-            { yybegin(YYINITIAL); return OpenSCADTypes.INCLUDE_END;
+            { yybegin(YYINITIAL); return OpenSCADTypes.IMPORT_END;
             } 
             // fall through
           case 84: break;
@@ -1263,7 +1263,7 @@ class OpenSCADHighlightingLexer implements FlexLexer {
             // lookahead expression with fixed base length
             zzMarkedPos = Character.offsetByCodePoints
                 (zzBufferL/*, zzStartRead, zzEndRead - zzStartRead*/, zzStartRead, 3);
-            { yybegin(INCLUDE_PATH); return OpenSCADTypes.USE_KEYWORD;
+            { yybegin(IMPORT_PATH); return OpenSCADTypes.USE_KEYWORD;
             } 
             // fall through
           case 98: break;
@@ -1351,7 +1351,7 @@ class OpenSCADHighlightingLexer implements FlexLexer {
             // lookahead expression with fixed base length
             zzMarkedPos = Character.offsetByCodePoints
                 (zzBufferL/*, zzStartRead, zzEndRead - zzStartRead*/, zzStartRead, 7);
-            { yybegin(INCLUDE_PATH); return OpenSCADTypes.INCLUDE_KEYWORD;
+            { yybegin(IMPORT_PATH); return OpenSCADTypes.INCLUDE_KEYWORD;
             } 
             // fall through
           case 110: break;

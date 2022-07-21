@@ -19,10 +19,9 @@ public class OpenSCADStructureViewModel
     public OpenSCADStructureViewModel(PsiFile psiFile, Editor editor) {
         super(psiFile, editor, new OpenSCADStructureViewElement(psiFile));
         withSuitableClasses(
-                OpenSCADModuleDeclaration.class,
+                OpenSCADImport.class,
                 OpenSCADFunctionDeclaration.class,
-                OpenSCADUseItem.class,
-                OpenSCADIncludeItem.class,
+                OpenSCADModuleDeclaration.class,
                 OpenSCADVariableDeclaration.class
         );
         withSorters(Sorter.ALPHA_SORTER);

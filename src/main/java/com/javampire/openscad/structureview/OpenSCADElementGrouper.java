@@ -43,8 +43,7 @@ public class OpenSCADElementGrouper implements Grouper {
     public static final Map<Class, ItemPresentation> ITEM_PRESENTATION_MAP = new LinkedHashMap<>();
 
     static {
-        ITEM_PRESENTATION_MAP.put(OpenSCADUseItem.class, IMPORT_GROUP_ITEM);
-        ITEM_PRESENTATION_MAP.put(OpenSCADIncludeItem.class, IMPORT_GROUP_ITEM);
+        ITEM_PRESENTATION_MAP.put(OpenSCADImport.class, IMPORT_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADFunctionDeclaration.class, FUNCTION_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADModuleDeclaration.class, MODULE_GROUP_ITEM);
         ITEM_PRESENTATION_MAP.put(OpenSCADVariableDeclaration.class, VARIABLE_GROUP_ITEM);
