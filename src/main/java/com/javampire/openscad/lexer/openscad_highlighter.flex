@@ -137,7 +137,6 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "sqrt"                      |
     "str"                       |
     "chr"                       |
-    "select"                    |
     "search"                    |
     "version"                   |
     "version_num"               |

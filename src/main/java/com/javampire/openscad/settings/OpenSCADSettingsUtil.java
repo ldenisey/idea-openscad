@@ -3,6 +3,7 @@ package com.javampire.openscad.settings;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 
@@ -68,39 +69,51 @@ public class OpenSCADSettingsUtil {
             "\\Program Files\\OpenSCAD"
     );
 
-    public static String suggestExecutablePath() {
+    public static String searchExecutablePath() {
+        String executablePath = null;
         if (SystemInfo.isWindows) {
-            // try first to detect if the executable is on the PATH
+            // Try first to detect if the executable is on the PATH
             final String path = System.getenv("PATH");
-            String result = filterWindowsPathOptions(StringUtil.split(path, ";"));
-            if (result != null) {
-                return result;
-            }
-            // if not check common windows locations
-            return filterWindowsPathOptions(WINDOWS_PATH_OPTIONS);
-        }
-        // try to detect from environment (i.e. PATH) on non-windows systems
-        for (String executableName : UNIX_EXECUTABLE_NAMES) {
-            try {
-                String result = new CapturingProcessHandler(
-                        new GeneralCommandLine("which", executableName)
-                ).runProcess(5 * MINUTE).getStdout().trim();
+            executablePath = filterWindowsPathOptions(StringUtil.split(path, ";"));
 
-                if (!result.isEmpty()) {
-                    return result;
-                }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+            // If not found, check common locations
+            if (executablePath == null) {
+                executablePath = filterWindowsPathOptions(WINDOWS_PATH_OPTIONS);
             }
-        }
-        // if not on PATH check common locations
-        if (SystemInfo.isMac) {
-            return filterUnixPathOptions(MACOS_PATH_OPTIONS);
-
         } else if (SystemInfo.isUnix) {
-            return filterUnixPathOptions(LINUX_PATH_OPTIONS);
+            // Try to detect from environment (i.e. PATH) on non-windows systems
+            for (String executableName : UNIX_EXECUTABLE_NAMES) {
+                try {
+                    executablePath = new CapturingProcessHandler(
+                            new GeneralCommandLine("which", executableName)
+                    ).runProcess(5 * MINUTE).getStdout().trim();
+
+                    if (!executablePath.isEmpty()) {
+                        break;
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (executablePath != null && executablePath.isEmpty()) {
+                executablePath = null;
+            }
+
+            // If not found, check common locations
+            if (executablePath == null) {
+                executablePath = filterUnixPathOptions(LINUX_PATH_OPTIONS);
+            }
+        } else if (SystemInfo.isMac) {
+            // Check common locations
+            executablePath = filterUnixPathOptions(MACOS_PATH_OPTIONS);
         }
-        return null;
+
+        // If running unit tests on server without openscad, give a fake path
+        if (executablePath == null && ApplicationManager.getApplication().isUnitTestMode()) {
+            return "/fake/path/for/unit/tests";
+        }
+
+        return executablePath;
     }
 
     private static String filterWindowsPathOptions(List<String> pathOptions) {

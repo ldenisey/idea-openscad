@@ -31,14 +31,13 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
-}
-
 intellij {
     version.set("221-EAP-SNAPSHOT")
 
-    //plugins.set(['psiviewer:221-SNAPSHOT']) // For debugging the parser only
+    plugins.set([
+            'java'
+            //,'psiviewer:221-SNAPSHOT'  // For debugging the parser only
+    ])
 
     updateSinceUntilBuild.set(false)
 

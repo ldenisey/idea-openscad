@@ -337,7 +337,6 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   //                    | "sqrt"
   //                    | "str"
   //                    | "chr"
-  //                    | "select"
   //                    | "search"
   //                    | "version"
   //                    | "version_num"
@@ -374,7 +373,6 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, "sqrt");
     if (!r) r = consumeToken(b, "str");
     if (!r) r = consumeToken(b, "chr");
-    if (!r) r = consumeToken(b, "select");
     if (!r) r = consumeToken(b, "search");
     if (!r) r = consumeToken(b, "version");
     if (!r) r = consumeToken(b, "version_num");

@@ -6,34 +6,30 @@
 Main repository is transferred from https://github.com/ncsaba/idea-openscad to https://github.com/ldenisey/idea-openscad.
 
 ### Added
-- Issue-34 - 2019.05 features not fully supported
-- Issue-38 - 2019.05 list comprehensions does not parse
-- Issue-91 - "include" can be included in a block object
+- [Issue-34](https://github.com/ncsaba/idea-openscad/issues/34) - 2019.05 features not fully supported
+- [Issue-38](https://github.com/ncsaba/idea-openscad/issues/38) - 2019.05 list comprehensions does not parse
+- [Issue-91](https://github.com/ncsaba/idea-openscad/issues/91) - "include" can be included in a block object
+- [Issue-92](https://github.com/ncsaba/idea-openscad/issues/92) - Code style: can disable indent in cascade transformations
 
 ### Changed
 - Dependency updates, cleaning build configuration
 
-### Deprecated
-
-### Removed
-
 ### Fixed
-- Issue-97 / PR-102 - Limit documentation provider for language OpenSCAD only (from kadhonn)
-- Issue-80 / Issue-89 - Identifiers can start with digits
+- [Issue-97](https://github.com/ncsaba/idea-openscad/issues/97) & [PR-102](https://github.com/ncsaba/idea-openscad/pull/102) - Limit documentation provider for language OpenSCAD only (from kadhonn)
+- [Issue-80](https://github.com/ncsaba/idea-openscad/issues/80) & [Issue-89](https://github.com/ncsaba/idea-openscad/issues/89) - Identifiers can start with digits
 
-### Security
 ## 2.1.1
 ### Fixed
-- Issue-71 & Issue-74 - Fix color identifier detection
-- Issue-77 - Fix npe when invoking file contextual action menu
+- [Issue-71](https://github.com/ncsaba/idea-openscad/issues/71) & [Issue-74](https://github.com/ncsaba/idea-openscad/issues/74) - Fix color identifier detection
+- [Issue-77](https://github.com/ncsaba/idea-openscad/issues/77) - Fix npe when invoking file contextual action menu
 
 ## 2.1.0
 ### Changed
 - "Generate" ... actions have been transformed into an "Export as ..." action that allow for target file path and type selection.
 
 ### Fix
-- Issue-59 NullPointerException In Intellij
-- Issue-62 Doesn't open app correctly if file path includes spaces
+- [Issue-59](https://github.com/ncsaba/idea-openscad/issues/59) NullPointerException In Intellij
+- [Issue-62](https://github.com/ncsaba/idea-openscad/issues/62) Doesn't open app correctly if file path includes spaces
 
 ## 2.0.1
 ### Changed

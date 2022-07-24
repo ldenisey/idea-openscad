@@ -31,7 +31,7 @@ public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
                 Wrap.createWrap(WrapType.NORMAL, false),
                 openSCADSettings,
                 createSpacingBuilder(openSCADSettings),
-                new OpenSCADIndentBuilder());
+                new OpenSCADIndentBuilder(settings));
         return FormattingModelProvider.createFormattingModelForPsiFile(element.getContainingFile(), fileBlock, settings);
     }
 

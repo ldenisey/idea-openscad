@@ -30,7 +30,7 @@ public class LibraryUtil implements StartupActivity {
     public void runActivity(@NotNull Project project) {
         final OpenSCADSettings settings = OpenSCADSettings.getInstance();
         if (settings.openSCADExecutable == null) {
-            final String suggestedExecutablePath = OpenSCADSettingsUtil.suggestExecutablePath();
+            final String suggestedExecutablePath = OpenSCADSettingsUtil.searchExecutablePath();
             if (suggestedExecutablePath == null) {
                 // warn user
                 DialogBuilder db = new DialogBuilder();
