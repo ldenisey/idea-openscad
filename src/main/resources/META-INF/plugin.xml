@@ -5,8 +5,8 @@
 
   <description><![CDATA[
     OpenSCAD language support plugin.
-    <p>Provides highlighting, completion, code folding, structure views, completion, navigation, color edition,
-    library support, actions for opening OpenSCAD and exporting model.</p>
+    <p>Provides highlighting, completion, code folding, structure views, navigation, color edition,
+    library support, actions for rendering in OpenSCAD and exporting model.</p>
     ]]></description>
 
   <extensions defaultExtensionNs="com.intellij">
