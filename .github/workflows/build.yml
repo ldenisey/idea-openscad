@@ -20,6 +20,10 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ['java']
+
     steps:
       - uses: actions/setup-java@v3
         with:
@@ -27,6 +31,12 @@ jobs:
           java-version: 11
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1.0.4
+
+      # CodeQL initialization
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
 
       # Cache Gradle dependencies
       - name: Setup Gradle Dependencies Cache
@@ -49,6 +59,10 @@ jobs:
       # Run verifyPlugin Gradle task
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
+
+      # Security scan with CodeQL
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
 
   # Build plugin with buildPlugin Gradle task and provide the artifact for the next workflow jobs
   # Requires test job to be passed
@@ -82,6 +96,13 @@ jobs:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
+      # Cache Plugin distribution
+      - name: Setup Plugin distribution Cache
+        uses: actions/cache@v3.0.5
+        with:
+          path: ./build/distributions
+          key: ${{ runner.os }}-plugin-distribution
+
       # Set environment variables
       - name: Export Properties
         id: properties
@@ -104,13 +125,6 @@ jobs:
       # Build artifact using buildPlugin Gradle task
       - name: Build Plugin
         run: ./gradlew buildPlugin
-
-      # Upload plugin artifact to make it available in the next jobs
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: plugin-artifact
-          path: ./build/distributions/${{ needs.build.outputs.artifact }}
 
   # Verify built plugin using IntelliJ Plugin Verifier tool
   # Requires build job to be passed
@@ -150,13 +164,6 @@ jobs:
           echo "::set-output name=ideVersions::$IDE_VERSIONS"
           echo "::set-output name=pluginVerifierHomeDir::~/.pluginVerifier"
 
-      # Cache Plugin Verifier IDEs
-      - name: Setup Plugin Verifier IDEs Cache
-        uses: actions/cache@v3.0.5
-        with:
-          path: ${{ steps.properties.outputs.pluginVerifierHomeDir }}/ides
-          key: ${{ runner.os }}-plugin-verifier-${{ steps.properties.outputs.ideVersions }}
-
       # Run IntelliJ Plugin Verifier action using GitHub Action
       - name: Verify Plugin
         run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
@@ -170,6 +177,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      # Cache Plugin distribution
+      - name: Setup Plugin distribution Cache
+        uses: actions/cache@v3.0.5
+        with:
+          path: ./build/distributions
+          key: ${{ runner.os }}-plugin-distribution
 
       # Delete existing release if needed
       - name: Delete previous release
@@ -192,6 +206,6 @@ jobs:
           tag: ${{ needs.build.outputs.version }}
           commit: ${{ env.GITHUB_SHA }}
           body: ${{ needs.build.outputs.changelog }}
-          artifact: ${{ needs.build.outputs.artifact }}
+          artifacts: ./build/distributions/${{ needs.build.outputs.artifact }}
           artifactContentType: application/zip
           token: ${{ secrets.GITHUB_TOKEN }}
