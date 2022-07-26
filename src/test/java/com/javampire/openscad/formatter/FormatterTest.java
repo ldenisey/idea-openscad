@@ -34,7 +34,6 @@ public class FormatterTest extends LightJavaCodeInsightFixtureTestCase {
         myFixture.configureByFile("IndentObjectsElements.scad");
         ApplicationManager.getApplication().runWriteAction(() ->
                 CommandProcessor.getInstance().runUndoTransparentAction(() -> {
-                    //CodeStyle.getLanguageSettings(myFixture.getFile()).SPACE_AROUND_ASSIGNMENT_OPERATORS = true;
                     CodeStyle.getCustomSettings(myFixture.getFile(), OpenSCADCodeStyleSettings.class).INDENT_CASCADING_TRANSFORMATIONS = false;
                     CodeStyleManager.getInstance(myFixture.getProject()).reformatText(
                             myFixture.getFile(),

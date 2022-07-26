@@ -14,7 +14,7 @@ import java.util.List;
 
 public class OpenSCADImportReference extends PsiReferenceBase<OpenSCADImportPathRefElement> implements PsiPolyVariantReference {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADImportReference");
+    private static final Logger LOG = Logger.getInstance(OpenSCADImportReference.class);
 
     private final String importPath;
 

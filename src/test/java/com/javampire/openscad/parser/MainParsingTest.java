@@ -1,7 +1,6 @@
 package com.javampire.openscad.parser;
 
 import com.intellij.testFramework.ParsingTestCase;
-import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import org.junit.Test;
 
 import java.io.IOException;

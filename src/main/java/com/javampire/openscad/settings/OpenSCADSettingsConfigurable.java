@@ -12,17 +12,28 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Objects;
 
 public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Parent, Configurable.NoScroll {
+
     private final Project myProject;
-
     private JPanel settingsPanel;
+    private TextFieldWithBrowseButton openSCADExecutablePath;
+    private JCheckBox allowPreviewEditor;
+    private JLabel allowPreviewEditorText;
 
-    private TextFieldWithBrowseButton openSCADExecutableField;
-
-    OpenSCADSettingsConfigurable(Project project) {
+    OpenSCADSettingsConfigurable(final Project project) {
         myProject = project;
+
+        openSCADExecutablePath.getTextField().addActionListener(e -> {
+            if (openSCADExecutablePath.getText().isEmpty()) {
+                allowPreviewEditor.setEnabled(false);
+                allowPreviewEditor.setSelected(false);
+                allowPreviewEditorText.setEnabled(false);
+            } else {
+                allowPreviewEditor.setEnabled(true);
+                allowPreviewEditorText.setEnabled(true);
+            }
+        });
     }
 
     @NotNull
@@ -33,7 +44,7 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
 
     @Nullable
     @Override
-    public Runnable enableSearch(String option) {
+    public Runnable enableSearch(final String option) {
         return null;
     }
 
@@ -58,25 +69,24 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
     @Override
     public boolean isModified() {
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-        return !Objects.equals(openSCADSettings.getOpenSCADExecutable(), openSCADExecutableField.getText());
+        return allowPreviewEditor.isSelected() != openSCADSettings.isAllowPreviewEditor()
+                || !openSCADExecutablePath.getText().equals(openSCADSettings.getOpenSCADExecutable());
     }
 
     @Override
     public void apply() {
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-        final String openSCADExecutable = openSCADExecutableField.getText();
-
-        openSCADSettings.setOpenSCADExecutable(openSCADExecutable);
-
-        LibraryUtil.updateOpenSCADLibraries(myProject);
+        openSCADSettings.setOpenSCADExecutable(openSCADExecutablePath.getText());
+        openSCADSettings.setAllowPreviewEditor(allowPreviewEditor.isSelected());
+        OpenSCADSettingsStartupActivity.updateOpenSCADLibraries(myProject);
     }
 
     @Override
     public void reset() {
         final OpenSCADSettings openSCADSettings = OpenSCADSettings.getInstance();
-
         final String openSCADExecutable = openSCADSettings.getOpenSCADExecutable();
-        openSCADExecutableField.setText(openSCADExecutable != null ? openSCADExecutable : "");
+        openSCADExecutablePath.setText(openSCADExecutable != null ? openSCADExecutable : "");
+        allowPreviewEditor.setSelected(openSCADSettings.isAllowPreviewEditor());
     }
 
     @Override
@@ -84,12 +94,12 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
     }
 
     private void createUIComponents() {
-        openSCADExecutableField = new TextFieldWithBrowseButton();
+        openSCADExecutablePath = new TextFieldWithBrowseButton();
 
         final FileChooserDescriptor executableDescriptor = FileChooserDescriptorFactory.createSingleLocalFileDescriptor().withFileFilter(
                 virtualFile -> virtualFile.isInLocalFileSystem() && new File(virtualFile.getPath()).canExecute()
         );
-        openSCADExecutableField.addBrowseFolderListener(
+        openSCADExecutablePath.addBrowseFolderListener(
                 "Choose OpenSCAD Executable",
                 "Choose OpenSCAD executable",
                 myProject,
@@ -102,7 +112,6 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
     public Configurable[] getConfigurables() {
         return new Configurable[0];
     }
-
 
     @Override
     public boolean hasOwnContent() {

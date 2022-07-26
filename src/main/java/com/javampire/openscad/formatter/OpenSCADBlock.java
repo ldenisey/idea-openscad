@@ -38,7 +38,7 @@ public class OpenSCADBlock extends AbstractBlock {
 
     @Override
     protected List<Block> buildChildren() {
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
         for (ASTNode child = myNode.getFirstChildNode(); child != null; child = child.getTreeNext()) {
             // Filtering blank and empty elements
             if (child.getElementType() != TokenType.WHITE_SPACE && child.getTextRange().getLength() > 0) {

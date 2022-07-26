@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class OpenSCADCommenter implements CodeDocumentationAwareCommenterEx {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.OpenSCADCommenter");
+    private static final Logger LOG = Logger.getInstance(OpenSCADCommenter.class);
 
     @Override
     public String getLineCommentPrefix() {

@@ -5,6 +5,8 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.IdeActions;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.keymap.KeymapUtil;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -20,12 +22,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.javampire.openscad.OpenSCADFileType;
-import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
@@ -41,20 +40,21 @@ import java.util.stream.Collectors;
 
 
 public class OpenSCADCompletionContributor extends CompletionContributor {
+    private static final Logger LOG = Logger.getInstance(OpenSCADCompletionContributor.class);
 
     private static final String _FROM_ = " from ";
-    private static final String BUILT_IN_MISSING_FUNCTION = "select";
-    private static final String BUILT_IN_MODULES_FILENAME = "builtin_modules.scad";
-    private static final String BUILT_IN_FUNCTIONS_FILENAME = "builtin_functions.scad";
+    private static final String BUILT_IN_MODULES_FILENAME = "/com/javampire/openscad/skeletons/builtin_modules.scad";
+    private static final String BUILT_IN_FUNCTIONS_FILENAME = "/com/javampire/openscad/skeletons/builtin_functions.scad";
 
-    private static List<LookupElement> builtinModulesAndFunctions;
+    private static List<LookupElement> builtinModules;
+    private static List<LookupElement> builtinFunctions;
     private static List<LookupElement> globalLibrariesModulesAndFunctions;
 
     public OpenSCADCompletionContributor() {
         extend(
                 CompletionType.BASIC,
                 PlatformPatterns.psiElement().withLanguage(OpenSCADLanguage.INSTANCE),
-                new CompletionProvider<CompletionParameters>() {
+                new CompletionProvider<>() {
                     @Override
                     protected void addCompletions(
                             @NotNull CompletionParameters parameters,
@@ -112,7 +112,8 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
                         ProgressManager.checkCanceled();
 
                         // Add builtin modules and functions
-                        addBuiltinModulesAndFunctions(result, project);
+                        addBuiltinModules(project, result);
+                        addBuiltinFunctions(project, result);
                         ProgressManager.checkCanceled();
 
                         // Add declared library methods and functions
@@ -265,17 +266,34 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         return convertToLookupElements(functionDeclarations, tailText);
     }
 
-    private void addBuiltinModulesAndFunctions(final CompletionResultSet result, final Project project) {
-        if (builtinModulesAndFunctions == null) {
+    private void addBuiltinModules(@NotNull final Project project, @NotNull final CompletionResultSet result) {
+        if (builtinModules == null) {
             // Add builtin modules
-            PsiFile[] builtinModuleResults = FilenameIndex.getFilesByName(project, BUILT_IN_MODULES_FILENAME, GlobalSearchScope.everythingScope(project));
-            builtinModulesAndFunctions = getModules(builtinModuleResults[0], null);
-            // Add builtin functions
-            PsiFile[] builtinFunctionResults = FilenameIndex.getFilesByName(project, BUILT_IN_FUNCTIONS_FILENAME, GlobalSearchScope.everythingScope(project));
-            builtinModulesAndFunctions.addAll(getFunctions(builtinFunctionResults[0], null));
-            builtinModulesAndFunctions.add(LookupElementBuilder.create(BUILT_IN_MISSING_FUNCTION).withIcon(OpenSCADIcons.FUNCTION));
+            final PsiFile moduleSkeleton = PsiManager.getInstance(project).findFile(
+                    VfsUtil.findFileByURL(getClass().getResource(BUILT_IN_MODULES_FILENAME))
+            );
+            if (moduleSkeleton == null) {
+                LOG.warn("Can not parse builtin modules skeleton file, completion will not be available on modules.");
+            } else {
+                builtinModules = getModules(moduleSkeleton, null);
+            }
         }
-        result.addAllElements(builtinModulesAndFunctions);
+        result.addAllElements(builtinModules);
+    }
+
+    private void addBuiltinFunctions(@NotNull final Project project, @NotNull final CompletionResultSet result) {
+        if (builtinFunctions == null) {
+            // Add builtin functions
+            final PsiFile functionSkeleton = PsiManager.getInstance(project).findFile(
+                    VfsUtil.findFileByURL(getClass().getResource(BUILT_IN_FUNCTIONS_FILENAME))
+            );
+            if (functionSkeleton == null) {
+                LOG.warn("Can not parse builtin functions skeleton file, completion will not be available on functions.");
+            } else {
+                builtinFunctions = getFunctions(functionSkeleton, null);
+            }
+        }
+        result.addAllElements(builtinFunctions);
     }
 
     /**
@@ -334,7 +352,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         if (globalLibrariesModulesAndFunctions == null) {
             // List global libraries paths
             PsiManager psiManager = PsiManager.getInstance(project);
-            ModifiableModelsProvider modelsProvider = ModifiableModelsProvider.SERVICE.getInstance();
+            ModifiableModelsProvider modelsProvider = ApplicationManager.getApplication().getService(ModifiableModelsProvider.class);
             Library[] librariesPathRoots = modelsProvider.getLibraryTableModifiableModel().getLibraries();
             final List<VirtualFile> librariesPaths = Arrays.stream(librariesPathRoots)
                     .map(libraryPathsRoot -> libraryPathsRoot.getFiles(OrderRootType.CLASSES))

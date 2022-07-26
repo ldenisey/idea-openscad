@@ -13,7 +13,10 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.parser.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.*;
+import com.javampire.openscad.psi.OpenSCADImportPathRef;
+import com.javampire.openscad.psi.OpenSCADNamedElement;
+import com.javampire.openscad.psi.OpenSCADTypes;
+import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
 import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,9 +28,9 @@ import java.util.regex.Pattern;
 
 public class OpenSCADPsiImplUtil {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil");
+    private static final Logger LOG = Logger.getInstance(OpenSCADPsiImplUtil.class);
 
-    private static Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
+    private static final Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
 
     public static ItemPresentation getPresentation(@NotNull final PsiElement element) {
         return new ItemPresentation() {

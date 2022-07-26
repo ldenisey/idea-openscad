@@ -1,8 +1,6 @@
 package com.javampire.openscad.formatter;
 
 import com.intellij.formatting.*;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
@@ -14,25 +12,22 @@ import org.jetbrains.annotations.NotNull;
 import static com.javampire.openscad.parser.OpenSCADParserDefinition.*;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 
-
 public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
 
-    @NotNull
     @Override
-    public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
-
-        PsiFile containingFile = element.getContainingFile().getViewProvider().getPsi(OpenSCADLanguage.INSTANCE);
-        ASTNode astNode = containingFile.getNode();
-        CommonCodeStyleSettings openSCADSettings = settings.getCommonSettings(OpenSCADLanguage.INSTANCE);
+    public @NotNull FormattingModel createModel(@NotNull final FormattingContext formattingContext) {
+        final PsiFile elementPsiFile = formattingContext.getPsiElement().getContainingFile();
+        final CodeStyleSettings settings = formattingContext.getCodeStyleSettings();
+        final CommonCodeStyleSettings openSCADSettings = settings.getCommonSettings(OpenSCADLanguage.INSTANCE);
 
         final OpenSCADBlock fileBlock = new OpenSCADBlock(
-                astNode,
+                elementPsiFile.getViewProvider().getPsi(OpenSCADLanguage.INSTANCE).getNode(),
                 null,
                 Wrap.createWrap(WrapType.NORMAL, false),
                 openSCADSettings,
                 createSpacingBuilder(openSCADSettings),
                 new OpenSCADIndentBuilder(settings));
-        return FormattingModelProvider.createFormattingModelForPsiFile(element.getContainingFile(), fileBlock, settings);
+        return FormattingModelProvider.createFormattingModelForPsiFile(elementPsiFile, fileBlock, settings);
     }
 
     private SpacingBuilder createSpacingBuilder(CommonCodeStyleSettings settings) {
