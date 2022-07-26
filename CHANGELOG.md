@@ -4,7 +4,19 @@
 
 ## Unreleased
 Main repository is transferred from https://github.com/ncsaba/idea-openscad to https://github.com/ldenisey/idea-openscad.
+### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## 2.2.0
 ### Added
 - [Issue-34](https://github.com/ncsaba/idea-openscad/issues/34) - 2019.05 features not fully supported
 - [Issue-38](https://github.com/ncsaba/idea-openscad/issues/38) - 2019.05 list comprehensions does not parse
@@ -17,60 +29,6 @@ Main repository is transferred from https://github.com/ncsaba/idea-openscad to h
 ### Fixed
 - [Issue-97](https://github.com/ncsaba/idea-openscad/issues/97) & [PR-102](https://github.com/ncsaba/idea-openscad/pull/102) - Limit documentation provider for language OpenSCAD only (from kadhonn)
 - [Issue-80](https://github.com/ncsaba/idea-openscad/issues/80) & [Issue-89](https://github.com/ncsaba/idea-openscad/issues/89) - Identifiers can start with digits
-
-## 2.1.1
-### Fixed
-- [Issue-71](https://github.com/ncsaba/idea-openscad/issues/71) & [Issue-74](https://github.com/ncsaba/idea-openscad/issues/74) - Fix color identifier detection
-- [Issue-77](https://github.com/ncsaba/idea-openscad/issues/77) - Fix npe when invoking file contextual action menu
-
-## 2.1.0
-### Changed
-- "Generate" ... actions have been transformed into an "Export as ..." action that allow for target file path and type selection.
-
-### Fix
-- [Issue-59](https://github.com/ncsaba/idea-openscad/issues/59) NullPointerException In Intellij
-- [Issue-62](https://github.com/ncsaba/idea-openscad/issues/62) Doesn't open app correctly if file path includes spaces
-
-## 2.0.1
-### Changed
-- Update GitHub actions and changelog format
-
-### Fix
-- Fix [Issue-56](https://github.com/ncsaba/idea-openscad/issues/56)
-
-## 2.0.0
-### Added
-- Add code formatter
-- Add settings for OpenSCAD libraries and executable
-- Add import reference
-- Add editor context menu open OpenSCAD and generate actions
-- Add completion for variables, modules and functions
-
-### Changed
-- Update compatibility version from 192.2549 to no limit
-
-### Fix
-- Fix deprecated calls
-
-## 1.3.0
-### Added
-- Added structure view
-- Partial code navigation (modules/functions/variables without considering context)
-- Documentation popups
-
-### Changed
-- Change version number to 1.3.0
-
-### Fix
-- Fix known grammar parsing issues
-
-## 1.2.0
-### Fix
-- Fixed change-log from the default text
-
-## 1.1.0
-### Changed
-- Updated plugin name to conform to standards for uploading to the jetbrains plugin repository.
 
 ## 1.0.0
 ### Added
