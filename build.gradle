@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.intellij' version '1.7.0'
+    id 'org.jetbrains.intellij' version '1.8.0'
     id 'org.jetbrains.changelog' version '1.3.1'
     id 'com.github.ldenisey.setversions' version '1.0.1'
 }
@@ -7,23 +7,27 @@ plugins {
 apply plugin: 'org.jetbrains.changelog'
 
 group = 'com.javampire'
-version = '2.2.1-SNAPSHOT'
+version = '2.3.0-SNAPSHOT'
 
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
+dependencies {
+    testImplementation 'org.mockito:mockito-inline:4.6.1'
+}
+
 ext {
     pluginVerifierIdeVersions =
-            "IIC-2020.1.3, " +
+            "IIC-2021.2.1, " +
             "IIC-2022.2, " +
-            "PCC-2020.1.3, " +
+            "PCC-2021.2.1, " +
             "PCC-2022.2, " +
-            "CL-2020.1, " +
+            "CL-2021.2.1, " +
             "CL-2022.2, " +
-            "PS-2020.1, " +
+            "PS-2021.2.1, " +
             "PS-2022.2, " +
-            "WS-2020.1," +
+            "WS-2021.2.1," +
             "WS-2022.2"
 }
 
@@ -32,7 +36,9 @@ repositories {
 }
 
 intellij {
-    version.set("221-EAP-SNAPSHOT")
+    //version.set("2021.2.1")
+    version.set("222-EAP-SNAPSHOT")
+    //version.set("LATEST-EAP-SNAPSHOT")
 
     plugins.set([
             'java'
@@ -42,7 +48,7 @@ intellij {
     updateSinceUntilBuild.set(false)
 
     patchPluginXml {
-        sinceBuild.set('201.6668')
+        sinceBuild.set('212.5080')
         untilBuild.set('')
 
         changeNotes.set(provider { changelog.getLatest().toHTML() })
@@ -64,3 +70,34 @@ runPluginVerifier {
 publishPlugin {
     token = System.getenv("intellijPublishToken")
 }
+
+task downloadJSDeps() {
+    description "Download latest version of the JS dependencies"
+
+    // Get latest release build zip link
+    File tempDir = getTemporaryDir()
+    File releaseInfo = File.createTempFile('viewstl_relase_info', '.txt', tempDir)
+    new URL('https://api.github.com/repos/omrips/viewstl/releases/latest').withInputStream { i ->
+        releaseInfo.withOutputStream { it << i }
+    }
+    String latestReleaseUrl = (releaseInfo.text =~ /.*zipball_url[ :"]*([^"]*).*/)[0][1]
+
+    // Download latest release
+    File viewStlZip = new File('viewstl.zip', tempDir)
+    new URL(latestReleaseUrl).withInputStream { i ->
+        viewStlZip.withOutputStream { it << i }
+    }
+
+    // Extract build dir
+    copy {
+        from(zipTree(viewStlZip)) {
+            include '**/build/**'
+            eachFile { fcd ->
+                fcd.relativePath = new RelativePath(true, fcd.relativePath.segments.drop(2))
+            }
+            includeEmptyDirs = false
+        }
+        into new File('src/main/resources/html/viewstl/')
+    }
+}
+setupDependencies.finalizedBy downloadJSDeps

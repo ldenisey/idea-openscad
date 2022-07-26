@@ -22,7 +22,6 @@ public class ExportAction extends OpenSCADExecutableAction {
         if (sourceFile == null) {
             return null;
         }
-        final String sourceFilePath = sourceFile.getPath();
 
         // Choose target file, to be generated
         final FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor("Save File", "Choose destination file.", this.extensions);
@@ -32,6 +31,10 @@ public class ExportAction extends OpenSCADExecutableAction {
             return null;
         }
 
-        return Arrays.asList("-o", vfw.getVirtualFile(true).getPath(), sourceFilePath);
+        return generateStlArguments(sourceFile, vfw.getVirtualFile(true));
+    }
+
+    public static List<String> generateStlArguments(@NotNull final VirtualFile scadFile, @NotNull final VirtualFile stlFile) {
+        return Arrays.asList("-o", stlFile.getPath(), scadFile.getCanonicalPath());
     }
 }

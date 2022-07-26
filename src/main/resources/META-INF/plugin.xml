@@ -5,7 +5,7 @@
 
   <description><![CDATA[
     OpenSCAD language support plugin.
-    <p>Provides highlighting, completion, code folding, structure views, navigation, color edition,
+    <p>Provides model preview, highlighting, completion, code folding, structure views, navigation, color edition,
     library support, actions for rendering in OpenSCAD and exporting model.</p>
     ]]></description>
 
@@ -13,6 +13,7 @@
     <!-- Extension points for openscad -->
     <fileType name="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE" language="OpenSCAD" extensions="scad" />
     <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition" />
+    <fileEditorProvider implementation="com.javampire.openscad.editor.OpenSCADTextEditorWithPreviewProvider"/>
     <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory" />
     <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage" />
     <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" />
@@ -27,9 +28,9 @@
     <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
     <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher" />
     <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor" />
-    <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable" id="OpenSCADSettings" displayName="OpenSCAD Language" />
+    <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable" id="OpenSCADSettings" displayName="OpenSCAD" />
     <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings" />
-    <postStartupActivity implementation="com.javampire.openscad.settings.LibraryUtil" />
+    <postStartupActivity implementation="com.javampire.openscad.settings.OpenSCADSettingsStartupActivity" />
     <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" />
     <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider" />
     <langCodeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider" />
@@ -37,7 +38,7 @@
   </extensions>
 
   <actions>
-    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render This File" />
+    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render" />
     <action class="com.javampire.openscad.action.ExportAction" description="Export as..." id="ExportAs" text="Export as..." />
 
     <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD" icon="/com/javampire/openscad/icons/openscad.png">

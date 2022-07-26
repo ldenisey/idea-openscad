@@ -1,7 +1,7 @@
 package com.javampire.openscad.settings;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.util.text.StringUtil;
@@ -14,10 +14,11 @@ import java.io.File;
 @State(name = "OpenSCADSettings", storages = @Storage("OpenSCADSettings.xml"))
 public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettings> {
 
-    public String openSCADExecutable = null;
+    private String openSCADExecutable = null;
+    private boolean allowPreviewEditor = true;
 
     public static OpenSCADSettings getInstance() {
-        return ServiceManager.getService(OpenSCADSettings.class);
+        return ApplicationManager.getApplication().getService(OpenSCADSettings.class);
     }
 
     @Override
@@ -26,7 +27,7 @@ public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettin
     }
 
     @Override
-    public void loadState(@NotNull OpenSCADSettings state) {
+    public void loadState(@NotNull final OpenSCADSettings state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
@@ -35,13 +36,20 @@ public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettin
         return openSCADExecutable;
     }
 
-    public static boolean hasExecutable() {
-        String executable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
-        return !StringUtil.isEmptyOrSpaces(executable) && new File(executable).canExecute();
-    }
-
     public void setOpenSCADExecutable(@NotNull final String openSCADExecutable) {
         this.openSCADExecutable = openSCADExecutable;
     }
 
+    public boolean isAllowPreviewEditor() {
+        return allowPreviewEditor;
+    }
+
+    public void setAllowPreviewEditor(boolean allowPreviewEditor) {
+        this.allowPreviewEditor = allowPreviewEditor;
+    }
+
+    public boolean hasExecutable() {
+        final String executable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
+        return !StringUtil.isEmptyOrSpaces(executable) && new File(executable).canExecute();
+    }
 }

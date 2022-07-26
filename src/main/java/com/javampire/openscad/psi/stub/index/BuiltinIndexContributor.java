@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BuiltinIndexContributor extends IndexableSetContributor {
@@ -17,18 +16,13 @@ public class BuiltinIndexContributor extends IndexableSetContributor {
     @Override
     public Set<VirtualFile> getAdditionalRootsToIndex() {
         final HashSet<VirtualFile> result = new HashSet<>();
-        final List<String> builtinFiles = Arrays.asList(
-                "builtin_functions.scad",
-                "builtin_modules.scad"
-        );
-        for (String fileName : builtinFiles) {
-            final URL builtinFunctions = this.getClass().getResource(
+        for (final String fileName : Arrays.asList("builtin_functions.scad", "builtin_modules.scad")) {
+            final URL builtinFileUrl = this.getClass().getResource(
                     "/com/javampire/openscad/skeletons/" + fileName
             );
-            final VirtualFile builtinFunctionsFile = VfsUtil.findFileByURL(builtinFunctions);
-            result.add(builtinFunctionsFile);
+            final VirtualFile builtinFile = VfsUtil.findFileByURL(builtinFileUrl);
+            result.add(builtinFile);
         }
         return result;
     }
-
 }

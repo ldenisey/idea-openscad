@@ -17,9 +17,9 @@ import java.util.List;
 
 public class OpenSCADStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.structureview.OpenSCADStructureViewElement");
+    private static final Logger LOG = Logger.getInstance(OpenSCADStructureViewElement.class);
 
-    private NavigatablePsiElement element;
+    private final NavigatablePsiElement element;
 
     OpenSCADStructureViewElement(NavigatablePsiElement element) {
         this.element = element;

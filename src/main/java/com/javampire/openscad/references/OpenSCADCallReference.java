@@ -16,9 +16,9 @@ import java.util.List;
 
 public class OpenSCADCallReference extends PsiReferenceBase<OpenSCADResolvableElement> implements PsiPolyVariantReference {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.references.OpenSCADCallReference");
+    private static final Logger LOG = Logger.getInstance(OpenSCADCallReference.class);
 
-    private String referencedName;
+    private final String referencedName;
 
     public OpenSCADCallReference(@NotNull OpenSCADResolvableElement element, TextRange textRange) {
         super(element, textRange);

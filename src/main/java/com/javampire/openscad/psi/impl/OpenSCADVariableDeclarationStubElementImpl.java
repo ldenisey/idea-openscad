@@ -51,6 +51,6 @@ public class OpenSCADVariableDeclarationStubElementImpl extends StubBasedPsiElem
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + getNode().getElementType().toString() + ")";
+        return getClass().getSimpleName() + "(" + getNode().getElementType() + ")";
     }
 }

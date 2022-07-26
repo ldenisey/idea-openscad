@@ -16,7 +16,7 @@ public abstract class OpenSCADResolvableElementImpl
         extends OpenSCADNamedElementImpl
         implements OpenSCADResolvableElement {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl");
+    private static final Logger LOG = Logger.getInstance(OpenSCADResolvableElementImpl.class);
 
     public OpenSCADResolvableElementImpl(@NotNull ASTNode node) {
         super(node);

@@ -6,7 +6,10 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADBundle;
 import com.javampire.openscad.OpenSCADIcons;
-import com.javampire.openscad.psi.*;
+import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
+import com.javampire.openscad.psi.OpenSCADImport;
+import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
+import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

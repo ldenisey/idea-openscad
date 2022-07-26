@@ -15,15 +15,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class OpenSCADDocumentationProvider extends AbstractDocumentationProvider {
 
-    private static final Logger LOG = Logger.getInstance("#com.javampire.openscad.OpenSCADDocumentationProvider");
+    private static final Logger LOG = Logger.getInstance(OpenSCADDocumentationProvider.class);
 
-    @Nullable
     @Override
-    public PsiElement getCustomDocumentationElement(
-            @NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement
-    ) {
+    public @Nullable PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement, int targetOffset) {
         LOG.debug("getCustomDocumentationElement called with: " + contextElement);
-        // return super.getCustomDocumentationElement(editor, file, contextElement);
         return contextElement;
     }
 
@@ -49,7 +45,7 @@ public class OpenSCADDocumentationProvider extends AbstractDocumentationProvider
     }
 
     private static String getLocationString(PsiElement element) {
-        PsiFile file = element.getContainingFile();
+        final PsiFile file = element.getContainingFile();
         return file != null ? " [" + file.getName() + "]" : "";
     }
 
