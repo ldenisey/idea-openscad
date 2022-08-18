@@ -5,7 +5,7 @@ import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider;
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.JarFileSystem;
+import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,8 @@ public class OpenSCADTextEditorWithPreviewProvider implements AsyncFileEditorPro
     public boolean accept(@NotNull final Project project, @NotNull final VirtualFile file) {
         return textEditorProvider.accept(project, file)
                 && previewEditorProvider.accept(project, file)
-                && !(file.getFileSystem() instanceof JarFileSystem);
+                // Excluding files that are not part of a module : external libraries, skeletons, external files, ...
+                && FileIndexFacade.getInstance(project).getModuleForFile(file) != null;
     }
 
     @NotNull
