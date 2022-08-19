@@ -8,6 +8,7 @@ import com.intellij.openapi.components.Service;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.CompilerProjectExtension;
 import com.intellij.openapi.roots.FileIndexFacade;
@@ -34,8 +35,8 @@ import java.util.Collection;
 @Service(Service.Level.PROJECT)
 public final class OpenSCADPreviewFileService implements Disposable {
 
-    private static final Logger LOG = Logger.getInstance(OpenSCADPreviewFileService.class);
-    private final String HTML = "html";
+    private final static Logger LOG = Logger.getInstance(OpenSCADPreviewFileService.class);
+    private final static String HTML = "html";
 
     private final Project project;
     private VirtualFile htmlDir;
@@ -106,18 +107,18 @@ public final class OpenSCADPreviewFileService implements Disposable {
 
     private VirtualFile getHtmlDir() {
         if (htmlDir == null || !new File(htmlDir.getPath()).exists()) {
-            final VirtualFile moduleCompilerOutputDir = getModuleCompilerOutputDir();
+            final VirtualFile outputDir = getOutputDir();
 
-            htmlDir = moduleCompilerOutputDir.findChild(HTML);
+            htmlDir = outputDir.findChild(HTML);
             if (htmlDir != null && !new File(htmlDir.getPath()).exists()) {
                 htmlDir.refresh(false, true);
-                htmlDir = moduleCompilerOutputDir.findChild(HTML);
+                htmlDir = outputDir.findChild(HTML);
             }
 
             if (htmlDir == null || !new File(htmlDir.getPath()).exists()) {
                 ApplicationManager.getApplication().runWriteAction(() -> {
                     try {
-                        htmlDir = moduleCompilerOutputDir.createChildDirectory(getInstance(project), HTML);
+                        htmlDir = outputDir.createChildDirectory(getInstance(project), HTML);
                     } catch (IOException ioe) {
                         LOG.error("Can not initialize a temporary directory for scad file preview !", ioe);
                         htmlDir = null;
@@ -138,15 +139,43 @@ public final class OpenSCADPreviewFileService implements Disposable {
         return htmlDir;
     }
 
-    private VirtualFile getModuleCompilerOutputDir() {
-        VirtualFile compilerOutputPath = CompilerProjectExtension.getInstance(project).getCompilerOutput();
-        if (compilerOutputPath == null) {
-            final String compilerOutputUrl = CompilerProjectExtension.getInstance(project).getCompilerOutputUrl();
-            final File compilerOutputFile = new File(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(compilerOutputUrl)));
-            compilerOutputFile.mkdirs();
-            compilerOutputPath = VirtualFileManager.getInstance().refreshAndFindFileByNioPath(compilerOutputFile.toPath());
+    private VirtualFile getOutputDir() {
+        // Basic case, using compiler output path
+        final CompilerProjectExtension compilerProjectExtension = CompilerProjectExtension.getInstance(project);
+        if (compilerProjectExtension != null) {
+            VirtualFile compilerOutputVirtualFile = compilerProjectExtension.getCompilerOutput();
+            if (compilerOutputVirtualFile == null) {
+                compilerOutputVirtualFile = createOutputDir(compilerProjectExtension.getCompilerOutputUrl());
+            }
+            return compilerOutputVirtualFile;
         }
-        return compilerOutputPath;
+
+        // Current language probably does not have a compiler, getting an existing excluded temp folder
+        final Module module = ModuleManager.getInstance(project).getModules()[0];
+        final VirtualFile[] rootFiles = ModuleRootManager.getInstance(module).getExcludeRoots();
+        if (rootFiles.length > 0) {
+            return rootFiles[0];
+        }
+
+        // No existing temp folder, creating one from excluded paths
+        final String[] excludeRootUrls = ModuleRootManager.getInstance(module).getExcludeRootUrls();
+        if (excludeRootUrls.length > 0) {
+            return createOutputDir(excludeRootUrls[0]);
+        }
+
+        // Last resort, using custom folder
+        final String DEFAULT_OUTPUT_FOLDER = "out";
+        VirtualFile customFolder = project.getWorkspaceFile().findChild(DEFAULT_OUTPUT_FOLDER);
+        if (customFolder == null) {
+            customFolder = createOutputDir(project.getBasePath() + "/" + DEFAULT_OUTPUT_FOLDER);
+        }
+        return customFolder;
+    }
+
+    private VirtualFile createOutputDir(final String compilerOutputUrl) {
+        final File compilerOutputFile = new File(FileUtil.toSystemDependentName(VfsUtilCore.urlToPath(compilerOutputUrl)));
+        compilerOutputFile.mkdirs();
+        return VirtualFileManager.getInstance().refreshAndFindFileByNioPath(compilerOutputFile.toPath());
     }
 
     private String computeSiteFilesRelativeName(@NotNull final VirtualFile scadFile) {
