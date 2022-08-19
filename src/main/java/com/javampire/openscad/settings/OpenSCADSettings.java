@@ -15,7 +15,7 @@ import java.io.File;
 public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettings> {
 
     private String openSCADExecutable = null;
-    private boolean allowPreviewEditor = true;
+    private boolean allowPreviewEditor = false;
 
     public static OpenSCADSettings getInstance() {
         return ApplicationManager.getApplication().getService(OpenSCADSettings.class);
@@ -49,7 +49,6 @@ public class OpenSCADSettings implements PersistentStateComponent<OpenSCADSettin
     }
 
     public boolean hasExecutable() {
-        final String executable = OpenSCADSettings.getInstance().getOpenSCADExecutable();
-        return !StringUtil.isEmptyOrSpaces(executable) && new File(executable).canExecute();
+        return !StringUtil.isEmptyOrSpaces(getOpenSCADExecutable()) && new File(getOpenSCADExecutable()).canExecute();
     }
 }

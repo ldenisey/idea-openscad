@@ -3,9 +3,14 @@ package com.javampire.openscad.settings;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
+import com.intellij.ide.IdeBundle;
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.impl.text.TextEditorImpl;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.progress.ProgressManager;
@@ -20,7 +25,9 @@ import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.CommonProcessors;
+import com.javampire.openscad.OpenSCADFileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -59,9 +66,10 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
     @Override
     public void runActivity(@NotNull final Project project) {
         final OpenSCADSettings settings = OpenSCADSettings.getInstance();
-        ProgressManager.getInstance().runProcessWithProgressSynchronously(
-                () -> {
-                    if (!settings.hasExecutable()) {
+
+        if (!settings.hasExecutable()) {
+            ProgressManager.getInstance().runProcessWithProgressSynchronously(
+                    () -> {
                         final String suggestedExecutablePath = searchExecutablePath();
                         if (suggestedExecutablePath == null) {
                             new Notification(
@@ -81,15 +89,49 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                                     NotificationType.INFORMATION
                             ).notify(project);
                         }
-                    }
-                },
-                "Configuring OpenSCAD executable",
-                false,
-                null
-        );
+                    },
+                    "Configuring OpenSCAD executable",
+                    false,
+                    project
+            );
+        }
 
         if (settings.hasExecutable()) {
             updateOpenSCADLibraries(project);
+            if (!settings.isAllowPreviewEditor()) {
+                final Notification previewNotification = new Notification(
+                        OpenSCADSettings.class.getSimpleName(),
+                        "OpenSCAD files preview is available",
+                        "The split preview editor allows previewing your model without opening OpenSCAD. " +
+                                "It displays an STL generated from OpenSCAD command line. Some information like colors " +
+                                "are missing but the overall model is the exact result of OpensCAD rendering.",
+                        NotificationType.INFORMATION
+                );
+                previewNotification.setSuggestionType(true);
+                previewNotification.addAction(
+                        NotificationAction.createSimpleExpiring("Enable preview", () -> {
+                            settings.setAllowPreviewEditor(true);
+                            // Closing all opened scad file text editors to open them in preview editors
+                            final FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
+                            for (final FileEditor fileEditor : fileEditorManager.getAllEditors()) {
+                                if (fileEditor instanceof TextEditorImpl) {
+                                    final VirtualFile file = fileEditor.getFile();
+                                    if (file.getFileType() == OpenSCADFileType.INSTANCE) {
+                                        fileEditorManager.closeFile(file);
+                                        fileEditorManager.openFile(file, fileEditorManager.getSelectedEditor() == fileEditor);
+                                    }
+                                }
+                            }
+                        })
+                );
+                previewNotification.addAction(
+                        NotificationAction.createSimpleExpiring(
+                                IdeBundle.message("sys.health.acknowledge.action"),
+                                () -> previewNotification.setDoNotAskFor(project)
+                        )
+                );
+                previewNotification.notify(project);
+            }
         }
     }
 

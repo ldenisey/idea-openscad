@@ -1,57 +1,72 @@
-![Java CI](https://github.com/ldenisey/idea-openscad/workflows/Java%20CI/badge.svg)
+![Workflow build](https://github.com/ldenisey/idea-openscad/workflows/Java%20CI/badge.svg)
+[![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/11198-openscad-language-support?label=Latest%20Plugin%20Release)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support/versions)
+[![JetBrains Plugin Rating](https://img.shields.io/jetbrains/plugin/r/rating/11198-openscad-language-support)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support/reviews)
+[![JetBrains Plugin Downloads](https://img.shields.io/jetbrains/plugin/d/11198-openscad-language-support)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support)
 
 # OpenSCAD Language Support for IntelliJ Platform
 
-OpenSCAD language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc.). It provides :
+OpenSCAD language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc). It provides :
 
-* Preview split panel, based on OpenSCAD rendering with [viewstl](https://github.com/omrips/viewstl).
+* Preview split panel, based on OpenSCAD rendering with [viewstl](https://github.com/omrips/viewstl)
 * syntax highlighting
+* code completion
+* code navigation
 * formatting
 * code folding support
 * structure views
-* code completion
-* code navigation
 * library support
 * actions for opening OpenSCAD and exporting model
-
-A color scheme coming close to what the built-in OpenSCAD editor uses is provided and can be selected in the preferences :
-*Settings* -> *Editor* -> *Color Scheme* -> *OpenSCAD* -> *Scheme* -> *OpenSCAD.Default*.
-
-Formatting options are configurable in the preferences : *Settings* -> *Editor* -> *Code Style* -> *OpenSCAD*.
+* a color scheme close to the built-in OpenSCAD editor
 
 ## Configuration
 
-This plugin will search for an OpenSCAD executable in standard installation paths at startup.
-If your installation path is not found, you can set it in *Settings* -> *Languages & Frameworks* -> *OpenSCAD*.
+### OpenSCAD executable
 
-If set, global libraries are automatically detected and added to your project, for navigation and code completion.
+OpenSCAD needs to be installed on your machine for the preview editor and the rendering and exporting actions.
 
-## Context menu
+The plugin will search for an OpenSCAD executable in standard installation paths at startup.
 
-When OpenSCAD is configured, a right click on a scad file will give you access to two context menu actions :
+Go in *Settings* -> *Languages & Frameworks* -> *OpenSCAD* to manually set your installation path and activate/deactivate the preview editor.
 
-- *Render* : To open an OpenSCAD instance for the given file.
-- *Export as...* : To export your model in various format using OpenSCAD command line.
+### Global libraries
+
+The libraries configured in OpenSCAD are automatically added as libraries in your IDE.
+You will be able to access them through navigation and code completion with take them into account.
+
+### Formatting
+
+The formatting options are located in *Settings* -> *Editor* -> *Code Style* -> *OpenSCAD*.
+
+### OpenSCAD color scheme
+
+The OpenSCAD color scheme can be loaded in *Settings* -> *Editor* -> *Color Scheme* -> *OpenSCAD* -> *Scheme* -> *OpenSCAD.Default*.
 
 ## Preview panel
 
-The preview panel is available if OpenSCAD is installed on your machine.
+The plugin split preview editor will allow you to modify your code and easily check its result in the IDE.
 
-The preview is done by generating a temporary STL file from your current editor content using OpenSCAD command line,
-then displayed in an HTML page using [viewstl](https://github.com/omrips/viewstl).
+The preview is done with an STL file, generated using OpenSCAD command line, then displayed in an HTML page using [viewstl](https://github.com/omrips/viewstl).
+Due to the conversion into an STL file, some information like colors are lost.
 
-You can refresh the preview by clicking on the refresh button at the top right of the preview editor.
-Note that the refresh can take some time if your model is complex due to STL file generation. For faster preview,
-you can temporarily set the [$fn variable](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#.24fa.2C_.24fs_and_.24fn)
-to reduce the complexity of the rendering.
+You can refresh the preview by clicking on the refresh button at the top right of the preview panel.
+The STL file generation can take some time if your model is complex. For faster preview,
+you can temporarily lower the [$fn variable](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#.24fa.2C_.24fs_and_.24fn).
 
-Temporary files are kept in the compilation output path of your project (generally the *out* folder at the root of the project).
-They are automatically deleted when the IDE is closed. If needed, you can safely delete the *html* folder in the compilation
-output path when all the scad editors are closed. In any case, it is not advised to modify, copy or save those files in a CVS (Git, ...).
+Temporary files are kept in a temporary folder (*out*, *temp*, *tmp* or *.tmp* folder depending on your IDE) at your project root.
+If you are using a CVS (i.e. git), best is to ignore this folder.
+The plugins automatically deletes the temporary files. If your IDE has crashed or if you encounter preview errors, you can close all scad editors and
+delete the temporary folder to restart from scratch.
+
+## Context menu
+
+Right clicking on a scad file will give you access to two context menu actions :
+
+* *Render* : To open an OpenSCAD instance for the given file.
+* *Export as...* : To export your model in various format using OpenSCAD command line.
 
 ## Issues and requests
 
-Issues and requests are tracked in the [Issues tab](https://github.com/ldenisey/idea-openscad/issues). Follow the templates to submit a new one.
+Issues and requests are tracked in the [Issues tab](https://github.com/ldenisey/idea-openscad/issues).
 
 ## How to contribute
 

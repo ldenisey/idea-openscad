@@ -4,6 +4,7 @@
 
 ## Unreleased
 ### Added
+- Adding a notification to activate preview editor when OpenSCAD executable is already configured (plugin update use case)
 
 ### Changed
 
@@ -12,6 +13,7 @@
 ### Removed
 
 ### Fixed
+- [Issue-34](https://github.com/ldenisey/idea-openscad/issues/34) - Fix preview temporary folder selection in IDE without compilers (Webstorm, ...)
 
 ### Security
 
