@@ -28,25 +28,26 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Manage the creation/deletion of temporary files used for previewing scad file with the {@link OpenSCADPreviewFileEditor}.
  */
 @Service(Service.Level.PROJECT)
-public final class OpenSCADPreviewFileService implements Disposable {
+public final class OpenSCADPreviewSiteService implements Disposable {
 
-    private final static Logger LOG = Logger.getInstance(OpenSCADPreviewFileService.class);
+    private final static Logger LOG = Logger.getInstance(OpenSCADPreviewSiteService.class);
     private final static String HTML = "html";
 
     private final Project project;
     private VirtualFile htmlDir;
 
-    public OpenSCADPreviewFileService(@NotNull final Project project) {
+    public OpenSCADPreviewSiteService(@NotNull final Project project) {
         this.project = project;
     }
 
-    public static OpenSCADPreviewFileService getInstance(@NotNull final Project project) {
-        return project.getService(OpenSCADPreviewFileService.class);
+    public static OpenSCADPreviewSiteService getInstance(@NotNull final Project project) {
+        return project.getService(OpenSCADPreviewSiteService.class);
     }
 
     public WebPreviewVirtualFile createVirtualFile(@NotNull final VirtualFile scadFile) {
@@ -103,6 +104,19 @@ public final class OpenSCADPreviewFileService implements Disposable {
             LOG.error("An error occurred while getting internal preview url.", e);
         }
         return null;
+    }
+
+    public VirtualFile getStlFile(final VirtualFile scadFile) {
+        final String stlFilesRelativeName = computeSiteFilesRelativeName(scadFile) + ".stl";
+        final AtomicReference<VirtualFile> curStlFile = new AtomicReference<>();
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            try {
+                curStlFile.set(getHtmlDir().findOrCreateChildData(this, stlFilesRelativeName));
+            } catch (final IOException ioe) {
+                LOG.error("An error occurred while generating STL for scad file preview.", ioe);
+            }
+        });
+        return curStlFile.get();
     }
 
     private VirtualFile getHtmlDir() {

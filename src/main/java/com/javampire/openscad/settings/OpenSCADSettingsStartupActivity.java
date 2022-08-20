@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.ide.IdeBundle;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
@@ -37,6 +38,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OpenSCADSettingsStartupActivity implements StartupActivity {
+
+    private final static String DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID = "Notification.DoNotAsk-OpenSCAD-allow_preview";
 
     private static final int EXE_SEARCH_TIMEOUT = 5 * 60 * 1000;
 
@@ -98,7 +101,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
 
         if (settings.hasExecutable()) {
             updateOpenSCADLibraries(project);
-            if (!settings.isAllowPreviewEditor()) {
+            if (!settings.isAllowPreviewEditor() && !PropertiesComponent.getInstance(project).getBoolean(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, false)) {
                 final Notification previewNotification = new Notification(
                         OpenSCADSettings.class.getSimpleName(),
                         "OpenSCAD files preview is available",
@@ -107,7 +110,6 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                                 "are missing but the overall model is the exact result of OpensCAD rendering.",
                         NotificationType.INFORMATION
                 );
-                previewNotification.setSuggestionType(true);
                 previewNotification.addAction(
                         NotificationAction.createSimpleExpiring("Enable preview", () -> {
                             settings.setAllowPreviewEditor(true);
@@ -127,7 +129,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                 previewNotification.addAction(
                         NotificationAction.createSimpleExpiring(
                                 IdeBundle.message("sys.health.acknowledge.action"),
-                                () -> previewNotification.setDoNotAskFor(project)
+                                () -> PropertiesComponent.getInstance(project).setValue(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, true)
                         )
                 );
                 previewNotification.notify(project);

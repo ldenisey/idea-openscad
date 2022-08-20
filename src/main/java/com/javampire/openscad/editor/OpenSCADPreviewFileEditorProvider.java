@@ -1,7 +1,8 @@
 package com.javampire.openscad.editor;
 
+import com.intellij.openapi.fileEditor.AsyncFileEditorProvider;
+import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorPolicy;
-import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -11,7 +12,7 @@ import com.javampire.openscad.settings.OpenSCADSettings;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-public class OpenSCADPreviewFileEditorProvider implements FileEditorProvider, DumbAware {
+public class OpenSCADPreviewFileEditorProvider implements AsyncFileEditorProvider, DumbAware {
 
     @Override
     public boolean accept(@NotNull final Project project, @NotNull final VirtualFile scadFile) {
@@ -21,8 +22,18 @@ public class OpenSCADPreviewFileEditorProvider implements FileEditorProvider, Du
     }
 
     @Override
+    public @NotNull Builder createEditorAsync(@NotNull final Project project, @NotNull final VirtualFile scadFile) {
+        return new Builder() {
+            @Override
+            public FileEditor build() {
+                return new OpenSCADPreviewFileEditor(project, scadFile);
+            }
+        };
+    }
+
+    @Override
     public @NotNull OpenSCADPreviewFileEditor createEditor(@NotNull final Project project, @NotNull final VirtualFile scadFile) {
-        return new OpenSCADPreviewFileEditor(project, scadFile);
+        return (OpenSCADPreviewFileEditor) createEditorAsync(project, scadFile).build();
     }
 
     @Override

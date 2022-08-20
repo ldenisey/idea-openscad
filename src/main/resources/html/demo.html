@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html lang="language_code">
 <head>
     <title>OpenSCAD STL Preview</title>
     <script src="viewstl/stl_viewer.min.js"></script>
@@ -9,34 +9,38 @@
 
     <style>
         * {
-          margin: 0 auto;
-          padding: 0;
+            margin: 0 auto;
+            padding: 0;
         }
+
         html {
-          height:100vh;
-          width: 100vw;
-          background-color: transparent;
+            height: 100vh;
+            width: 100vw;
+            background-color: transparent;
         }
+
         :not(html, canvas) {
-          height:100%;
-          width: 100%;
+            height: 100%;
+            width: 100%;
         }
+
         canvas {
-          float: left;
+            float: left;
         }
     </style>
 </head>
-
 <body>
 <div id="stl_cont"></div>
 <script type="module">
-			var stl_viewer=new StlViewer(
-				document.getElementById("stl_cont"),
-				{
-					models:	[{filename: "../demo.stl"}]
-				}
-			);
-			stl_viewer.set_grid(true);
+    var stl_viewer = new StlViewer(
+        document.getElementById("stl_cont"),
+        {
+            models: [{filename: "../demo.stl"}],
+            camerax: -1,
+            cameray: 1
+        }
+    );
+    stl_viewer.set_grid(true);
 </script>
 </body>
 </html>

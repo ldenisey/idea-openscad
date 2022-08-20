@@ -168,7 +168,7 @@ jobs:
       - name: Verify Plugin
         run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=${{ steps.properties.outputs.pluginVerifierHomeDir }}
 
-  # Prepare a pre release for GitHub Releases page for the manual verification
+  # Prepare a pre-release for GitHub Releases page for the manual verification
   # Use manual promote release workflow to create final release
   preRelease:
     name: Pre release
@@ -195,7 +195,7 @@ jobs:
         with:
           tag_name: ${{ needs.build.outputs.version }}
 
-      # Create new pre release - which is not publicly visible and requires manual acceptance
+      # Create new pre-release - which is not publicly visible and requires manual acceptance
       - name: Create Pre Release
         id: createPreRelease
         uses: ncipollo/release-action@v1

@@ -38,11 +38,11 @@
   </extensions>
 
   <actions>
-    <action class="com.javampire.openscad.action.RenderAction" description="Render in OpenSCAD" id="Render" text="Render" />
-    <action class="com.javampire.openscad.action.ExportAction" description="Export as..." id="ExportAs" text="Export as..." />
+    <action class="com.javampire.openscad.action.OpenAction" description="Open selected file in OpenSCAD" id="OpenIn" text="Open in OpenSCAD" />
+    <action class="com.javampire.openscad.action.ExportAction" description="Export selected file as ..." id="ExportAs" text="Export as ..." />
 
     <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD" icon="/com/javampire/openscad/icons/openscad.png">
-      <reference ref="Render" />
+      <reference ref="OpenIn" />
       <reference ref="ExportAs" />
       <add-to-group group-id="EditorPopupMenu" anchor="last" />
       <add-to-group group-id="EditorTabPopupMenu" anchor="last" />

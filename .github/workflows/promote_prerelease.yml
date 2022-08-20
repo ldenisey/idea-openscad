@@ -1,5 +1,5 @@
-# GitHub Actions Workflow to handle the release process based on the pre release prepared with the Build workflow.
-# Will delete the latest pre release and build a new release with version incrementation.
+# GitHub Actions Workflow to handle the release process based on the pre-release prepared with the Build workflow.
+# Will delete the latest pre-release and build a new release with version incrementation.
 
 name: PromotePreRelease
 on: [ workflow_dispatch ]
@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: gradle/wrapper-validation-action@v1.0.4
 
-      # Export pre release (snapshot) version
+      # Export pre-release (snapshot) version
       - name: Export base version properties
         id: baseProperties
         shell: bash
@@ -93,7 +93,7 @@ jobs:
           artifactContentType: application/zip
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Delete promoted pre release
+      # Delete promoted pre-release
       - name: Delete previous release
         id: deletePreviousRelease
         uses: dev-drprasad/delete-tag-and-release@v0.2.0

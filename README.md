@@ -15,14 +15,14 @@ OpenSCAD language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc). It pro
 * code folding support
 * structure views
 * library support
-* actions for opening OpenSCAD and exporting model
+* context menu actions for opening OpenSCAD and exporting model
 * a color scheme close to the built-in OpenSCAD editor
 
 ## Configuration
 
 ### OpenSCAD executable
 
-OpenSCAD needs to be installed on your machine for the preview editor and the rendering and exporting actions.
+OpenSCAD needs to be installed on your machine for the preview editor and the context menu actions.
 
 The plugin will search for an OpenSCAD executable in standard installation paths at startup.
 
@@ -59,9 +59,9 @@ delete the temporary folder to restart from scratch.
 
 ## Context menu
 
-Right clicking on a scad file will give you access to two context menu actions :
+Right-clicking on a scad file will give you access to two context menu actions :
 
-* *Render* : To open an OpenSCAD instance for the given file.
+* *Open in OpenSCAD* : To open an OpenSCAD instance for the given file.
 * *Export as...* : To export your model in various format using OpenSCAD command line.
 
 ## Issues and requests

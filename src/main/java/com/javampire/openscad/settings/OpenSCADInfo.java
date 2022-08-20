@@ -21,7 +21,7 @@ public class OpenSCADInfo {
     private static String getInfoString() {
         if (infoString == null) {
             // Run the OpenSCAD executable to get info
-            final OpenSCADExecutor executor = OpenSCADExecutor.execute(Arrays.asList("--info"));
+            final OpenSCADExecutor executor = OpenSCADExecutor.execute(List.of("--info"));
             if (executor == null) {
                 LOG.warn(OpenSCADExecutor.ERROR_NO_EXE);
             } else if (executor.getException() != null) {

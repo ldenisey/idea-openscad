@@ -9,3 +9,4 @@ out
 /IDE/
 /Check/
 /src/main/java/com/javampire/openscad/grammar/_OpenSCADLexer.flex
+*.stl
