@@ -5,24 +5,25 @@
 
 # OpenSCAD Language Support for IntelliJ Platform
 
-OpenSCAD language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc). It provides :
+[OpenSCAD](https://openscad.org/index.html) language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc). It provides :
 
-* Preview split panel, based on OpenSCAD rendering with [viewstl](https://github.com/omrips/viewstl)
-* syntax highlighting
-* code completion
-* code navigation
-* formatting
-* code folding support
-* structure views
-* library support
-* context menu actions for opening OpenSCAD and exporting model
-* a color scheme close to the built-in OpenSCAD editor
+* Preview split panel, based on [OpenSCAD](https://openscad.org/index.html) rendering with [viewstl](https://github.com/omrips/viewstl)
+* Syntax highlighting
+* Code completion
+* Code navigation
+* Formatting
+* Code folding support
+* Structure views
+* Library support
+* Color picking
+* Actions for opening OpenSCAD and exporting model
+* Color scheme close to the built-in OpenSCAD editor
 
 ## Configuration
 
 ### OpenSCAD executable
 
-OpenSCAD needs to be installed on your machine for the preview editor and the context menu actions.
+[OpenSCAD](https://openscad.org/downloads.html) needs to be installed on your machine for the preview editor and the context menu actions.
 
 The plugin will search for an OpenSCAD executable in standard installation paths at startup.
 

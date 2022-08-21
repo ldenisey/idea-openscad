@@ -18,16 +18,22 @@ public class OpenSCADExecutor {
     public static final String ERROR_EXCEPTION = "Execution of %s failed with exception.";
     public static final String ERROR_RETURN_CODE = "Execution of %s failed with error %s : %s";
 
-    private final List<String> command = new ArrayList<>();
+    private final String openSCADExecutable;
+    private final List<String> arguments;
     private String stderr = null;
     private String stdout = null;
     private Integer returnCode = null;
     private Throwable exception = null;
 
-    protected OpenSCADExecutor() {
+    protected OpenSCADExecutor(@NotNull final String openSCADExecutable, @NotNull final List<String> arguments) {
+        this.openSCADExecutable = openSCADExecutable;
+        this.arguments = arguments;
     }
 
     public List<String> getCommand() {
+        final List<String> command = new ArrayList<>();
+        command.add(openSCADExecutable);
+        command.addAll(arguments);
         return command;
     }
 
@@ -55,30 +61,30 @@ public class OpenSCADExecutor {
      * @return Null if the OpenSCAD executable is not configured, else this with execution information.
      */
     public static @Nullable OpenSCADExecutor execute(@NotNull final List<String> arguments) {
-        // Check configuration
         final OpenSCADSettings settings = OpenSCADSettings.getInstance();
-        if (!settings.hasExecutable()) {
+        if (settings.hasExecutable()) {
+            final OpenSCADExecutor executor = new OpenSCADExecutor(settings.getOpenSCADExecutable(), arguments);
+            ApplicationManager.getApplication().runReadAction(() -> {
+                startAndWaitFor(executor);
+            });
+            return executor;
+        } else {
             LOG.warn(ERROR_NO_EXE);
             return null;
         }
-
-        // Create full command
-        final OpenSCADExecutor _this = new OpenSCADExecutor();
-        _this.command.add(settings.getOpenSCADExecutable());
-        _this.command.addAll(arguments);
-        ApplicationManager.getApplication().runReadAction(() -> {
-            final ProcessBuilder processBuilder = new ProcessBuilder().command(_this.command);
-            try {
-                final Process process = processBuilder.start();
-                _this.stderr = IOUtils.toString(process.getErrorStream(), StandardCharsets.UTF_8);
-                _this.stdout = IOUtils.toString(process.getInputStream(), StandardCharsets.UTF_8);
-                _this.returnCode = process.waitFor();
-            } catch (final IOException | InterruptedException e) {
-                LOG.error("Execution of " + _this.command + " failed with an exception.", e);
-                _this.exception = e;
-            }
-        });
-        return _this;
     }
 
+    protected static @NotNull OpenSCADExecutor startAndWaitFor(@NotNull final OpenSCADExecutor executor) {
+        final ProcessBuilder processBuilder = new ProcessBuilder().command(executor.getCommand());
+        try {
+            final Process process = processBuilder.start();
+            executor.stderr = IOUtils.toString(process.getErrorStream(), StandardCharsets.UTF_8);
+            executor.stdout = IOUtils.toString(process.getInputStream(), StandardCharsets.UTF_8);
+            executor.returnCode = process.waitFor();
+        } catch (final IOException | InterruptedException e) {
+            LOG.error("Execution of " + executor.getCommand() + " failed with an exception.", e);
+            executor.exception = e;
+        }
+        return executor;
+    }
 }

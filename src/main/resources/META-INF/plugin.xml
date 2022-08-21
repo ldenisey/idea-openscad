@@ -1,55 +1,80 @@
 <idea-plugin>
-  <id>com.javampire.idea-openscad</id>
-  <name>OpenSCAD Language Support</name>
-  <vendor url="https://github.com/ldenisey/idea-openscad">Lucien Denisey</vendor>
+    <id>com.javampire.idea-openscad</id>
+    <name>OpenSCAD Language Support</name>
+    <vendor url="https://github.com/ldenisey/idea-openscad">Lucien Denisey</vendor>
 
-  <description><![CDATA[
-    OpenSCAD language support plugin.
-    <p>Provides model preview, highlighting, completion, code folding, structure views, navigation, color edition,
-    library support, actions for rendering in OpenSCAD and exporting model.</p>
+    <description><![CDATA[
+    <p><a href="https://openscad.org/index.html">OpenSCAD</a> language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc.). It provides :</p>
+    <ul>
+		<li>Preview split panel</li>
+		<li>Syntax highlighting</li>
+		<li>Code completion</li>
+        <li>Code navigation</li>
+        <li>Formatting</li>
+        <li>Code folding support</li>
+        <li>Structure views</li>
+        <li>Library support</li>
+		<li>Color picking</li>
+        <li>Actions for opening OpenSCAD and exporting model</li>
+        <li>Color scheme close to the built-in OpenSCAD editor</li>
+	</ul>
     ]]></description>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Extension points for openscad -->
-    <fileType name="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE" language="OpenSCAD" extensions="scad" />
-    <lang.parserDefinition language="OpenSCAD" implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition" />
-    <fileEditorProvider implementation="com.javampire.openscad.editor.OpenSCADTextEditorWithPreviewProvider"/>
-    <lang.syntaxHighlighterFactory language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory" />
-    <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage" />
-    <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" />
-    <lang.foldingBuilder language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADFoldingBuilder" />
-    <lang.psiStructureViewFactory language="OpenSCAD" implementationClass="com.javampire.openscad.structureview.OpenSCADStructureViewFactory" />
-    <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes" />
-    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex" />
-    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex" />
-    <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex" />
-    <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter" />
-    <lang.documentationProvider language="OpenSCAD" implementationClass="com.javampire.openscad.documentation.OpenSCADDocumentationProvider" />
-    <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
-    <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher" />
-    <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor" />
-    <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable" id="OpenSCADSettings" displayName="OpenSCAD" />
-    <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings" />
-    <postStartupActivity implementation="com.javampire.openscad.settings.OpenSCADSettingsStartupActivity" />
-    <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder" />
-    <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider" />
-    <langCodeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider" />
-    <completion.contributor language="OpenSCAD" implementationClass="com.javampire.openscad.completion.OpenSCADCompletionContributor" />
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Extension points for openscad -->
+        <fileType name="OpenSCAD" implementationClass="com.javampire.openscad.OpenSCADFileType" fieldName="INSTANCE"
+                  language="OpenSCAD" extensions="scad"/>
+        <lang.parserDefinition language="OpenSCAD"
+                               implementationClass="com.javampire.openscad.parser.OpenSCADParserDefinition"/>
+        <fileEditorProvider implementation="com.javampire.openscad.editor.OpenSCADTextEditorWithPreviewProvider"/>
+        <lang.syntaxHighlighterFactory language="OpenSCAD"
+                                       implementationClass="com.javampire.openscad.highlighting.OpenSCADSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage"/>
+        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
+        <lang.foldingBuilder language="OpenSCAD"
+                             implementationClass="com.javampire.openscad.editor.OpenSCADFoldingBuilder"/>
+        <lang.psiStructureViewFactory language="OpenSCAD"
+                                      implementationClass="com.javampire.openscad.structureview.OpenSCADStructureViewFactory"/>
+        <stubElementTypeHolder class="com.javampire.openscad.psi.OpenSCADTypes"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADFunctionIndex"/>
+        <stubIndex implementation="com.javampire.openscad.psi.stub.index.OpenSCADVariableIndex"/>
+        <lang.commenter language="OpenSCAD" implementationClass="com.javampire.openscad.editor.OpenSCADCommenter"/>
+        <lang.documentationProvider language="OpenSCAD"
+                                    implementationClass="com.javampire.openscad.documentation.OpenSCADDocumentationProvider"/>
+        <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
+        <lang.braceMatcher language="OpenSCAD"
+                           implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
+        <indexedRootsProvider implementation="com.javampire.openscad.psi.stub.index.BuiltinIndexContributor"/>
+        <projectConfigurable groupId="language" instance="com.javampire.openscad.settings.OpenSCADSettingsConfigurable"
+                             id="OpenSCADSettings" displayName="OpenSCAD"/>
+        <applicationService serviceImplementation="com.javampire.openscad.settings.OpenSCADSettings"/>
+        <postStartupActivity implementation="com.javampire.openscad.settings.OpenSCADSettingsStartupActivity"/>
+        <lang.formatter language="OpenSCAD"
+                        implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder"/>
+        <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider"/>
+        <completion.contributor language="OpenSCAD"
+                                implementationClass="com.javampire.openscad.completion.OpenSCADCompletionContributor"/>
+    </extensions>
 
-  <actions>
-    <action class="com.javampire.openscad.action.OpenAction" description="Open selected file in OpenSCAD" id="OpenIn" text="Open in OpenSCAD" />
-    <action class="com.javampire.openscad.action.ExportAction" description="Export selected file as ..." id="ExportAs" text="Export as ..." />
+    <actions>
+        <action class="com.javampire.openscad.action.OpenAction" description="Open selected file in OpenSCAD"
+                id="OpenIn" text="Open in OpenSCAD"/>
+        <action class="com.javampire.openscad.action.ExportAction" description="Export selected file as ..."
+                id="ExportAs" text="Export as ..."/>
 
-    <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD" icon="/com/javampire/openscad/icons/openscad.png">
-      <reference ref="OpenIn" />
-      <reference ref="ExportAs" />
-      <add-to-group group-id="EditorPopupMenu" anchor="last" />
-      <add-to-group group-id="EditorTabPopupMenu" anchor="last" />
-    </group>
-  </actions>
+        <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD"
+               icon="/com/javampire/openscad/icons/openscad.png">
+            <reference ref="OpenIn"/>
+            <reference ref="ExportAs"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
+        </group>
+    </actions>
 
-  <depends>com.intellij.modules.platform</depends>
-  <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
 
 </idea-plugin>

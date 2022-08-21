@@ -1,5 +1,6 @@
 package com.javampire.openscad.editor;
 
+import com.google.common.io.Resources;
 import com.intellij.ide.browsers.*;
 import com.intellij.ide.browsers.actions.WebPreviewVirtualFile;
 import com.intellij.openapi.Disposable;
@@ -13,113 +14,55 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.CompilerProjectExtension;
 import com.intellij.openapi.roots.FileIndexFacade;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.util.Url;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Manage the creation/deletion of temporary files used for previewing scad file with the {@link OpenSCADPreviewFileEditor}.
  */
 @Service(Service.Level.PROJECT)
-public final class OpenSCADPreviewSiteService implements Disposable {
+public final class OpenSCADPreviewSiteFactory implements Disposable {
 
-    private final static Logger LOG = Logger.getInstance(OpenSCADPreviewSiteService.class);
+    private final static Logger LOG = Logger.getInstance(OpenSCADPreviewSiteFactory.class);
     private final static String HTML = "html";
 
     private final Project project;
     private VirtualFile htmlDir;
 
-    public OpenSCADPreviewSiteService(@NotNull final Project project) {
+    public OpenSCADPreviewSiteFactory(@NotNull final Project project) {
         this.project = project;
     }
 
-    public static OpenSCADPreviewSiteService getInstance(@NotNull final Project project) {
-        return project.getService(OpenSCADPreviewSiteService.class);
+    public static OpenSCADPreviewSiteFactory getInstance(@NotNull final Project project) {
+        return project.getService(OpenSCADPreviewSiteFactory.class);
     }
 
-    public WebPreviewVirtualFile createVirtualFile(@NotNull final VirtualFile scadFile) {
-        VirtualFile htmlDirTmp = getHtmlDir();
-        if (htmlDirTmp == null) {
-            LOG.error("Can not create stl file for scad file preview without an html output folder !");
-            return null;
-        }
 
-        // Creating a dedicated html file based on template one
-        final String siteFilesRelativeName = computeSiteFilesRelativeName(scadFile);
-        final String htmlFileName = siteFilesRelativeName + ".html";
-        final VirtualFile demoIndexFile = htmlDirTmp.findChild("demo.html");
-        final Color previewBackgroundColor = EditorColorsManager.getInstance().getSchemeForCurrentUITheme().getDefaultBackground();
-        final String previewBackgroundHex = String.format("#%02X%02X%02X", previewBackgroundColor.getRed(), previewBackgroundColor.getGreen(), previewBackgroundColor.getBlue());
-        var refObject = new Object() {
-            VirtualFile htmlFile = null;
-        };
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            try {
-                refObject.htmlFile = htmlDirTmp.findChild(htmlFileName);
-                if (refObject.htmlFile == null || !refObject.htmlFile.exists()) {
-                    refObject.htmlFile = htmlDirTmp.createChildData(getInstance(project), htmlFileName);
-                }
-                final String indexContent = VfsUtil.loadText(demoIndexFile)
-                        .replaceAll("(demo\\.stl)", siteFilesRelativeName + ".stl")
-                        .replaceAll("transparent", previewBackgroundHex);
-                refObject.htmlFile.setBinaryContent(indexContent.getBytes(StandardCharsets.UTF_8));
-                refObject.htmlFile.setBOM(demoIndexFile.getBOM());
-            } catch (IOException ioe) {
-                LOG.error("Can not modify index html file for scad file preview !", ioe);
-                htmlDir = null;
-            }
-        });
-        if (htmlDir == null) {
-            return null;
-        }
-
-        // Creating the WebPreviewVirtualFile from the previously created html file
-        try {
-            final OpenInBrowserRequest browserRequest = OpenInBrowserRequestKt.createOpenInBrowserRequest(
-                    PsiManager.getInstance(project).findFile(refObject.htmlFile),
-                    false
-            );
-            if (browserRequest != null) {
-                browserRequest.setReloadMode(WebBrowserManager.getInstance().getWebPreviewReloadMode());
-                Collection<Url> urls = WebBrowserService.getInstance().getUrlsToOpen(browserRequest, false);
-                if (!urls.isEmpty()) {
-                    Url url = urls.iterator().next();
-                    return new WebPreviewVirtualFile(refObject.htmlFile, url);
-                }
-            }
-        } catch (final WebBrowserUrlProvider.BrowserException e) {
-            LOG.error("An error occurred while getting internal preview url.", e);
-        }
-        return null;
+    public OpenSCADPreviewSite createSite(@NotNull final VirtualFile scadFile) {
+        final OpenSCADPreviewSite previewSite = new OpenSCADPreviewSite(scadFile);
+        createPreviewFile(previewSite);
+        createHTMLFile(previewSite);
+        Disposer.register(this, previewSite);
+        return previewSite;
     }
 
-    public VirtualFile getStlFile(final VirtualFile scadFile) {
-        final String stlFilesRelativeName = computeSiteFilesRelativeName(scadFile) + ".stl";
-        final AtomicReference<VirtualFile> curStlFile = new AtomicReference<>();
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            try {
-                curStlFile.set(getHtmlDir().findOrCreateChildData(this, stlFilesRelativeName));
-            } catch (final IOException ioe) {
-                LOG.error("An error occurred while generating STL for scad file preview.", ioe);
-            }
-        });
-        return curStlFile.get();
-    }
-
-    private VirtualFile getHtmlDir() {
+    private @Nullable VirtualFile getHtmlDir() {
         if (htmlDir == null || !new File(htmlDir.getPath()).exists()) {
             final VirtualFile outputDir = getOutputDir();
 
@@ -134,7 +77,7 @@ public final class OpenSCADPreviewSiteService implements Disposable {
                     try {
                         htmlDir = outputDir.createChildDirectory(getInstance(project), HTML);
                     } catch (IOException ioe) {
-                        LOG.error("Can not initialize a temporary directory for scad file preview !", ioe);
+                        LOG.error("Can not initialize a temporary directory for scad file preview.", ioe);
                         htmlDir = null;
                         return;
                     }
@@ -144,13 +87,96 @@ public final class OpenSCADPreviewSiteService implements Disposable {
                     try {
                         VfsUtil.copyDirectory(getInstance(project), jarHtmlRoot, htmlDir, null);
                     } catch (final IOException ioe) {
-                        LOG.error("Can not create copy resource file for scad file preview !", ioe);
+                        LOG.error("Can not create copy resource file for scad file preview.", ioe);
                         htmlDir = null;
                     }
                 });
             }
         }
         return htmlDir;
+    }
+
+    private void createPreviewFile(@NotNull final OpenSCADPreviewSite previewSite) {
+        VirtualFile htmlDirTmp = getHtmlDir();
+        if (htmlDirTmp == null) {
+            LOG.error("Can not create preview file without an html output folder.");
+            return;
+        }
+
+        final String previewFileRelativeName = computeSiteFilesRelativeName(previewSite.scadFile) + ".stl";
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            try {
+                previewSite.previewFile = getHtmlDir().findOrCreateChildData(this, previewFileRelativeName);
+            } catch (final IOException ioe) {
+                LOG.error("An error occurred while initializing preview file.", ioe);
+            }
+        });
+    }
+
+    private void createHTMLFile(@NotNull final OpenSCADPreviewSite previewSite) {
+        VirtualFile htmlDirTmp = getHtmlDir();
+        if (htmlDirTmp == null) {
+            LOG.error("Can not create html file without an html output folder.");
+            return;
+        }
+
+        // Creating a dedicated html file based on template one
+        final String htmlFileName = previewSite.previewFile.getNameWithoutExtension() + ".html";
+        final String htmlFileContent = generateHtmlFileContent(previewSite.previewFile);
+        if (htmlFileContent == null) {
+            return;
+        }
+        var refObject = new Object() {
+            VirtualFile htmlFile = null;
+        };
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            try {
+                refObject.htmlFile = htmlDirTmp.findOrCreateChildData(this, htmlFileName);
+                refObject.htmlFile.setBinaryContent(htmlFileContent.getBytes(StandardCharsets.UTF_8));
+            } catch (IOException ioe) {
+                LOG.error("Can not modify index html file for scad file preview.", ioe);
+                refObject.htmlFile = null;
+            }
+        });
+        if (refObject.htmlFile == null) {
+            return;
+        }
+
+        // Creating the WebPreviewVirtualFile from the html file
+        final PsiElement htmlPsiFile = PsiManager.getInstance(project).findFile(refObject.htmlFile);
+        if (htmlPsiFile == null) {
+            LOG.error("Can not find html psi file.");
+            return;
+        }
+        final OpenInBrowserRequest browserRequest = OpenInBrowserRequestKt.createOpenInBrowserRequest(
+                htmlPsiFile,
+                false
+        );
+        if (browserRequest != null) {
+            browserRequest.setReloadMode(WebBrowserManager.getInstance().getWebPreviewReloadMode());
+            try {
+                Collection<Url> urls = WebBrowserService.getInstance().getUrlsToOpen(browserRequest, false);
+                if (!urls.isEmpty()) {
+                    Url url = urls.iterator().next();
+                    previewSite.htmlFile = new WebPreviewVirtualFile(refObject.htmlFile, url);
+                }
+            } catch (final WebBrowserUrlProvider.BrowserException e) {
+                LOG.error("An error occurred while getting internal preview url.", e);
+            }
+        }
+    }
+
+    private @Nullable String generateHtmlFileContent(@NotNull final VirtualFile previewFile) {
+        final Color previewBackgroundColor = EditorColorsManager.getInstance().getSchemeForCurrentUITheme().getDefaultBackground();
+        final String previewBackgroundHex = String.format("#%02X%02X%02X", previewBackgroundColor.getRed(), previewBackgroundColor.getGreen(), previewBackgroundColor.getBlue());
+        try {
+            return Resources.toString(getClass().getResource("/html/demo.html"), StandardCharsets.UTF_8)
+                    .replaceAll("(demo\\.stl)", previewFile.getName())
+                    .replaceAll("transparent", previewBackgroundHex);
+        } catch (final IOException e) {
+            LOG.error("An error occurred while getting template html file content.", e);
+            return null;
+        }
     }
 
     private VirtualFile getOutputDir() {

@@ -10,15 +10,19 @@ import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
+import com.javampire.openscad.settings.OpenSCADInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Can be called from context menu or preview toolbar. Calls OpenSCAD to export the model in various format.
+ */
 public class ExportAction extends OpenSCADExecutableAction {
 
-    private final String[] extensions = {"stl", "png", "svg", "off", "amf", "3mf", "dxf", "csg", "pdf"};
+    private static String[] extensions;
 
     @Override
     public void update(@NotNull final AnActionEvent event) {
@@ -49,7 +53,7 @@ public class ExportAction extends OpenSCADExecutableAction {
     @Nullable
     protected String getDestinationFilePath(@NotNull final AnActionEvent event) {
         final VirtualFile sourceFile = event.getData(CommonDataKeys.VIRTUAL_FILE);
-        final FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor("Save File", "Choose destination file.", this.extensions);
+        final FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor("Save File", "Choose destination file.", getAvailableExtensions());
         final FileSaverDialog dialog = FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, event.getProject());
         final VirtualFileWrapper vfw = dialog.save(sourceFile.getParent(), sourceFile.getNameWithoutExtension());
         if (vfw == null) {
@@ -57,5 +61,29 @@ public class ExportAction extends OpenSCADExecutableAction {
             return null;
         }
         return vfw.getFile().getAbsolutePath();
+    }
+
+    protected String[] getAvailableExtensions() {
+        if (extensions == null) {
+            final Integer majorVersion = OpenSCADInfo.getOpenSCADMajorVersion();
+            if (majorVersion != null) {
+                switch (majorVersion) {
+                    case 2021:
+                        extensions = new String[]{"stl", "off", "dxf", "csg", "svg", "amf", "3mf", "png", "pdf", "echo", "ast", "term", "nef3", "nefdbg"};
+                        break;
+                    case 2019:
+                        extensions = new String[]{"stl", "off", "dxf", "csg", "svg", "amf", "3mf", "png", "echo", "ast", "term", "nef3", "nefdbg"};
+                        break;
+                    case 2015:
+                        extensions = new String[]{"stl", "off", "dxf", "csg", "svg", "amf"};
+                        break;
+                    default:
+                        // Older or unknown version
+                        extensions = new String[]{"stl", "off", "dxf", "csg"};
+                        break;
+                }
+            }
+        }
+        return extensions;
     }
 }

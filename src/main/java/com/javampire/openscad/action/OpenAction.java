@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Can be called from context menu or preview toolbar. Calls OpenSCAD with the selected file opened.
+ */
 public class OpenAction extends OpenSCADExecutableAction {
 
     @Override

@@ -9,6 +9,9 @@ import com.intellij.ui.AnimatedIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Used for generating and refreshing {@link com.javampire.openscad.editor.OpenSCADPreviewFileEditor} preview.
+ */
 public class RefreshPreviewAction extends ExportAction {
 
     @Override

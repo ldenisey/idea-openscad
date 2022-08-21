@@ -129,10 +129,33 @@ public class OpenSCADInfo {
         return getStringInfo("Application Path");
     }
 
+    /**
+     * Return full version, as shown in the OpenSCAD --info command result.
+     *
+     * @return Full version.
+     */
     public static @Nullable String getOpenSCADVersion() {
         return getStringInfo("OpenSCAD Version");
     }
 
+    /**
+     * Return only major version = year of release.
+     *
+     * @return Major version.
+     */
+    public static @Nullable Integer getOpenSCADMajorVersion() {
+        final String version = getStringInfo("OpenSCAD Version");
+        if (version != null && version.length() >= 4) {
+            return Integer.parseInt(version.substring(0, 4));
+        }
+        return null;
+    }
+
+    /**
+     * Returns all available keys.
+     *
+     * @return Available keys.
+     */
     public static Set<String> getInfoKeys() {
         return getInfoMap().keySet();
     }

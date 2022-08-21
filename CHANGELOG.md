@@ -6,6 +6,9 @@
 ### Added
 
 ### Changed
+- Export available formats will depend on OpenSCAD version
+- Technical refactoring
+- Documentation cleaning
 
 ### Deprecated
 

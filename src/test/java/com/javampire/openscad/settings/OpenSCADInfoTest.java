@@ -54,6 +54,7 @@ public class OpenSCADInfoTest extends TestCase {
 
         assertEquals(34, OpenSCADInfo.getInfoKeys().size());
         assertEquals("2021.01", OpenSCADInfo.getOpenSCADVersion());
+        assertEquals(2021, OpenSCADInfo.getOpenSCADMajorVersion().intValue());
         assertEquals("C:/Program Files/OpenSCAD", OpenSCADInfo.getApplicationPath());
         assertEquals(Arrays.asList("C:/Documents/OpenSCAD/libraries", "C:/Program Files/OpenSCAD\\libraries"), OpenSCADInfo.getLibraryPaths());
         assertEquals("4.6.0 - Build 26.20.100.7985", OpenSCADInfo.getStringInfo("OpenGL Version"));

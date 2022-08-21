@@ -16,15 +16,15 @@ sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 ext {
     pluginVerifierIdeVersions =
             "IIC-2021.2.1, " +
-            "IIC-2022.2, " +
-            "PCC-2021.2.1, " +
-            "PCC-2022.2, " +
-            "CL-2021.2.1, " +
-            "CL-2022.2, " +
-            "PS-2021.2.1, " +
-            "PS-2022.2, " +
-            "WS-2021.2.1," +
-            "WS-2022.2"
+                    "IIC-2022.2, " +
+                    "PCC-2021.2.1, " +
+                    "PCC-2022.2, " +
+                    "CL-2021.2.1, " +
+                    "CL-2022.2, " +
+                    "PS-2021.2.1, " +
+                    "PS-2022.2, " +
+                    "WS-2021.2.1," +
+                    "WS-2022.2"
 }
 
 repositories {
@@ -70,30 +70,49 @@ publishPlugin {
 task downloadJSDeps() {
     description "Download latest version of the JS dependencies"
 
-    // Get latest release build zip link
-    File tempDir = getTemporaryDir()
-    File releaseInfo = File.createTempFile('viewstl_relase_info', '.txt', tempDir)
-    new URL('https://api.github.com/repos/omrips/viewstl/releases/latest').withInputStream { i ->
-        releaseInfo.withOutputStream { it << i }
-    }
-    String latestReleaseUrl = (releaseInfo.text =~ /.*zipball_url[ :"]*([^"]*).*/)[0][1]
-
-    // Download latest release
-    File viewStlZip = new File('viewstl.zip', tempDir)
-    new URL(latestReleaseUrl).withInputStream { i ->
-        viewStlZip.withOutputStream { it << i }
-    }
-
-    // Extract build dir
-    copy {
-        from(zipTree(viewStlZip)) {
-            include '**/build/**'
-            eachFile { fcd ->
-                fcd.relativePath = new org.gradle.api.file.RelativePath(true, fcd.relativePath.segments.drop(2))
-            }
-            includeEmptyDirs = false
+    ext.downloadLatestAndFilter = { url, filter ->
+        // Get latest release build zip link
+        File tempDir = getTemporaryDir()
+        File releaseInfo = File.createTempFile('deps_info', '.txt', tempDir)
+        new URL(url).withInputStream { i ->
+            releaseInfo.withOutputStream { it << i }
         }
-        into new File('src/main/resources/html/viewstl/')
+        def releaseInfoJson = new groovy.json.JsonSlurper().parse(releaseInfo)
+        String latestReleaseUrl
+        if (url.contains('/releases/')) {
+            latestReleaseUrl = releaseInfoJson.zipball_url
+        } else {
+            String lastTag = releaseInfoJson[releaseInfoJson.size - 1].ref
+            latestReleaseUrl = url.replaceAll('api\\.', '').replaceAll('/repos', '').replaceAll('git/refs/tags', 'archive/' + lastTag + '.zip')
+        }
+
+        // Download latest release
+        File depZip = File.createTempFile('dep', '.zip', tempDir)
+        new URL(latestReleaseUrl).withInputStream { i ->
+            depZip.withOutputStream { it << i }
+        }
+
+        // Extract build dir
+        copy {
+            from(zipTree(depZip)) {
+                include filter
+                eachFile { fcd ->
+                    fcd.relativePath = new org.gradle.api.file.RelativePath(true, fcd.relativePath.segments.drop(2))
+                }
+                includeEmptyDirs = false
+            }
+            into new File('src/main/resources/html/deps/')
+        }
     }
+
+    // View STL
+    downloadLatestAndFilter('https://api.github.com/repos/omrips/viewstl/releases/latest', '**/build/**')
+
+    /*
+     * JSZip and JSZip Utils
+     * Needed for 3mf files preview. Ignored for now, OpenSCAD 3MF generated files seems incompatible for now.
+     */
+    //downloadLatestAndFilter('https://api.github.com/repos/Stuk/jszip/git/refs/tags', '**/dist/jszip.min.js')
+    //downloadLatestAndFilter('https://api.github.com/repos/Stuk/jszip-utils/git/refs/tags', '**/dist/jszip-utils.min.js')
 }
 setupDependencies.finalizedBy downloadJSDeps
