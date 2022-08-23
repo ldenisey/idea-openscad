@@ -189,7 +189,7 @@ expr ::= conditional_group
 private conditional_group ::= elvis_expr | conditional_expr
 private boolean_group ::= and_expr | or_expr
 private add_group ::= plus_expr | minus_expr
-private mul_group ::= mul_expr | div_expr | modulo_expr
+private mul_group ::= mul_expr | div_expr | modulo_expr | power_expr
 private unary_group ::= unary_plus_expr | unary_min_expr | unary_negate_expr
 private primary_group ::= range_expr
                         | echo_expr
@@ -213,6 +213,7 @@ unary_negate_expr ::= EXCL expr
 div_expr ::= expr DIV expr
 mul_expr ::= expr MUL expr
 modulo_expr ::= expr PERC expr
+power_expr ::= expr EXP expr
 minus_expr ::= expr MINUS expr
 plus_expr ::= expr PLUS expr
 conditional_expr ::= expr ( LT | GT | LE | GE | EQ | NE ) expr

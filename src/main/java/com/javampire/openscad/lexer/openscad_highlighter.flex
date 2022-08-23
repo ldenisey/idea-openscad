@@ -151,6 +151,7 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "/"                         { return OpenSCADTypes.DIV; }
     "*"                         { return OpenSCADTypes.MUL; }
     "%"                         { return OpenSCADTypes.PERC; }
+    "^"                         { return OpenSCADTypes.EXP; }
     "?"                         { return OpenSCADTypes.QUERY; }
     ":"                         { return OpenSCADTypes.COLON; }
     "("                         { return OpenSCADTypes.LPARENTH; }

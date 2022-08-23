@@ -261,6 +261,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
+  public void visitPowerExpr(@NotNull OpenSCADPowerExpr o) {
+    visitExpr(o);
+  }
+
   public void visitQualificationExpr(@NotNull OpenSCADQualificationExpr o) {
     visitExpr(o);
     // visitResolvableElement(o);

@@ -11,7 +11,7 @@ import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
 
-@SuppressWarnings({"SimplifiableIfStatement"})
+@SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class OpenSCADParser implements PsiParser, LightPsiParser {
 
   public ASTNode parse(IElementType t, PsiBuilder b) {
@@ -44,9 +44,9 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
       DIV_EXPR, ECHO_EXPR, ELVIS_EXPR, EXPR,
       FUNCTION_CALL_EXPR, FUNCTION_LITERAL_EXPR, INDEX_EXPR, LIST_EXPR,
       LITERAL_EXPR, MINUS_EXPR, MODULO_EXPR, MUL_EXPR,
-      OR_EXPR, PAREN_EXPR, PLUS_EXPR, QUALIFICATION_EXPR,
-      RANGE_EXPR, TEST_EXPR, UNARY_MIN_EXPR, UNARY_NEGATE_EXPR,
-      UNARY_PLUS_EXPR, VARIABLE_REF_EXPR, VECTOR_EXPR),
+      OR_EXPR, PAREN_EXPR, PLUS_EXPR, POWER_EXPR,
+      QUALIFICATION_EXPR, RANGE_EXPR, TEST_EXPR, UNARY_MIN_EXPR,
+      UNARY_NEGATE_EXPR, UNARY_PLUS_EXPR, VARIABLE_REF_EXPR, VECTOR_EXPR),
   };
 
   /* ********************************************************** */
@@ -1541,7 +1541,7 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   // 0: POSTFIX(elvis_expr) BINARY(conditional_expr)
   // 1: BINARY(and_expr) BINARY(or_expr)
   // 2: BINARY(plus_expr) BINARY(minus_expr)
-  // 3: BINARY(mul_expr) BINARY(div_expr) BINARY(modulo_expr)
+  // 3: BINARY(mul_expr) BINARY(div_expr) BINARY(modulo_expr) BINARY(power_expr)
   // 4: PREFIX(unary_plus_expr) PREFIX(unary_min_expr) PREFIX(unary_negate_expr)
   // 5: ATOM(range_expr) PREFIX(echo_expr) PREFIX(assert_expr) PREFIX(test_expr)
   //    ATOM(builtin_expr) ATOM(function_call_expr) ATOM(variable_ref_expr) ATOM(vector_expr)
@@ -1612,6 +1612,10 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
       else if (g < 3 && consumeTokenSmart(b, PERC)) {
         r = expr(b, l, 3);
         exit_section_(b, l, m, MODULO_EXPR, r, true, null);
+      }
+      else if (g < 3 && consumeTokenSmart(b, EXP)) {
+        r = expr(b, l, 3);
+        exit_section_(b, l, m, POWER_EXPR, r, true, null);
       }
       else if (g < 5 && index_expr_0(b, l + 1)) {
         r = true;

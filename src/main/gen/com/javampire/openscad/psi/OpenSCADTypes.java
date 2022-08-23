@@ -70,6 +70,7 @@ public interface OpenSCADTypes {
   IElementType PARAMETER_REFERENCE = OpenSCADElementFactory.getElementType("PARAMETER_REFERENCE");
   IElementType PAREN_EXPR = OpenSCADElementFactory.getElementType("PAREN_EXPR");
   IElementType PLUS_EXPR = OpenSCADElementFactory.getElementType("PLUS_EXPR");
+  IElementType POWER_EXPR = OpenSCADElementFactory.getElementType("POWER_EXPR");
   IElementType QUALIFICATION_EXPR = OpenSCADElementFactory.getElementType("QUALIFICATION_EXPR");
   IElementType RANGE_EXPR = OpenSCADElementFactory.getElementType("RANGE_EXPR");
   IElementType ROOT_OP = OpenSCADElementFactory.getElementType("ROOT_OP");
@@ -98,6 +99,7 @@ public interface OpenSCADTypes {
   IElementType EQ = new OpenSCADTokenType("EQ");
   IElementType EQUALS = new OpenSCADTokenType("EQUALS");
   IElementType EXCL = new OpenSCADTokenType("EXCL");
+  IElementType EXP = new OpenSCADTokenType("EXP");
   IElementType FALSE_KEYWORD = new OpenSCADTokenType("FALSE_KEYWORD");
   IElementType FOR_KEYWORD = new OpenSCADTokenType("FOR_KEYWORD");
   IElementType FUNCTION_KEYWORD = new OpenSCADTokenType("FUNCTION_KEYWORD");
@@ -313,6 +315,9 @@ public interface OpenSCADTypes {
       }
       else if (type == PLUS_EXPR) {
         return new OpenSCADPlusExprImpl(node);
+      }
+      else if (type == POWER_EXPR) {
+        return new OpenSCADPowerExprImpl(node);
       }
       else if (type == QUALIFICATION_EXPR) {
         return new OpenSCADQualificationExprImpl(node);
