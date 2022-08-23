@@ -57,6 +57,7 @@ changelog {
     header.set(project.version)
     headerParserRegex.set(~/\d\.\d\.\d(-SNAPSHOT)?/)
     unreleasedTerm.set("Unreleased")
+    groups.set(["Added", "Changed", "Removed", "Fixed"])
 }
 
 runPluginVerifier {
