@@ -27,6 +27,7 @@ import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.search.FilenameIndex;
 import com.intellij.util.CommonProcessors;
 import com.javampire.openscad.OpenSCADFileType;
 import org.jetbrains.annotations.NotNull;
@@ -68,73 +69,78 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull final Project project) {
-        final OpenSCADSettings settings = OpenSCADSettings.getInstance();
-
-        if (!settings.hasExecutable()) {
-            ProgressManager.getInstance().runProcessWithProgressSynchronously(
-                    () -> {
-                        final String suggestedExecutablePath = searchExecutablePath();
-                        if (suggestedExecutablePath == null) {
-                            new Notification(
-                                    OpenSCADSettings.class.getSimpleName(),
-                                    "Could not find the OpenSCAD executable",
-                                    "Preview and action menu are disabled. If you do have OpenSCAD installed on your machine, configure it in Settings -> Languages & Frameworks -> OpenSCAD",
-                                    NotificationType.WARNING
-                            ).notify(project);
-                            settings.setAllowPreviewEditor(false);
-                        } else {
-                            settings.setOpenSCADExecutable(suggestedExecutablePath);
-                            settings.setAllowPreviewEditor(true);
-                            new Notification(
-                                    OpenSCADSettings.class.getSimpleName(),
-                                    "OpenSCAD executable has been found",
-                                    "Preview and action menu are enabled. You can check and modify the configuration Settings -> Languages & Frameworks -> OpenSCAD",
-                                    NotificationType.INFORMATION
-                            ).notify(project);
-                        }
-                    },
-                    "Configuring OpenSCAD executable",
-                    false,
-                    project
-            );
-        }
-
-        if (settings.hasExecutable()) {
-            updateOpenSCADLibraries(project);
-            if (!settings.isAllowPreviewEditor() && !PropertiesComponent.getInstance(project).getBoolean(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, false)) {
-                final Notification previewNotification = new Notification(
-                        OpenSCADSettings.class.getSimpleName(),
-                        "OpenSCAD files preview is available",
-                        "The split preview editor allows previewing your model without opening OpenSCAD. " +
-                                "It displays an STL generated from OpenSCAD command line. Some information like colors " +
-                                "are missing but the overall model is the exact result of OpensCAD rendering.",
-                        NotificationType.INFORMATION
-                );
-                previewNotification.addAction(
-                        NotificationAction.createSimpleExpiring("Enable preview", () -> {
-                            settings.setAllowPreviewEditor(true);
-                            // Closing all opened scad file text editors to open them in preview editors
-                            final FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
-                            for (final FileEditor fileEditor : fileEditorManager.getAllEditors()) {
-                                if (fileEditor instanceof TextEditorImpl) {
-                                    final VirtualFile file = fileEditor.getFile();
-                                    if (file.getFileType() == OpenSCADFileType.INSTANCE) {
-                                        fileEditorManager.closeFile(file);
-                                        fileEditorManager.openFile(file, fileEditorManager.getSelectedEditor() == fileEditor);
-                                    }
-                                }
+        if (FilenameIndex.getAllFilesByExt(project, OpenSCADFileType.INSTANCE.getDefaultExtension()).size() > 0) {
+            final OpenSCADSettings settings = OpenSCADSettings.getInstance();
+            if (!settings.hasExecutable()) {
+                ProgressManager.getInstance().runProcessWithProgressSynchronously(
+                        () -> {
+                            final String suggestedExecutablePath = searchExecutablePath();
+                            if (suggestedExecutablePath == null) {
+                                new Notification(
+                                        OpenSCADSettings.class.getSimpleName(),
+                                        "Could not find the OpenSCAD executable",
+                                        "Preview and action menu are disabled. If you do have OpenSCAD installed on your machine, configure it in Settings -> Languages & Frameworks -> OpenSCAD",
+                                        NotificationType.WARNING
+                                ).notify(project);
+                                settings.setAllowPreviewEditor(false);
+                            } else {
+                                settings.setOpenSCADExecutable(suggestedExecutablePath);
+                                settings.setAllowPreviewEditor(true);
+                                new Notification(
+                                        OpenSCADSettings.class.getSimpleName(),
+                                        "OpenSCAD executable has been found",
+                                        "Preview and action menu are enabled. You can check and modify the configuration Settings -> Languages & Frameworks -> OpenSCAD",
+                                        NotificationType.INFORMATION
+                                ).notify(project);
                             }
-                        })
+                        },
+                        "Configuring OpenSCAD executable",
+                        false,
+                        project
                 );
-                previewNotification.addAction(
-                        NotificationAction.createSimpleExpiring(
-                                IdeBundle.message("sys.health.acknowledge.action"),
-                                () -> PropertiesComponent.getInstance(project).setValue(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, true)
-                        )
-                );
-                previewNotification.notify(project);
+            }
+
+            if (settings.hasExecutable()) {
+                updateOpenSCADLibraries(project);
+                if (!settings.isAllowPreviewEditor() && !PropertiesComponent.getInstance(project).getBoolean(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, false)) {
+                    createPreviewAvailableNotification(project, settings).notify(project);
+                }
             }
         }
+    }
+
+    private Notification createPreviewAvailableNotification(@NotNull final Project project, @NotNull final OpenSCADSettings settings) {
+        final Notification previewNotification = new Notification(
+                OpenSCADSettings.class.getSimpleName(),
+                "OpenSCAD files preview is available",
+                "The split preview editor allows previewing your model without opening OpenSCAD. " +
+                        "It displays an STL generated from OpenSCAD command line. Some information like colors " +
+                        "are missing but the overall model is the exact result of OpensCAD rendering.",
+                NotificationType.INFORMATION
+        );
+        previewNotification.addAction(
+                NotificationAction.createSimpleExpiring("Enable preview", () -> {
+                    settings.setAllowPreviewEditor(true);
+                    // Closing all opened scad file text editors to open them in preview editors
+                    final FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
+                    for (final FileEditor fileEditor : fileEditorManager.getAllEditors()) {
+                        if (fileEditor instanceof TextEditorImpl) {
+                            final VirtualFile file = fileEditor.getFile();
+                            if (file.getFileType() == OpenSCADFileType.INSTANCE) {
+                                fileEditorManager.closeFile(file);
+                                fileEditorManager.openFile(file, fileEditorManager.getSelectedEditor() == fileEditor);
+                            }
+                        }
+                    }
+                })
+        );
+        previewNotification.addAction(
+                NotificationAction.createSimpleExpiring(
+                        IdeBundle.message("sys.health.acknowledge.action"),
+                        () -> PropertiesComponent.getInstance(project).setValue(DO_NOT_ASK_AGAIN_ALLOW_PREVIEW_ID, true)
+                )
+        );
+        return previewNotification;
     }
 
     public static void updateOpenSCADLibraries(final Project project) {

@@ -10,6 +10,7 @@
 ### Removed
 
 ### Fixed
+- [Issue-1](https://github.com/ldenisey/idea-openscad/issues/41) Show preview activation popup only on OpenSCAD projects
 - Bump dependencies
 
 ## 2.3.2
