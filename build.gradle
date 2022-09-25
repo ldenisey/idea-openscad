@@ -16,15 +16,15 @@ sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 ext {
     pluginVerifierIdeVersions =
             "IIC-2021.2.1, " +
-                    "IIC-2022.2, " +
+                    "IIC-2022.3, " +
                     "PCC-2021.2.1, " +
-                    "PCC-2022.2, " +
+                    "PCC-2022.3, " +
                     "CL-2021.2.1, " +
-                    "CL-2022.2, " +
+                    "CL-2022.3, " +
                     "PS-2021.2.1, " +
-                    "PS-2022.2, " +
+                    //"PS-2022.3, " +
                     "WS-2021.2.1," +
-                    "WS-2022.2"
+                    "WS-2022.3"
 }
 
 repositories {
@@ -33,8 +33,8 @@ repositories {
 
 intellij {
     //version.set("2021.2.1")
-    version.set("222-EAP-SNAPSHOT")
-    //version.set("LATEST-EAP-SNAPSHOT")
+    //version.set("222-EAP-SNAPSHOT")
+    version.set("LATEST-EAP-SNAPSHOT")
 
     plugins.set([
             'java'
