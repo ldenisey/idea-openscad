@@ -27,7 +27,7 @@ jobs:
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
 
           echo "$VERSION"
-          echo "::set-output name=baseVersion::$VERSION"
+          echo "baseVersion=$VERSION" >> $GITHUB_OUTPUT
 
       # Set release version
       - name: Trim dev suffix
@@ -52,9 +52,9 @@ jobs:
           CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
           CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
 
-          echo "::set-output name=version::$VERSION"
-          echo "::set-output name=name::$NAME"
-          echo "::set-output name=changelog::$CHANGELOG"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
 
       # Publish the plugin to the marketplace
       - name: Publish Plugin
@@ -78,7 +78,7 @@ jobs:
         id: sha
         run: |
           RELEASE_SHA="$(git rev-parse HEAD)"
-          echo "::set-output name=releaseSha::$RELEASE_SHA"
+          echo "releaseSha=$RELEASE_SHA" >> $GITHUB_OUTPUT
 
       # Create GitHub release
       - name: Create Release
