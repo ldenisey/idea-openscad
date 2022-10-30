@@ -7,6 +7,7 @@
 - [Issue-39](https://github.com/ldenisey/idea-openscad/issues/39) highlight customizer comments
 
 ### Changed
+- [Issue-45](https://github.com/ldenisey/idea-openscad/issues/45) Preview should not be computed when editor is in text only view
 
 ### Removed
 

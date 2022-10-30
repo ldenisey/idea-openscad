@@ -1,4 +1,4 @@
-for (i = [10:50])
+for (i = [10:10:50])
 {
     assign (angle = i * 360 / 20, distance = i * 10, r = i * 2)
     {
@@ -8,7 +8,7 @@ for (i = [10:50])
     }
 }
 
-for (i = [10:50])
+for (i = [10:10:50])
 {
     angle = i * 360 / 20;
     distance = i * 10;
