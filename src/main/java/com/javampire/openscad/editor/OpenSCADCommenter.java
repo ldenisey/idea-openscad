@@ -40,19 +40,19 @@ public class OpenSCADCommenter implements CodeDocumentationAwareCommenterEx {
     @Override
     @Nullable
     public IElementType getLineCommentTokenType() {
-        return OpenSCADTypes.END_OF_LINE_COMMENT;
+        return OpenSCADTypes.COMMENT_SINGLELINE;
     }
 
     @Override
     @Nullable
     public IElementType getBlockCommentTokenType() {
-        return OpenSCADTypes.C_STYLE_COMMENT;
+        return OpenSCADTypes.COMMENT_C_STYLE;
     }
 
     @Override
     @Nullable
     public IElementType getDocumentationCommentTokenType() {
-        return OpenSCADTypes.DOC_COMMENT;
+        return OpenSCADTypes.COMMENT_DOC;
     }
 
     @Override

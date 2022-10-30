@@ -48,7 +48,7 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
         if (node == null) {
             return element;
         }
-        if (node.getElementType() == OpenSCADTypes.END_OF_LINE_COMMENT) {
+        if (node.getElementType() == OpenSCADTypes.COMMENT_SINGLELINE) {
             return addFoldsForStatementBlock(list, element, document, LINE_COMMENT_TOKENS, "//...");
         }
         if (IMPORT_FOLDING_TOKENS.contains(node.getElementType())) {
@@ -56,13 +56,13 @@ public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
         }
         if (node.getElementType() == OpenSCADTypes.BLOCK_OBJ) {
             foldIfMultiLine(list, element, document, "{...}");
-        } else if (node.getElementType() == OpenSCADTypes.C_STYLE_COMMENT) {
+        } else if (node.getElementType() == OpenSCADTypes.COMMENT_C_STYLE) {
             foldIfMultiLine(list, element, document, "/* ... */");
             return element;
-        } else if (node.getElementType() == OpenSCADTypes.DOC_COMMENT) {
+        } else if (node.getElementType() == OpenSCADTypes.COMMENT_DOC) {
             foldIfMultiLine(list, element, document, "/** ... */");
             return element;
-        } else if (node.getElementType() == OpenSCADTypes.BLOCK_COMMENT) {
+        } else if (node.getElementType() == OpenSCADTypes.COMMENT_SINGLELINE_BLOCK) {
             foldIfMultiLine(list, element, document, "//...");
             return element;
         } else {

@@ -140,9 +140,9 @@ public class OpenSCADPsiImplUtil {
             return null;
         }
         IElementType docNodeElementType = docNode.getElementType();
-        if (docNodeElementType == OpenSCADTypes.BLOCK_COMMENT) {
+        if (docNodeElementType == OpenSCADTypes.COMMENT_SINGLELINE_BLOCK) {
             text = text.replaceAll("(?sm)^\\s*//", "");
-        } else if (docNodeElementType != OpenSCADTypes.DOC_COMMENT) {
+        } else if (docNodeElementType != OpenSCADTypes.COMMENT_DOC) {
             text = null;
         } else {
             text = text.replaceFirst("(?s)^\\s*/\\*\\*", "");
@@ -160,7 +160,7 @@ public class OpenSCADPsiImplUtil {
             if (commentNode == null) {
                 return null;
             }
-            if (commentNode.getElementType() == OpenSCADTypes.END_OF_LINE_COMMENT) {
+            if (commentNode.getElementType() == OpenSCADTypes.COMMENT_SINGLELINE) {
                 for (PsiElement wsElement : PsiTreeUtil.getElementsOfRange(element, nextComment)) {
                     if (isMultiLine(wsElement)) {
                         return null;

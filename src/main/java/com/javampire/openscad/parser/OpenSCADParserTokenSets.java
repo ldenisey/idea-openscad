@@ -15,8 +15,12 @@ public class OpenSCADParserTokenSets {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
 
     public static final TokenSet COMMENTS = TokenSet.create(
-            END_OF_LINE_COMMENT, C_STYLE_COMMENT,
-            DOC_COMMENT, BLOCK_COMMENT
+            COMMENT_SINGLELINE, COMMENT_C_STYLE,
+            COMMENT_DOC, COMMENT_SINGLELINE_BLOCK
+    );
+
+    public static final TokenSet CUSTOMIZER_COMMENTS = TokenSet.create(
+            COMMENT_CUSTOMIZER_VALUE, COMMENT_CUSTOMIZER_TABS
     );
 
     public static final TokenSet STRINGS = TokenSet.create(
@@ -80,7 +84,7 @@ public class OpenSCADParserTokenSets {
     );
 
     public static final TokenSet LINE_COMMENT_TOKENS = TokenSet.create(
-            END_OF_LINE_COMMENT
+            COMMENT_SINGLELINE
     );
 
 
@@ -93,7 +97,7 @@ public class OpenSCADParserTokenSets {
      * Used for folding import section (can include comments too)
      */
     public static final TokenSet IMPORT_FOLDING_TOKENS = TokenSet.create(
-            END_OF_LINE_COMMENT, INCLUDE_IMPORT, USE_IMPORT
+            COMMENT_SINGLELINE, INCLUDE_IMPORT, USE_IMPORT
     );
 
 

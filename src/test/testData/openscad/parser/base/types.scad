@@ -5,15 +5,6 @@ translate([10, 5]) {circle(5); square(4);}
 rotate(60) color("red") {circle(5); square(4);}
 color("blue") {translate([5, 3, 0]) sphere(5); rotate([45, 0, 45]) {cylinder(10); cube([5, 6, 7]);}}
 
-// This is a comment
-
-myvar = 10; // The rest of the line is a comment
-
-/*
-   Multi-line comments
-   can span multiple lines.
-*/
-
 inf = 1e200 * 1e200;
 nan = 0 / 0;
 echo(inf, nan);

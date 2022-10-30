@@ -31,6 +31,11 @@ public class BaseParsingTest extends ParsingTestCase {
     }
 
     @Test
+    public void testcomment() throws IOException {
+        doTest("_psidump");
+    }
+
+    @Test
     public void testconcat() throws IOException {
         doTest("_psidump");
     }
