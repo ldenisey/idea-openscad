@@ -1,7 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Verifications" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="Run Clean Plugin" type="GradleRunConfiguration" factoryName="Gradle">
     <log_file alias="idea.log" path="$PROJECT_DIR$/build/idea-sandbox/system/log/idea.log" />
     <ExternalSystemSettings>
+      <option name="env">
+        <map>
+          <entry key="PROJECT_DIR" value="&quot;D:\Documents\workspace\idea-openscad\src\test\testData\openscad&quot;" />
+        </map>
+      </option>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
@@ -11,10 +16,11 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="runPluginVerifier" />
+          <option value="clean" />
+          <option value="runIde" />
         </list>
       </option>
-      <option name="vmOptions" value="" />
+      <option name="vmOptions" value="-Xmx2048m" />
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
-import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
+import com.javampire.openscad.psi.stub.variable.OpenSCADVariableStub;
 import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADVariableDeclaration extends OpenSCADNamedElement, StubBasedPsiElement<OpenSCADVariableStub> {

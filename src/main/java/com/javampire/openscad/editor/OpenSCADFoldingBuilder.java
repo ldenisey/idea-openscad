@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.IMPORT_FOLDING_TOKENS;
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.LINE_COMMENT_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.IMPORT_FOLDING_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.LINE_COMMENT_TOKENS;
 
 public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
     @NotNull

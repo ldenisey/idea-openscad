@@ -22,7 +22,7 @@ ext {
                     "CL-2021.2.1, " +
                     "CL-2022.3, " +
                     "PS-2021.2.1, " +
-                    //"PS-2022.3, " +
+                    "PS-2022.3, " +
                     "WS-2021.2.1," +
                     "WS-2022.3"
 }
@@ -33,12 +33,12 @@ repositories {
 
 intellij {
     //version.set("2021.2.1")
-    //version.set("222-EAP-SNAPSHOT")
-    version.set("LATEST-EAP-SNAPSHOT")
+    version.set("222-EAP-SNAPSHOT")
+    //version.set("LATEST-EAP-SNAPSHOT")
 
     plugins.set([
             'java'
-            //,'psiviewer:221-SNAPSHOT'  // For debugging the parser only
+            //,'psiviewer:222-SNAPSHOT'  // For debugging the parser only
     ])
 
     updateSinceUntilBuild.set(false)

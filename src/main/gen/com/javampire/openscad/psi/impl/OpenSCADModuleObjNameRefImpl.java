@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
+import com.javampire.openscad.psi.OpenSCADResolvableElementImpl;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
 

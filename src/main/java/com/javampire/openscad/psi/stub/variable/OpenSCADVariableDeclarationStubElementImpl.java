@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.impl;
+package com.javampire.openscad.psi.stub.variable;
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
@@ -8,7 +8,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.psi.OpenSCADElementFactory;
 import com.javampire.openscad.psi.OpenSCADTypes;
-import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
 import org.jetbrains.annotations.NotNull;
 
 public class OpenSCADVariableDeclarationStubElementImpl extends StubBasedPsiElementBase<OpenSCADVariableStub> {

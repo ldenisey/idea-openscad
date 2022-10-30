@@ -5,9 +5,9 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
-import com.javampire.openscad.psi.stub.OpenSCADFunctionStub;
-import com.javampire.openscad.psi.stub.OpenSCADVariableStub;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
+import com.javampire.openscad.psi.stub.function.OpenSCADFunctionStub;
+import com.javampire.openscad.psi.stub.variable.OpenSCADVariableStub;
+import com.javampire.openscad.psi.stub.module.OpenSCADModuleStub;
 
 public class OpenSCADVisitor extends PsiElementVisitor {
 
@@ -276,6 +276,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
 
   public void visitRootOp(@NotNull OpenSCADRootOp o) {
     visitOperator(o);
+  }
+
+  public void visitTestExpRef(@NotNull OpenSCADTestExpRef o) {
+    visitResolvableElement(o);
   }
 
   public void visitTestExpr(@NotNull OpenSCADTestExpr o) {

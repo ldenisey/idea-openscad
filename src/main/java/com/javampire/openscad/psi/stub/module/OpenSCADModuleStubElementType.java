@@ -1,16 +1,15 @@
-package com.javampire.openscad.psi.stub;
+package com.javampire.openscad.psi.stub.module;
 
 import com.intellij.psi.stubs.*;
 import com.intellij.util.io.StringRef;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
 import com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationImpl;
-import com.javampire.openscad.psi.impl.OpenSCADModuleStubImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static com.javampire.openscad.psi.stub.index.OpenSCADModuleIndex.MODULE;
+import static com.javampire.openscad.psi.stub.module.OpenSCADModuleIndex.MODULE;
 
 public class OpenSCADModuleStubElementType extends IStubElementType<OpenSCADModuleStub, OpenSCADModuleDeclaration> {
 

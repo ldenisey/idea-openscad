@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.stub.index;
+package com.javampire.openscad.psi.stub.module;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -11,9 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class OpenSCADModuleIndex
-        extends StringStubIndexExtension<OpenSCADModuleDeclaration>
-        implements OpenSCADReferenceResolver {
+public class OpenSCADModuleIndex extends StringStubIndexExtension<OpenSCADModuleDeclaration> implements OpenSCADReferenceResolver {
 
     public static final StubIndexKey<String, OpenSCADModuleDeclaration> MODULE = StubIndexKey.createIndexKey("OpenSCAD.module.name");
 
@@ -35,5 +33,4 @@ public class OpenSCADModuleIndex
                                                      @NotNull final GlobalSearchScope scope) {
         return StubIndex.getElements(getKey(), moduleName, project, null, OpenSCADModuleDeclaration.class);
     }
-
 }

@@ -1,10 +1,8 @@
-package com.javampire.openscad.psi.impl;
+package com.javampire.openscad.psi.stub.module;
 
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStubElementType;
 
 public class OpenSCADModuleStubImpl extends StubBase<OpenSCADModuleDeclaration> implements OpenSCADModuleStub {
 

@@ -33,4 +33,10 @@ public class OpenSCADTestExprImpl extends OpenSCADExprImpl implements OpenSCADTe
     return findChildByClass(OpenSCADExpr.class);
   }
 
+  @Override
+  @NotNull
+  public OpenSCADTestExpRef getTestExpRef() {
+    return findNotNullChildByClass(OpenSCADTestExpRef.class);
+  }
+
 }

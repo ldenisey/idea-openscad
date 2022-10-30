@@ -8,7 +8,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.javampire.openscad.OpenSCADLanguage;
@@ -16,155 +15,10 @@ import com.javampire.openscad.lexer.OpenSCADLexerAdapter;
 import com.javampire.openscad.psi.OpenSCADFile;
 import org.jetbrains.annotations.NotNull;
 
-import static com.javampire.openscad.psi.OpenSCADTypes.*;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.*;
+import static com.javampire.openscad.psi.OpenSCADTypes.Factory;
 
 public class OpenSCADParserDefinition implements ParserDefinition {
-
-    // the sets defined below are used for syntax highlighting
-
-    public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-
-    public static final TokenSet COMMENTS = TokenSet.create(
-            END_OF_LINE_COMMENT, C_STYLE_COMMENT,
-            DOC_COMMENT, BLOCK_COMMENT
-    );
-
-    public static final TokenSet STRINGS = TokenSet.create(
-            STRING_LITERAL
-    );
-
-    public static final TokenSet OPERATOR_KEYWORDS = TokenSet.create(
-            BUILTIN_OP
-    );
-
-    public static final TokenSet LANGUAGE_KEYWORDS = TokenSet.create(
-            ASSIGN_KEYWORD, EACH_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FOR_KEYWORD,
-            FUNCTION_KEYWORD, IF_KEYWORD,
-            LET_KEYWORD, MODULE_KEYWORD,
-            TRUE_KEYWORD, UNDEF_KEYWORD
-    );
-
-    public static final TokenSet OBJECT_KEYWORDS = TokenSet.create(
-            BUILTIN_OBJ
-    );
-
-    public static final TokenSet FUNCTION_KEYWORDS = TokenSet.create(
-            BUILTIN_EXPR
-    );
-
-    public static final TokenSet PREDEFINED_SYMBOLS = TokenSet.create(
-            AND, OR, PLUS,
-            MINUS, PERC, DIV,
-            MUL, LT, LE,
-            GT, GE, NE,
-            EQ, EQUALS
-    );
-
-    public static final TokenSet SEPARATOR_SYMBOLS = TokenSet.create(
-            COLON, SEMICOLON, COMMA
-    );
-
-    public static final TokenSet ANGLE_BRACKETS_TOKENS = TokenSet.create(
-            IMPORT_START, IMPORT_END
-    );
-
-    public static final TokenSet PARENTHESES_TOKENS = TokenSet.create(
-            LPARENTH, RPARENTH
-    );
-
-    public static final TokenSet BRACES_TOKENS = TokenSet.create(
-            LBRACE, RBRACE
-    );
-
-    public static final TokenSet BRACKETS_TOKENS = TokenSet.create(
-            LBRACKET, RBRACKET
-    );
-
-    public static final TokenSet LINE_COMMENT_TOKENS = TokenSet.create(
-            END_OF_LINE_COMMENT
-    );
-
-    // The sets below are used for code folding
-
-    /**
-     * Used for folding import section (can include comments too)
-     */
-    public static final TokenSet IMPORT_FOLDING_TOKENS = TokenSet.create(
-            END_OF_LINE_COMMENT, INCLUDE_IMPORT, USE_IMPORT
-    );
-
-    // The sets below are used for element naming/renaming
-
-    /**
-     * These elements have their name in the first child with IMPORT_PATH token type
-     */
-    public static final TokenSet IMPORT_TOKENS = TokenSet.create(
-            INCLUDE_IMPORT, USE_IMPORT
-    );
-
-    /**
-     * These elements have their name in the first child with IDENTIFIER token type
-     */
-    public static final TokenSet NAMED_ELEMENTS = TokenSet.create(
-            MODULE_DECLARATION, FUNCTION_DECLARATION,
-            ARG_DECLARATION, FULL_ARG_DECLARATION,
-            MODULE_OP_NAME_REF, MODULE_OBJ_NAME_REF,
-            FUNCTION_NAME_REF, PARAMETER_REFERENCE,
-            VARIABLE_REF_EXPR, VARIABLE_DECLARATION,
-            BUILTIN_EXPR_REF, BUILTIN_OBJ_REF,
-            COMMON_OP_REF
-    );
-
-    /**
-     * These elements can't be renamed
-     */
-    public static final TokenSet NON_RENAMABLE_ELEMENTS = TokenSet.create(
-            BUILTIN_EXPR_REF, BUILTIN_OBJ_REF,
-            COMMON_OP_REF
-    );
-
-    /**
-     * These elements have their doc-string attached to the parent
-     */
-    public static final TokenSet DOC_IN_PARENT = TokenSet.create(
-            IDENTIFIER
-    );
-
-    // The sets below are used for spacing feature in formatting
-
-    public static final TokenSet LOGICAL_OPERATORS = TokenSet.create(
-            AND, OR
-    );
-
-    public static final TokenSet EQUALITY_OPERATORS = TokenSet.create(
-            EQ, NE
-    );
-
-    public static final TokenSet RELATIONAL_OPERATORS = TokenSet.create(
-            LT, LE, GT, GE
-    );
-
-    public static final TokenSet ADDITIVE_OPERATORS = TokenSet.create(
-            MINUS, PLUS
-    );
-
-    public static final TokenSet MULTIPLICATIVE_OPERATORS = TokenSet.create(
-            DIV, MUL, PERC
-    );
-
-    public static final TokenSet MATHEMATICAL_EXPR = TokenSet.create(
-            PLUS_EXPR, MINUS_EXPR, DIV_EXPR, MUL_EXPR, MODULO_EXPR
-    );
-
-    // The set below are used for completion
-
-    public static final TokenSet WITH_ARG_DECLARATION_LIST = TokenSet.create(
-            MODULE_DECLARATION, FUNCTION_DECLARATION
-    );
-
-    public static final TokenSet WITH_FULL_ARG_DECLARATION_LIST = TokenSet.create(
-            FOR_OBJ
-    );
 
     public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);
 

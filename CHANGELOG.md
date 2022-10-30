@@ -10,7 +10,8 @@
 ### Removed
 
 ### Fixed
-- [Issue-1](https://github.com/ldenisey/idea-openscad/issues/41) Show preview activation popup only on OpenSCAD projects
+- [Issue-46](https://github.com/ldenisey/idea-openscad/issues/46) Some keywords are parsed as identifiers
+- [Issue-41](https://github.com/ldenisey/idea-openscad/issues/41) Show preview activation popup only on OpenSCAD projects
 - Bump dependencies
 
 ## 2.3.2

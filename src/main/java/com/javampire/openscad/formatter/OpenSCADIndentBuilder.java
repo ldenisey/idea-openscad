@@ -6,8 +6,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.tree.IElementType;
 
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.BRACES_TOKENS;
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.MATHEMATICAL_EXPR;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.BRACES_TOKENS;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.MATHEMATICAL_EXPR;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 
 public class OpenSCADIndentBuilder {

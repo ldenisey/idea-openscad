@@ -5,11 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.javampire.openscad.psi.OpenSCADFunctionDeclaration;
-import com.javampire.openscad.psi.OpenSCADModuleDeclaration;
-import com.javampire.openscad.psi.OpenSCADNamedElement;
-import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
-import com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil;
+import com.javampire.openscad.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

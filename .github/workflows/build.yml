@@ -56,6 +56,15 @@ jobs:
       - name: Run Linters and Test
         run: ./gradlew check
 
+      # upload test results in case of tests failure
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-results
+          path: |
+            build/reports/tests/
+            build/test-results/
+
       # Run verifyPlugin Gradle task
       - name: Verify Plugin
         run: ./gradlew verifyPlugin

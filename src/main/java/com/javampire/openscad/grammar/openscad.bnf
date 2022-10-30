@@ -16,9 +16,8 @@
     extends(".*obj")=object
     extends(".*op")=operator
 
-    psiImplUtilClass="com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil"
+    psiImplUtilClass="com.javampire.openscad.psi.OpenSCADPsiImplUtil"
     parserUtilClass="com.javampire.openscad.parser.OpenSCADParserUtil"
-
 }
 
 openSCADFile ::= item*
@@ -43,7 +42,7 @@ include_import ::= INCLUDE_KEYWORD IMPORT_START import_path_ref IMPORT_END
 use_import ::= USE_KEYWORD IMPORT_START import_path_ref IMPORT_END
 
 import_path_ref ::= IMPORT_PATH {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADImportPathRefElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADImportPathRefElementImpl"
 }
 
 object ::= builtin_obj
@@ -57,30 +56,30 @@ object ::= builtin_obj
 builtin_obj ::= (builtin_obj_ref arg_assignment_list SEMICOLON)
                 | (builtin_op block_obj)
                 | (builtin_op statement)
-builtin_obj_ref ::= "cube"
-                  | "cylinder"
-                  | "assert"
-                  | "echo"
-                  | "sphere"
-                  | "polyhedron"
-                  | "square"
-                  | "circle"
-                  | "polygon"
-                  | "text"
-                  | "surface"
-                  | "child"
-                  | "children"
-                  | "import"
-                  | "import_dxf"
-                  | "import_stl" {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+builtin_obj_ref ::= ASSERT_KEYWORD
+                  | CHILD_KEYWORD
+                  | CHILDREN_KEYWORD
+                  | CIRCLE_KEYWORD
+                  | CUBE_KEYWORD
+                  | CYLINDER_KEYWORD
+                  | ECHO_KEYWORD
+                  | IMPORT_KEYWORD
+                  | IMPORT_DXF_KEYWORD
+                  | IMPORT_STL_KEYWORD
+                  | POLYGON_KEYWORD
+                  | POLYHEDRON_KEYWORD
+                  | SPHERE_KEYWORD
+                  | SQUARE_KEYWORD
+                  | SURFACE_KEYWORD
+                  | TEXT_KEYWORD {
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements=["com.javampire.openscad.psi.OpenSCADResolvableElement"]
     methods=[setName getNameIdentifier]
 }
 
 module_call_obj ::= module_obj_name_ref arg_assignment_list SEMICOLON
 module_obj_name_ref ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
@@ -96,30 +95,30 @@ private declaration ::= variable_declaration | module_declaration | function_dec
 
 variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
     pin=1
-    mixin="com.javampire.openscad.psi.impl.OpenSCADVariableDeclarationStubElementImpl"
+    mixin="com.javampire.openscad.psi.stub.variable.OpenSCADVariableDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
-        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADVariableStub>"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.variable.OpenSCADVariableStub>"
     ]
     methods=[getPresentation getNameIdentifier]
 }
 
 module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
     pin=1
-    mixin="com.javampire.openscad.psi.impl.OpenSCADModuleDeclarationStubElementImpl"
+    mixin="com.javampire.openscad.psi.stub.module.OpenSCADModuleDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
-        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADModuleStub>"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.module.OpenSCADModuleStub>"
     ]
     methods=[getPresentation getNameIdentifier]
 }
 
 function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
     pin=1
-    mixin="com.javampire.openscad.psi.impl.OpenSCADFunctionDeclarationStubElementImpl"
+    mixin="com.javampire.openscad.psi.stub.function.OpenSCADFunctionDeclarationStubElementImpl"
     implements=[
         "com.javampire.openscad.psi.OpenSCADNamedElement"
-        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.OpenSCADFunctionStub>"
+        "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.function.OpenSCADFunctionStub>"
     ]
     methods=[getPresentation getNameIdentifier]
 }
@@ -132,7 +131,7 @@ operator ::= builtin_op
 
 module_call_op ::= module_op_name_ref arg_assignment_list
 module_op_name_ref ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
@@ -149,34 +148,32 @@ disable_op ::= MUL
 
 builtin_op ::= common_op_ref arg_assignment_list
 
-common_op_ref ::= "linear_extrude"
-                | "rotate_extrude"
-                | "rotate"
-                | "translate"
-                | "scale"
-                | "resize"
-                | "mirror"
-                | "multmatrix"
-                | "color"
-                | "offset"
-                | "minkowski"
-                | "hull"
-                | "union"
-                | "difference"
-                | "intersection"
-                | "render"
-                | "projection" {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+common_op_ref ::= COLOR_KEYWORD
+                | DIFFERENCE_KEYWORD
+                | HULL_KEYWORD
+                | INTERSECTION_KEYWORD
+                | LINEAR_EXTRUDE_KEYWORD
+                | MINKOWSKI_KEYWORD
+                | MIRROR_KEYWORD
+                | MULTMATRIX_KEYWORD
+                | OFFSET_KEYWORD
+                | PROJECTION_KEYWORD
+                | RENDER_KEYWORD
+                | RESIZE_KEYWORD
+                | ROTATE_KEYWORD
+                | ROTATE_EXTRUDE_KEYWORD
+                | SCALE_KEYWORD
+                | TRANSLATE_KEYWORD
+                | UNION_KEYWORD {
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[setName getNameIdentifier]
 }
 
-private full_arg_op_identifier ::= "intersection_for"
+private full_arg_op_identifier ::= INTERSECTION_FOR_KEYWORD
                                  | ASSIGN_KEYWORD
                                  | FOR_KEYWORD
                                  | LET_KEYWORD
-
-
 
 expr ::= conditional_group
        | boolean_group
@@ -223,7 +220,17 @@ echo_expr ::= echo_element expr
 assert_expr ::= assert_element expr
 assert_element ::= "assert" LPARENTH expr (',' STRING_LITERAL)? RPARENTH
 elvis_expr ::= expr QUERY (elvis_expr | expr) COLON (elvis_expr | expr)
-test_expr ::= ("is_undef" | "is_list" | "is_num" | "is_bool" | "is_string" | "is_function") LPARENTH expr RPARENTH
+test_expr ::= test_exp_ref LPARENTH expr RPARENTH
+test_exp_ref ::= IS_UNDEF_KEYWORD
+               | IS_LIST_KEYWORD
+               | IS_NUM_KEYWORD
+               | IS_BOOL_KEYWORD
+               | IS_STRING_KEYWORD
+               | IS_FUNCTION_KEYWORD {
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
+    implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
+    methods=[setName getNameIdentifier]
+}
 function_literal_expr ::= FUNCTION_KEYWORD arg_declaration_list expr
 paren_expr ::= LPARENTH expr RPARENTH
 index_expr ::= expr LBRACKET <<innerExpression>> RBRACKET
@@ -242,45 +249,45 @@ else_element ::= ELSE_KEYWORD [if_element]
 let_element ::= LET_KEYWORD full_arg_declaration_list
 builtin_expr ::= builtin_expr_ref arg_assignment_list
                | LET_KEYWORD full_arg_declaration_list expr
-builtin_expr_ref ::= "cos"
-                   | "sin"
-                   | "tan"
-                   | "acos"
-                   | "asin"
-                   | "atan"
-                   | "atan2"
-                   | "abs"
-                   | "ceil"
-                   | "concat"
-                   | "cross"
-                   | "exp"
-                   | "floor"
-                   | "ln"
-                   | "len"
-                   | "log"
-                   | "lookup"
-                   | "max"
-                   | "min"
-                   | "norm"
-                   | "ord"
-                   | "pow"
-                   | "rands"
-                   | "round"
-                   | "sign"
-                   | "sqrt"
-                   | "str"
-                   | "chr"
-                   | "search"
-                   | "version"
-                   | "version_num"
-                   | "parent_module" {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+builtin_expr_ref ::= ABS_KEYWORD
+                   | ACOS_KEYWORD
+                   | ASIN_KEYWORD
+                   | ATAN_KEYWORD
+                   | ATAN2_KEYWORD
+                   | CEIL_KEYWORD
+                   | CHR_KEYWORD
+                   | CONCAT_KEYWORD
+                   | COS_KEYWORD
+                   | CROSS_KEYWORD
+                   | EXP_KEYWORD
+                   | FLOOR_KEYWORD
+                   | LEN_KEYWORD
+                   | LN_KEYWORD
+                   | LOG_KEYWORD
+                   | LOOKUP_KEYWORD
+                   | MAX_KEYWORD
+                   | MIN_KEYWORD
+                   | NORM_KEYWORD
+                   | ORD_KEYWORD
+                   | PARENT_MODULE_KEYWORD
+                   | POW_KEYWORD
+                   | RANDS_KEYWORD
+                   | ROUND_KEYWORD
+                   | SEARCH_KEYWORD
+                   | SIGN_KEYWORD
+                   | SIN_KEYWORD
+                   | SQRT_KEYWORD
+                   | STR_KEYWORD
+                   | TAN_KEYWORD
+                   | VERSION_KEYWORD
+                   | VERSION_NUM_KEYWORD {
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[setName getNameIdentifier]
 }
 
 qualification_expr ::= expr DOT IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
@@ -293,7 +300,7 @@ literal_expr ::= TRUE_KEYWORD
 
 function_call_expr ::= function_name_ref arg_assignment_list+
 function_name_ref ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
@@ -304,14 +311,14 @@ arg_assignment ::= [ parameter_reference EQUALS ] expr {
 }
 private recover_arg ::= ! (COMMA | RPARENTH)
 parameter_reference ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getPresentation getNameIdentifier getReference]
 }
 
 arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA arg_declaration? )* RPARENTH {pin(".*")=1}
 arg_declaration ::= IDENTIFIER [EQUALS expr] {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getNameIdentifier]
     recoverWhile=recover_arg
@@ -319,14 +326,14 @@ arg_declaration ::= IDENTIFIER [EQUALS expr] {
 
 full_arg_declaration_list ::= LPARENTH full_arg_declaration? ( COMMA+ full_arg_declaration )* RPARENTH {pin(".*")=1}
 full_arg_declaration ::= IDENTIFIER EQUALS expr {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADNamedElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
     methods=[getNameIdentifier]
     recoverWhile=recover_arg
 }
 
 variable_ref_expr ::= IDENTIFIER {
-    mixin="com.javampire.openscad.psi.impl.OpenSCADResolvableElementImpl"
+    mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
     methods=[getPresentation getNameIdentifier]
 }
