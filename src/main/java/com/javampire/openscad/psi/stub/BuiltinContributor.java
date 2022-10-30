@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.stub.index;
+package com.javampire.openscad.psi.stub;
 
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BuiltinIndexContributor extends IndexableSetContributor {
+public class BuiltinContributor extends IndexableSetContributor {
 
     @NotNull
     @Override

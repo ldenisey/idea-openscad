@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.stub;
+package com.javampire.openscad.psi.stub.module;
 
 import com.intellij.psi.stubs.StubElement;
 import com.javampire.openscad.psi.OpenSCADModuleDeclaration;

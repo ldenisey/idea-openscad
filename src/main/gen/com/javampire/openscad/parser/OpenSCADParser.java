@@ -309,74 +309,74 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "cos"
-  //                    | "sin"
-  //                    | "tan"
-  //                    | "acos"
-  //                    | "asin"
-  //                    | "atan"
-  //                    | "atan2"
-  //                    | "abs"
-  //                    | "ceil"
-  //                    | "concat"
-  //                    | "cross"
-  //                    | "exp"
-  //                    | "floor"
-  //                    | "ln"
-  //                    | "len"
-  //                    | "log"
-  //                    | "lookup"
-  //                    | "max"
-  //                    | "min"
-  //                    | "norm"
-  //                    | "ord"
-  //                    | "pow"
-  //                    | "rands"
-  //                    | "round"
-  //                    | "sign"
-  //                    | "sqrt"
-  //                    | "str"
-  //                    | "chr"
-  //                    | "search"
-  //                    | "version"
-  //                    | "version_num"
-  //                    | "parent_module"
+  // ABS_KEYWORD
+  //                    | ACOS_KEYWORD
+  //                    | ASIN_KEYWORD
+  //                    | ATAN_KEYWORD
+  //                    | ATAN2_KEYWORD
+  //                    | CEIL_KEYWORD
+  //                    | CHR_KEYWORD
+  //                    | CONCAT_KEYWORD
+  //                    | COS_KEYWORD
+  //                    | CROSS_KEYWORD
+  //                    | EXP_KEYWORD
+  //                    | FLOOR_KEYWORD
+  //                    | LEN_KEYWORD
+  //                    | LN_KEYWORD
+  //                    | LOG_KEYWORD
+  //                    | LOOKUP_KEYWORD
+  //                    | MAX_KEYWORD
+  //                    | MIN_KEYWORD
+  //                    | NORM_KEYWORD
+  //                    | ORD_KEYWORD
+  //                    | PARENT_MODULE_KEYWORD
+  //                    | POW_KEYWORD
+  //                    | RANDS_KEYWORD
+  //                    | ROUND_KEYWORD
+  //                    | SEARCH_KEYWORD
+  //                    | SIGN_KEYWORD
+  //                    | SIN_KEYWORD
+  //                    | SQRT_KEYWORD
+  //                    | STR_KEYWORD
+  //                    | TAN_KEYWORD
+  //                    | VERSION_KEYWORD
+  //                    | VERSION_NUM_KEYWORD
   public static boolean builtin_expr_ref(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_expr_ref")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUILTIN_EXPR_REF, "<builtin expr ref>");
-    r = consumeToken(b, "cos");
-    if (!r) r = consumeToken(b, "sin");
-    if (!r) r = consumeToken(b, "tan");
-    if (!r) r = consumeToken(b, "acos");
-    if (!r) r = consumeToken(b, "asin");
-    if (!r) r = consumeToken(b, "atan");
-    if (!r) r = consumeToken(b, "atan2");
-    if (!r) r = consumeToken(b, "abs");
-    if (!r) r = consumeToken(b, "ceil");
-    if (!r) r = consumeToken(b, "concat");
-    if (!r) r = consumeToken(b, "cross");
-    if (!r) r = consumeToken(b, "exp");
-    if (!r) r = consumeToken(b, "floor");
-    if (!r) r = consumeToken(b, "ln");
-    if (!r) r = consumeToken(b, "len");
-    if (!r) r = consumeToken(b, "log");
-    if (!r) r = consumeToken(b, "lookup");
-    if (!r) r = consumeToken(b, "max");
-    if (!r) r = consumeToken(b, "min");
-    if (!r) r = consumeToken(b, "norm");
-    if (!r) r = consumeToken(b, "ord");
-    if (!r) r = consumeToken(b, "pow");
-    if (!r) r = consumeToken(b, "rands");
-    if (!r) r = consumeToken(b, "round");
-    if (!r) r = consumeToken(b, "sign");
-    if (!r) r = consumeToken(b, "sqrt");
-    if (!r) r = consumeToken(b, "str");
-    if (!r) r = consumeToken(b, "chr");
-    if (!r) r = consumeToken(b, "search");
-    if (!r) r = consumeToken(b, "version");
-    if (!r) r = consumeToken(b, "version_num");
-    if (!r) r = consumeToken(b, "parent_module");
+    r = consumeToken(b, ABS_KEYWORD);
+    if (!r) r = consumeToken(b, ACOS_KEYWORD);
+    if (!r) r = consumeToken(b, ASIN_KEYWORD);
+    if (!r) r = consumeToken(b, ATAN_KEYWORD);
+    if (!r) r = consumeToken(b, ATAN2_KEYWORD);
+    if (!r) r = consumeToken(b, CEIL_KEYWORD);
+    if (!r) r = consumeToken(b, CHR_KEYWORD);
+    if (!r) r = consumeToken(b, CONCAT_KEYWORD);
+    if (!r) r = consumeToken(b, COS_KEYWORD);
+    if (!r) r = consumeToken(b, CROSS_KEYWORD);
+    if (!r) r = consumeToken(b, EXP_KEYWORD);
+    if (!r) r = consumeToken(b, FLOOR_KEYWORD);
+    if (!r) r = consumeToken(b, LEN_KEYWORD);
+    if (!r) r = consumeToken(b, LN_KEYWORD);
+    if (!r) r = consumeToken(b, LOG_KEYWORD);
+    if (!r) r = consumeToken(b, LOOKUP_KEYWORD);
+    if (!r) r = consumeToken(b, MAX_KEYWORD);
+    if (!r) r = consumeToken(b, MIN_KEYWORD);
+    if (!r) r = consumeToken(b, NORM_KEYWORD);
+    if (!r) r = consumeToken(b, ORD_KEYWORD);
+    if (!r) r = consumeToken(b, PARENT_MODULE_KEYWORD);
+    if (!r) r = consumeToken(b, POW_KEYWORD);
+    if (!r) r = consumeToken(b, RANDS_KEYWORD);
+    if (!r) r = consumeToken(b, ROUND_KEYWORD);
+    if (!r) r = consumeToken(b, SEARCH_KEYWORD);
+    if (!r) r = consumeToken(b, SIGN_KEYWORD);
+    if (!r) r = consumeToken(b, SIN_KEYWORD);
+    if (!r) r = consumeToken(b, SQRT_KEYWORD);
+    if (!r) r = consumeToken(b, STR_KEYWORD);
+    if (!r) r = consumeToken(b, TAN_KEYWORD);
+    if (!r) r = consumeToken(b, VERSION_KEYWORD);
+    if (!r) r = consumeToken(b, VERSION_NUM_KEYWORD);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -431,42 +431,42 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "cube"
-  //                   | "cylinder"
-  //                   | "assert"
-  //                   | "echo"
-  //                   | "sphere"
-  //                   | "polyhedron"
-  //                   | "square"
-  //                   | "circle"
-  //                   | "polygon"
-  //                   | "text"
-  //                   | "surface"
-  //                   | "child"
-  //                   | "children"
-  //                   | "import"
-  //                   | "import_dxf"
-  //                   | "import_stl"
+  // ASSERT_KEYWORD
+  //                   | CHILD_KEYWORD
+  //                   | CHILDREN_KEYWORD
+  //                   | CIRCLE_KEYWORD
+  //                   | CUBE_KEYWORD
+  //                   | CYLINDER_KEYWORD
+  //                   | ECHO_KEYWORD
+  //                   | IMPORT_KEYWORD
+  //                   | IMPORT_DXF_KEYWORD
+  //                   | IMPORT_STL_KEYWORD
+  //                   | POLYGON_KEYWORD
+  //                   | POLYHEDRON_KEYWORD
+  //                   | SPHERE_KEYWORD
+  //                   | SQUARE_KEYWORD
+  //                   | SURFACE_KEYWORD
+  //                   | TEXT_KEYWORD
   public static boolean builtin_obj_ref(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "builtin_obj_ref")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BUILTIN_OBJ_REF, "<builtin obj ref>");
-    r = consumeToken(b, "cube");
-    if (!r) r = consumeToken(b, "cylinder");
-    if (!r) r = consumeToken(b, "assert");
-    if (!r) r = consumeToken(b, "echo");
-    if (!r) r = consumeToken(b, "sphere");
-    if (!r) r = consumeToken(b, "polyhedron");
-    if (!r) r = consumeToken(b, "square");
-    if (!r) r = consumeToken(b, "circle");
-    if (!r) r = consumeToken(b, "polygon");
-    if (!r) r = consumeToken(b, "text");
-    if (!r) r = consumeToken(b, "surface");
-    if (!r) r = consumeToken(b, "child");
-    if (!r) r = consumeToken(b, "children");
-    if (!r) r = consumeToken(b, "import");
-    if (!r) r = consumeToken(b, "import_dxf");
-    if (!r) r = consumeToken(b, "import_stl");
+    r = consumeToken(b, ASSERT_KEYWORD);
+    if (!r) r = consumeToken(b, CHILD_KEYWORD);
+    if (!r) r = consumeToken(b, CHILDREN_KEYWORD);
+    if (!r) r = consumeToken(b, CIRCLE_KEYWORD);
+    if (!r) r = consumeToken(b, CUBE_KEYWORD);
+    if (!r) r = consumeToken(b, CYLINDER_KEYWORD);
+    if (!r) r = consumeToken(b, ECHO_KEYWORD);
+    if (!r) r = consumeToken(b, IMPORT_KEYWORD);
+    if (!r) r = consumeToken(b, IMPORT_DXF_KEYWORD);
+    if (!r) r = consumeToken(b, IMPORT_STL_KEYWORD);
+    if (!r) r = consumeToken(b, POLYGON_KEYWORD);
+    if (!r) r = consumeToken(b, POLYHEDRON_KEYWORD);
+    if (!r) r = consumeToken(b, SPHERE_KEYWORD);
+    if (!r) r = consumeToken(b, SQUARE_KEYWORD);
+    if (!r) r = consumeToken(b, SURFACE_KEYWORD);
+    if (!r) r = consumeToken(b, TEXT_KEYWORD);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -496,44 +496,44 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "linear_extrude"
-  //                 | "rotate_extrude"
-  //                 | "rotate"
-  //                 | "translate"
-  //                 | "scale"
-  //                 | "resize"
-  //                 | "mirror"
-  //                 | "multmatrix"
-  //                 | "color"
-  //                 | "offset"
-  //                 | "minkowski"
-  //                 | "hull"
-  //                 | "union"
-  //                 | "difference"
-  //                 | "intersection"
-  //                 | "render"
-  //                 | "projection"
+  // COLOR_KEYWORD
+  //                 | DIFFERENCE_KEYWORD
+  //                 | HULL_KEYWORD
+  //                 | INTERSECTION_KEYWORD
+  //                 | LINEAR_EXTRUDE_KEYWORD
+  //                 | MINKOWSKI_KEYWORD
+  //                 | MIRROR_KEYWORD
+  //                 | MULTMATRIX_KEYWORD
+  //                 | OFFSET_KEYWORD
+  //                 | PROJECTION_KEYWORD
+  //                 | RENDER_KEYWORD
+  //                 | RESIZE_KEYWORD
+  //                 | ROTATE_KEYWORD
+  //                 | ROTATE_EXTRUDE_KEYWORD
+  //                 | SCALE_KEYWORD
+  //                 | TRANSLATE_KEYWORD
+  //                 | UNION_KEYWORD
   public static boolean common_op_ref(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "common_op_ref")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, COMMON_OP_REF, "<common op ref>");
-    r = consumeToken(b, "linear_extrude");
-    if (!r) r = consumeToken(b, "rotate_extrude");
-    if (!r) r = consumeToken(b, "rotate");
-    if (!r) r = consumeToken(b, "translate");
-    if (!r) r = consumeToken(b, "scale");
-    if (!r) r = consumeToken(b, "resize");
-    if (!r) r = consumeToken(b, "mirror");
-    if (!r) r = consumeToken(b, "multmatrix");
-    if (!r) r = consumeToken(b, "color");
-    if (!r) r = consumeToken(b, "offset");
-    if (!r) r = consumeToken(b, "minkowski");
-    if (!r) r = consumeToken(b, "hull");
-    if (!r) r = consumeToken(b, "union");
-    if (!r) r = consumeToken(b, "difference");
-    if (!r) r = consumeToken(b, "intersection");
-    if (!r) r = consumeToken(b, "render");
-    if (!r) r = consumeToken(b, "projection");
+    r = consumeToken(b, COLOR_KEYWORD);
+    if (!r) r = consumeToken(b, DIFFERENCE_KEYWORD);
+    if (!r) r = consumeToken(b, HULL_KEYWORD);
+    if (!r) r = consumeToken(b, INTERSECTION_KEYWORD);
+    if (!r) r = consumeToken(b, LINEAR_EXTRUDE_KEYWORD);
+    if (!r) r = consumeToken(b, MINKOWSKI_KEYWORD);
+    if (!r) r = consumeToken(b, MIRROR_KEYWORD);
+    if (!r) r = consumeToken(b, MULTMATRIX_KEYWORD);
+    if (!r) r = consumeToken(b, OFFSET_KEYWORD);
+    if (!r) r = consumeToken(b, PROJECTION_KEYWORD);
+    if (!r) r = consumeToken(b, RENDER_KEYWORD);
+    if (!r) r = consumeToken(b, RESIZE_KEYWORD);
+    if (!r) r = consumeToken(b, ROTATE_KEYWORD);
+    if (!r) r = consumeToken(b, ROTATE_EXTRUDE_KEYWORD);
+    if (!r) r = consumeToken(b, SCALE_KEYWORD);
+    if (!r) r = consumeToken(b, TRANSLATE_KEYWORD);
+    if (!r) r = consumeToken(b, UNION_KEYWORD);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -990,14 +990,14 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "intersection_for"
+  // INTERSECTION_FOR_KEYWORD
   //                                  | ASSIGN_KEYWORD
   //                                  | FOR_KEYWORD
   //                                  | LET_KEYWORD
   static boolean full_arg_op_identifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "full_arg_op_identifier")) return false;
     boolean r;
-    r = consumeToken(b, "intersection_for");
+    r = consumeToken(b, INTERSECTION_FOR_KEYWORD);
     if (!r) r = consumeToken(b, ASSIGN_KEYWORD);
     if (!r) r = consumeToken(b, FOR_KEYWORD);
     if (!r) r = consumeToken(b, LET_KEYWORD);
@@ -1470,6 +1470,27 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // IS_UNDEF_KEYWORD
+  //                | IS_LIST_KEYWORD
+  //                | IS_NUM_KEYWORD
+  //                | IS_BOOL_KEYWORD
+  //                | IS_STRING_KEYWORD
+  //                | IS_FUNCTION_KEYWORD
+  public static boolean test_exp_ref(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "test_exp_ref")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, TEST_EXP_REF, "<test exp ref>");
+    r = consumeToken(b, IS_UNDEF_KEYWORD);
+    if (!r) r = consumeToken(b, IS_LIST_KEYWORD);
+    if (!r) r = consumeToken(b, IS_NUM_KEYWORD);
+    if (!r) r = consumeToken(b, IS_BOOL_KEYWORD);
+    if (!r) r = consumeToken(b, IS_STRING_KEYWORD);
+    if (!r) r = consumeToken(b, IS_FUNCTION_KEYWORD);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // USE_KEYWORD IMPORT_START import_path_ref IMPORT_END
   public static boolean use_import(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use_import")) return false;
@@ -1789,27 +1810,14 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // ("is_undef" | "is_list" | "is_num" | "is_bool" | "is_string" | "is_function") LPARENTH
+  // test_exp_ref LPARENTH
   private static boolean test_expr_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "test_expr_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = test_expr_0_0(b, l + 1);
+    r = test_exp_ref(b, l + 1);
     r = r && consumeToken(b, LPARENTH);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // "is_undef" | "is_list" | "is_num" | "is_bool" | "is_string" | "is_function"
-  private static boolean test_expr_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "test_expr_0_0")) return false;
-    boolean r;
-    r = consumeTokenSmart(b, "is_undef");
-    if (!r) r = consumeTokenSmart(b, "is_list");
-    if (!r) r = consumeTokenSmart(b, "is_num");
-    if (!r) r = consumeTokenSmart(b, "is_bool");
-    if (!r) r = consumeTokenSmart(b, "is_string");
-    if (!r) r = consumeTokenSmart(b, "is_function");
     return r;
   }
 

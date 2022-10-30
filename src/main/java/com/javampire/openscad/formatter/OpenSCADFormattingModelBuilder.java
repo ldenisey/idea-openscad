@@ -5,11 +5,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.javampire.openscad.OpenSCADLanguage;
-import com.javampire.openscad.psi.stub.OpenSCADFunctionStubElementType;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStubElementType;
+import com.javampire.openscad.psi.stub.function.OpenSCADFunctionStubElementType;
+import com.javampire.openscad.psi.stub.module.OpenSCADModuleStubElementType;
 import org.jetbrains.annotations.NotNull;
 
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.*;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.*;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 
 public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {

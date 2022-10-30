@@ -24,8 +24,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows]
- - Jetbrains platform and version: [e.g. IntelliJ community  2022.1.3]
- - OpenSCAD plugin version: Version [e.g. 2.2.0]
+ - Jetbrains platform and version: [e.g. IntelliJ community  2022.2.2]
+ - OpenSCAD plugin version: Version [e.g. 2.3.2]
 
 **Additional context**
 Add any other context about the problem here, error messages, stacktrace, ...

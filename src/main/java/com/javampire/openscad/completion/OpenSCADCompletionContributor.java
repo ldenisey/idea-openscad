@@ -26,9 +26,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.javampire.openscad.OpenSCADFileType;
 import com.javampire.openscad.OpenSCADLanguage;
-import com.javampire.openscad.parser.OpenSCADParserDefinition;
 import com.javampire.openscad.psi.*;
-import com.javampire.openscad.psi.impl.OpenSCADPsiImplUtil;
 import com.javampire.openscad.references.OpenSCADResolver;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.*;
 
 public class OpenSCADCompletionContributor extends CompletionContributor {
     private static final Logger LOG = Logger.getInstance(OpenSCADCompletionContributor.class);
@@ -153,7 +152,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
      */
     private void addAccessibleArgumentDeclarations(final CompletionResultSet result, final PsiElement element) {
         // Parents with ARG_DECLARATION_LIST : modules and functions
-        final List<PsiElement> argDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_ARG_DECLARATION_LIST);
+        final List<PsiElement> argDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, WITH_ARG_DECLARATION_LIST);
         final List<OpenSCADArgDeclaration> argDeclarations = argDeclarationParents.stream()
                 .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADArgDeclarationList.class))
                 .filter(Objects::nonNull)
@@ -163,7 +162,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         result.addAllElements(convertToLookupElements(argDeclarations, null));
 
         // Parents with FULL_ARG_DECLARATION_LIST : for loop
-        final List<PsiElement> fullArgDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.WITH_FULL_ARG_DECLARATION_LIST);
+        final List<PsiElement> fullArgDeclarationParents = OpenSCADPsiImplUtil.getParentsOfType(element, WITH_FULL_ARG_DECLARATION_LIST);
         final List<PsiElement> fullArgDeclarations = fullArgDeclarationParents.stream()
                 .map(e -> PsiTreeUtil.getChildOfType(e, OpenSCADFullArgDeclarationList.class))
                 .filter(Objects::nonNull)
@@ -173,7 +172,7 @@ public class OpenSCADCompletionContributor extends CompletionContributor {
         result.addAllElements(convertToLookupElements(fullArgDeclarations, null));
 
         // Parents previous sibling with FULL_ARG_DECLARATION_LIST : let declaration
-        final List<PsiElement> builtinExprParents = OpenSCADPsiImplUtil.getParentsOfType(element, OpenSCADParserDefinition.FUNCTION_KEYWORDS);
+        final List<PsiElement> builtinExprParents = OpenSCADPsiImplUtil.getParentsOfType(element, FUNCTION_KEYWORDS);
         final List<PsiElement> letFullArgDeclaration = builtinExprParents.stream()
                 .map(PsiElement::getFirstChild)
                 .filter(e -> e.getNode().getElementType() == OpenSCADTypes.LET_KEYWORD)

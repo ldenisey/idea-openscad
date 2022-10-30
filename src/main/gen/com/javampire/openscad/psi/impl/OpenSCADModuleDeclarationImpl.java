@@ -8,9 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
+import com.javampire.openscad.psi.stub.module.OpenSCADModuleDeclarationStubElementImpl;
 import com.javampire.openscad.psi.*;
 import com.intellij.navigation.ItemPresentation;
-import com.javampire.openscad.psi.stub.OpenSCADModuleStub;
+import com.javampire.openscad.psi.stub.module.OpenSCADModuleStub;
 import com.intellij.psi.stubs.IStubElementType;
 
 public class OpenSCADModuleDeclarationImpl extends OpenSCADModuleDeclarationStubElementImpl implements OpenSCADModuleDeclaration {

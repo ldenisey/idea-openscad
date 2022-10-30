@@ -12,7 +12,7 @@ import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
-import static com.javampire.openscad.parser.OpenSCADParserDefinition.*;
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.*;
 
 public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEPARATOR =
@@ -72,7 +72,7 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new OpenSCADLexerAdapter(new OpenSCADHighlightingLexer(null));
+        return new OpenSCADLexerAdapter();
     }
 
     @NotNull

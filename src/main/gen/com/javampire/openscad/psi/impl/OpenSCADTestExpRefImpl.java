@@ -8,23 +8,33 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
-import com.javampire.openscad.psi.OpenSCADImportPathRefElementImpl;
+import com.javampire.openscad.psi.OpenSCADResolvableElementImpl;
 import com.javampire.openscad.psi.*;
 
-public class OpenSCADImportPathRefImpl extends OpenSCADImportPathRefElementImpl implements OpenSCADImportPathRef {
+public class OpenSCADTestExpRefImpl extends OpenSCADResolvableElementImpl implements OpenSCADTestExpRef {
 
-  public OpenSCADImportPathRefImpl(@NotNull ASTNode node) {
+  public OpenSCADTestExpRefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull OpenSCADVisitor visitor) {
-    visitor.visitImportPathRef(this);
+    visitor.visitTestExpRef(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return OpenSCADPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
+  public PsiElement getNameIdentifier() {
+    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }

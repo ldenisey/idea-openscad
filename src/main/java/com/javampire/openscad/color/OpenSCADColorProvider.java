@@ -18,7 +18,7 @@ class OpenSCADColorProvider implements ElementColorProvider {
     @Nullable
     @Override
     public Color getColorFrom(@NotNull PsiElement element) {
-        if ("color".equals(element.getText()) && element.getNode().getElementType() == OpenSCADTypes.IDENTIFIER) {
+        if (element.getNode().getElementType() == OpenSCADTypes.COLOR_KEYWORD) {
             final PsiElement grandParentBlock = element.getParent().getParent();
             if (grandParentBlock instanceof OpenSCADBuiltinOp) {
                 final OpenSCADBuiltinOp colorBlock = (OpenSCADBuiltinOp) grandParentBlock;

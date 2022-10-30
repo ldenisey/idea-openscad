@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.stub.index;
+package com.javampire.openscad.psi.stub.variable;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;

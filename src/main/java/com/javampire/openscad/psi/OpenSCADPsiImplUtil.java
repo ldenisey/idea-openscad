@@ -1,4 +1,4 @@
-package com.javampire.openscad.psi.impl;
+package com.javampire.openscad.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
@@ -12,12 +12,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import com.javampire.openscad.OpenSCADIcons;
-import com.javampire.openscad.parser.OpenSCADParserDefinition;
-import com.javampire.openscad.psi.OpenSCADImportPathRef;
-import com.javampire.openscad.psi.OpenSCADNamedElement;
-import com.javampire.openscad.psi.OpenSCADTypes;
-import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
-import com.javampire.openscad.psi.stub.OpenSCADVariableStubElementType;
+import com.javampire.openscad.parser.OpenSCADParserTokenSets;
+import com.javampire.openscad.psi.stub.variable.OpenSCADVariableStubElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +21,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import static com.javampire.openscad.parser.OpenSCADParserTokenSets.DOC_IN_PARENT;
 
 public class OpenSCADPsiImplUtil {
 
@@ -37,16 +35,8 @@ public class OpenSCADPsiImplUtil {
             @Nullable
             @Override
             public String getPresentableText() {
-                if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
-                    final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
-                    if (nameNode != null) {
-                        return nameNode.getText();
-                    }
-                } else if (element.getNode().getElementType() == OpenSCADTypes.IMPORT) {
-                    final PsiElement pathElement = PsiTreeUtil.findChildOfType(element, OpenSCADImportPathRef.class);
-                    if (pathElement != null) {
-                        return pathElement.getNode().getText().replaceAll("^.*/([^/]*)$", "$1");
-                    }
+                if (element instanceof OpenSCADNamedElement) {
+                    return ((OpenSCADNamedElement) element).getName();
                 }
                 return null;
             }
@@ -76,24 +66,17 @@ public class OpenSCADPsiImplUtil {
         };
     }
 
-    public static PsiElement setName(@NotNull PsiElement element, String newName) {
-        if (OpenSCADParserDefinition.NON_RENAMABLE_ELEMENTS.contains(element.getNode().getElementType())) {
+    public static PsiElement setName(@NotNull final PsiElement element, final String newName) {
+        if (OpenSCADParserTokenSets.NON_RENAMABLE_ELEMENTS.contains(element.getNode().getElementType())) {
             throw new IncorrectOperationException("Builtin functions/modules can't be renamed");
         }
         return element;
     }
 
     public static PsiElement getNameIdentifier(@NotNull PsiElement element) {
-        if (OpenSCADParserDefinition.NAMED_ELEMENTS.contains(element.getNode().getElementType())) {
-            final ASTNode nameNode = element.getNode().findChildByType(OpenSCADTypes.IDENTIFIER);
-            if (nameNode != null) {
-                return nameNode.getPsi();
-            }
-        } else if (element.getNode().getElementType() == OpenSCADTypes.QUALIFICATION_EXPR) {
-            final ASTNode nameNode = element.getNode().getLastChildNode();
-            if (nameNode != null && nameNode.getElementType() == OpenSCADTypes.IDENTIFIER) {
-                return nameNode.getPsi();
-            }
+        final ASTNode nameNode = OpenSCADNamedElementImpl.getNameNode(element.getNode());
+        if (nameNode != null) {
+            return nameNode.getPsi();
         }
         return null;
     }
@@ -137,7 +120,7 @@ public class OpenSCADPsiImplUtil {
         if (node == null) {
             return null;
         }
-        if (OpenSCADParserDefinition.DOC_IN_PARENT.contains(node.getElementType())) {
+        if (DOC_IN_PARENT.contains(node.getElementType())) {
             return getDocString(element.getParent());
         }
         final PsiReference reference = element.getReference();
@@ -241,5 +224,4 @@ public class OpenSCADPsiImplUtil {
         }
         return matchingParents;
     }
-
 }
