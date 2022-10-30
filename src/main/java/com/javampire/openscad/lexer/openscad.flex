@@ -25,12 +25,18 @@ IMPORT_PATH=[^<>]+
 BUILTIN_COND={WHITE_SPACE}*"("
 BUILTIN_OVERRIDABLE_COND={WHITE_SPACE}*[^(]
 
-C_STYLE_COMMENT=("/*"[^"*"]{COMMENT_TAIL})|"/*"
-DOC_COMMENT="/*""*"+("/"|([^"/""*"]{COMMENT_TAIL}))?
-COMMENT_TAIL=([^"*"]*("*"+[^"*""/"])?)*("*"+"/")?
-END_OF_LINE_COMMENT="/""/"[^\r\n]*
-BLOCK_COMMENT_BODY={BLANK}*{END_OF_LINE_COMMENT}(\R{BLANK}*{END_OF_LINE_COMMENT})*
-BLOCK_COMMENT_END=\R{BLANK}*("module"|"function"|{IDENTIFIER}{WHITE_SPACE}*"=")
+COMMENT_MULTILINE_C_STYLE_START="/*"
+COMMENT_MULTILINE_DOC_START="/**"
+COMMENT_MULTILINE_CONTENT=([^"*"]*("*"+[^"*""/"])?)* // = whatever string except "*/"
+COMMENT_MULTILINE_END="*/"
+COMMENT_SINGLELINE_START="//"
+
+COMMENT_CUSTOMIZER_VALUE={COMMENT_SINGLELINE_START}{BLANK}*"["[a-zA-Z0-9:, -]+"]"
+COMMENT_CUSTOMIZER_TABS={COMMENT_MULTILINE_C_STYLE_START}{BLANK}*"["[a-zA-Z0-9:, -]+"]"{BLANK}*{COMMENT_MULTILINE_END}
+COMMENT_C_STYLE={COMMENT_MULTILINE_C_STYLE_START}{COMMENT_MULTILINE_CONTENT}{COMMENT_MULTILINE_END}
+COMMENT_DOC={COMMENT_MULTILINE_DOC_START}{COMMENT_MULTILINE_CONTENT}{COMMENT_MULTILINE_END}
+COMMENT_SINGLELINE={COMMENT_SINGLELINE_START}[^\r\n]*
+COMMENT_SINGLELINE_BLOCK={COMMENT_SINGLELINE}({CRLF}{COMMENT_SINGLELINE})+
 
 IDENTIFIER = [a-zA-Z0-9_$]+
 
@@ -46,6 +52,13 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
 %%
 
 <YYINITIAL> {
+
+    {COMMENT_CUSTOMIZER_VALUE}  { return OpenSCADTypes.COMMENT_CUSTOMIZER_VALUE; }
+    {COMMENT_CUSTOMIZER_TABS}   { return OpenSCADTypes.COMMENT_CUSTOMIZER_TABS; }
+    ^{COMMENT_SINGLELINE_BLOCK} { return OpenSCADTypes.COMMENT_SINGLELINE_BLOCK; }
+    {COMMENT_DOC}               { return OpenSCADTypes.COMMENT_DOC; }
+    {COMMENT_C_STYLE}           { return OpenSCADTypes.COMMENT_C_STYLE; }
+    {COMMENT_SINGLELINE}        { return OpenSCADTypes.COMMENT_SINGLELINE; }
 
     "false"                     { return OpenSCADTypes.FALSE_KEYWORD; }
     "true"                      { return OpenSCADTypes.TRUE_KEYWORD; }
@@ -170,12 +183,6 @@ STRING_LITERAL = \"  ([^\\\"] | {ESCAPE_SEQUENCE})* \"?
     "&&"                        { return OpenSCADTypes.AND; }
     "||"                        { return OpenSCADTypes.OR; }
     "!"                         { return OpenSCADTypes.EXCL; }
-
-    ^{BLOCK_COMMENT_BODY}
-    / {BLOCK_COMMENT_END}       { return OpenSCADTypes.BLOCK_COMMENT; }
-    {C_STYLE_COMMENT}           { return OpenSCADTypes.C_STYLE_COMMENT; }
-    {DOC_COMMENT}               { return OpenSCADTypes.DOC_COMMENT; }
-    {END_OF_LINE_COMMENT}       { return OpenSCADTypes.END_OF_LINE_COMMENT; }
 
     {NUMBER_LITERAL}            { return OpenSCADTypes.NUMBER_LITERAL; }
     {IDENTIFIER}                { return OpenSCADTypes.IDENTIFIER; }

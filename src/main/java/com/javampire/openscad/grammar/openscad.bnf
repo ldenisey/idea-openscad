@@ -27,7 +27,7 @@ private item ::= (
     | comment_item
 )
 
-private comment_item ::= C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT | BLOCK_COMMENT
+private comment_item ::= COMMENT_C_STYLE | COMMENT_DOC | COMMENT_SINGLELINE | COMMENT_SINGLELINE_BLOCK | COMMENT_CUSTOMIZER_VALUE | COMMENT_CUSTOMIZER_TABS
 
 private statement ::= object | declaration | import
 

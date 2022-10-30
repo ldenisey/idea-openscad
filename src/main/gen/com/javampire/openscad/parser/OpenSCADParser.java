@@ -484,14 +484,16 @@ public class OpenSCADParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // C_STYLE_COMMENT | DOC_COMMENT | END_OF_LINE_COMMENT | BLOCK_COMMENT
+  // COMMENT_C_STYLE | COMMENT_DOC | COMMENT_SINGLELINE | COMMENT_SINGLELINE_BLOCK | COMMENT_CUSTOMIZER_VALUE | COMMENT_CUSTOMIZER_TABS
   static boolean comment_item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comment_item")) return false;
     boolean r;
-    r = consumeToken(b, C_STYLE_COMMENT);
-    if (!r) r = consumeToken(b, DOC_COMMENT);
-    if (!r) r = consumeToken(b, END_OF_LINE_COMMENT);
-    if (!r) r = consumeToken(b, BLOCK_COMMENT);
+    r = consumeToken(b, COMMENT_C_STYLE);
+    if (!r) r = consumeToken(b, COMMENT_DOC);
+    if (!r) r = consumeToken(b, COMMENT_SINGLELINE);
+    if (!r) r = consumeToken(b, COMMENT_SINGLELINE_BLOCK);
+    if (!r) r = consumeToken(b, COMMENT_CUSTOMIZER_VALUE);
+    if (!r) r = consumeToken(b, COMMENT_CUSTOMIZER_TABS);
     return r;
   }
 
