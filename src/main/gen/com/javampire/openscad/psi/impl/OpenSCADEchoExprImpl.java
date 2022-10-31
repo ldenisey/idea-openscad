@@ -29,8 +29,8 @@ public class OpenSCADEchoExprImpl extends OpenSCADExprImpl implements OpenSCADEc
 
   @Override
   @NotNull
-  public OpenSCADEchoElement getEchoElement() {
-    return findNotNullChildByClass(OpenSCADEchoElement.class);
+  public OpenSCADEchoOp getEchoOp() {
+    return findNotNullChildByClass(OpenSCADEchoOp.class);
   }
 
   @Override

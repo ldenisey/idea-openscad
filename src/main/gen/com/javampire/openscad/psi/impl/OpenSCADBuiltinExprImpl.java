@@ -47,8 +47,8 @@ public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCA
 
   @Override
   @Nullable
-  public OpenSCADFullArgDeclarationList getFullArgDeclarationList() {
-    return findChildByClass(OpenSCADFullArgDeclarationList.class);
+  public OpenSCADLetOp getLetOp() {
+    return findChildByClass(OpenSCADLetOp.class);
   }
 
 }

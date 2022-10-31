@@ -4,11 +4,11 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.stubs.AbstractStubIndex;
 import com.javampire.openscad.psi.stub.function.OpenSCADFunctionIndex;
 import com.javampire.openscad.psi.stub.module.OpenSCADModuleIndex;
 import com.javampire.openscad.psi.stub.variable.OpenSCADVariableIndex;
-import com.javampire.openscad.references.OpenSCADCallReference;
-import com.javampire.openscad.references.OpenSCADReferenceResolver;
+import com.javampire.openscad.references.OpenSCADReference;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class OpenSCADResolvableElementImpl extends OpenSCADNamedElementImpl implements OpenSCADResolvableElement {
@@ -19,11 +19,14 @@ public abstract class OpenSCADResolvableElementImpl extends OpenSCADNamedElement
         super(node);
     }
 
-    public OpenSCADReferenceResolver getReferenceResolver() {
+    public AbstractStubIndex getStubIndex() {
         if (this instanceof OpenSCADModuleObjNameRef
                 || this instanceof OpenSCADModuleOpNameRef
                 || this instanceof OpenSCADCommonOpRef
-                || this instanceof OpenSCADBuiltinObjRef) {
+                || this instanceof OpenSCADBuiltinObjRef
+                || this instanceof OpenSCADLetOpRef
+                || this instanceof OpenSCADEchoOpRef
+                || this instanceof OpenSCADAssertElementRef) {
             return OpenSCADModuleIndex.getInstance();
         } else if (this instanceof OpenSCADFunctionNameRef
                 || this instanceof OpenSCADBuiltinExprRef
@@ -33,13 +36,13 @@ public abstract class OpenSCADResolvableElementImpl extends OpenSCADNamedElement
             return OpenSCADVariableIndex.getInstance();
         } else {
             final String name = getName();
-            LOG.warn("getReferenceResolver(not handled named element of type " + getClass().getName() + "): " + name);
+            LOG.warn("getStubResolver(not handled named element of type " + getClass().getName() + "): " + name);
         }
         return null;
     }
 
     public PsiReference getReference() {
-        return new OpenSCADCallReference(this, new TextRange(0, getTextLength()));
+        return new OpenSCADReference(this, new TextRange(0, getTextLength()));
     }
 
 }

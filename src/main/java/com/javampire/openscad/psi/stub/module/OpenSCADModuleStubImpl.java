@@ -13,7 +13,6 @@ public class OpenSCADModuleStubImpl extends StubBase<OpenSCADModuleDeclaration> 
         this.name = name;
     }
 
-
     @Override
     public String getName() {
         return this.name;

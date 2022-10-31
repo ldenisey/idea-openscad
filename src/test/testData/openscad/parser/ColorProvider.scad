@@ -11,6 +11,10 @@ module colorProvide() {
 }
 
 function norm(a) = sqrt(a*a);
+
+/**
+ * Dummy overriding module
+ */
 module cube() {
 
 }

@@ -6,14 +6,11 @@ import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.stubs.StubIndexKey;
 import com.javampire.openscad.psi.OpenSCADVariableDeclaration;
-import com.javampire.openscad.references.OpenSCADReferenceResolver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class OpenSCADVariableIndex
-        extends StringStubIndexExtension<OpenSCADVariableDeclaration>
-        implements OpenSCADReferenceResolver {
+public class OpenSCADVariableIndex extends StringStubIndexExtension<OpenSCADVariableDeclaration> {
 
     public static final StubIndexKey<String, OpenSCADVariableDeclaration> VARIABLE = StubIndexKey.createIndexKey("OpenSCAD.variable.name");
 
@@ -21,6 +18,10 @@ public class OpenSCADVariableIndex
 
     public static OpenSCADVariableIndex getInstance() {
         return INSTANCE;
+    }
+
+    public boolean traceKeyHashToVirtualFileMapping() {
+        return true;
     }
 
     @NotNull

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADAssertElement extends PsiElement {
 
   @NotNull
+  OpenSCADAssertElementRef getAssertElementRef();
+
+  @NotNull
   OpenSCADExpr getExpr();
 
 }

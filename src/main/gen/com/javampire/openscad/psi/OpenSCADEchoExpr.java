@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADEchoExpr extends OpenSCADExpr {
 
   @NotNull
-  OpenSCADEchoElement getEchoElement();
+  OpenSCADEchoOp getEchoOp();
 
   @Nullable
   OpenSCADExpr getExpr();

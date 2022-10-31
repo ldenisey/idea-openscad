@@ -30,12 +30,12 @@ public class OpenSCADModuleOpNameRefImpl extends OpenSCADResolvableElementImpl i
 
   @Override
   public ItemPresentation getPresentation() {
-    return OpenSCADPsiImplUtil.getPresentation(this);
+    return OpenSCADPsiUtils.getPresentation(this);
   }
 
   @Override
   public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
+    return OpenSCADPsiUtils.getNameIdentifier(this);
   }
 
 }

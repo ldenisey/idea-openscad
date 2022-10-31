@@ -49,7 +49,7 @@ public class OpenSCADParserTokenSets {
     public static final TokenSet FUNCTION_KEYWORDS = TokenSet.create(
             IS_UNDEF_KEYWORD, IS_LIST_KEYWORD, IS_NUM_KEYWORD, IS_BOOL_KEYWORD, IS_STRING_KEYWORD, IS_FUNCTION_KEYWORD,
             COS_KEYWORD, SIN_KEYWORD, TAN_KEYWORD, ACOS_KEYWORD, ASIN_KEYWORD, ATAN_KEYWORD, ATAN2_KEYWORD, ABS_KEYWORD,
-            CEIL_KEYWORD, CONCAT_KEYWORD, CROSS_KEYWORD, EXP_KEYWORD, FLOOR_KEYWORD, LN_KEYWORD, LEN_KEYWORD,
+            CEIL_KEYWORD, CONCAT_KEYWORD, CROSS_KEYWORD, EXP_KEYWORD, FLOOR_KEYWORD, LN_KEYWORD, LEN_KEYWORD, LET_KEYWORD,
             LOG_KEYWORD, LOOKUP_KEYWORD, MAX_KEYWORD, MIN_KEYWORD, NORM_KEYWORD, ORD_KEYWORD, POW_KEYWORD,
             RANDS_KEYWORD, ROUND_KEYWORD, SIGN_KEYWORD, SQRT_KEYWORD, STR_KEYWORD, CHR_KEYWORD, SEARCH_KEYWORD,
             VERSION_KEYWORD, VERSION_NUM_KEYWORD, PARENT_MODULE_KEYWORD
@@ -107,13 +107,6 @@ public class OpenSCADParserTokenSets {
 
 
     /**
-     * These elements have their name in the first child with IMPORT_PATH token type
-     */
-    public static final TokenSet IMPORT_TOKENS = TokenSet.create(
-            INCLUDE_IMPORT, USE_IMPORT
-    );
-
-    /**
      * These elements have their name in the first child with IDENTIFIER token type
      */
     public static final TokenSet NAMED_WITH_IDENTIFIER = TokenSet.create(
@@ -155,9 +148,10 @@ public class OpenSCADParserTokenSets {
      * common_op_ref keywords
      */
     public static final TokenSet COMMON_OP_REF_KEYWORDS = TokenSet.create(
-            COLOR_KEYWORD, DIFFERENCE_KEYWORD, HULL_KEYWORD, INTERSECTION_KEYWORD, LINEAR_EXTRUDE_KEYWORD,
-            MINKOWSKI_KEYWORD, MIRROR_KEYWORD, MULTMATRIX_KEYWORD, OFFSET_KEYWORD, PROJECTION_KEYWORD, RENDER_KEYWORD,
-            RESIZE_KEYWORD, ROTATE_KEYWORD, ROTATE_EXTRUDE_KEYWORD, SCALE_KEYWORD, TRANSLATE_KEYWORD, UNION_KEYWORD
+            ASSIGN_KEYWORD, COLOR_KEYWORD, DIFFERENCE_KEYWORD, HULL_KEYWORD, INTERSECTION_KEYWORD, LET_KEYWORD,
+            LINEAR_EXTRUDE_KEYWORD, MINKOWSKI_KEYWORD, MIRROR_KEYWORD, MULTMATRIX_KEYWORD, OFFSET_KEYWORD,
+            PROJECTION_KEYWORD, RENDER_KEYWORD, RESIZE_KEYWORD, ROTATE_KEYWORD, ROTATE_EXTRUDE_KEYWORD, SCALE_KEYWORD,
+            TRANSLATE_KEYWORD, UNION_KEYWORD
     );
 
     /**
@@ -179,6 +173,7 @@ public class OpenSCADParserTokenSets {
     /*
      * The sets below are used for spacing feature in formatting
      */
+
 
     public static final TokenSet LOGICAL_OPERATORS = TokenSet.create(
             AND, OR
@@ -216,5 +211,9 @@ public class OpenSCADParserTokenSets {
 
     public static final TokenSet WITH_FULL_ARG_DECLARATION_LIST = TokenSet.create(
             FOR_OBJ
+    );
+
+    public static final TokenSet LET_PARENT = TokenSet.create(
+            BUILTIN_OBJ, BUILTIN_EXPR
     );
 }
