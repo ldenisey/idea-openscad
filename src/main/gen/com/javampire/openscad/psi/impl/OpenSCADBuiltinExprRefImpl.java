@@ -29,12 +29,12 @@ public class OpenSCADBuiltinExprRefImpl extends OpenSCADResolvableElementImpl im
 
   @Override
   public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
+    return OpenSCADPsiUtils.setName(this, newName);
   }
 
   @Override
   public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
+    return OpenSCADPsiUtils.getNameIdentifier(this);
   }
 
 }

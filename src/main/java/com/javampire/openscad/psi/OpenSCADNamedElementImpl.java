@@ -2,6 +2,7 @@ package com.javampire.openscad.psi;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.javampire.openscad.parser.OpenSCADParserTokenSets;
@@ -10,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import static com.javampire.openscad.parser.OpenSCADParserTokenSets.*;
 
 public abstract class OpenSCADNamedElementImpl extends ASTWrapperPsiElement implements OpenSCADNamedElement {
+
+    private static final Logger LOG = Logger.getInstance(OpenSCADPsiUtils.class);
 
     public OpenSCADNamedElementImpl(@NotNull ASTNode node) {
         super(node);
@@ -60,6 +63,12 @@ public abstract class OpenSCADNamedElementImpl extends ASTWrapperPsiElement impl
             return node.findChildByType(TEST_EXP_REF_KEYWORDS);
         } else if (node.getElementType() == OpenSCADTypes.COMMON_OP_REF) {
             return node.findChildByType(COMMON_OP_REF_KEYWORDS);
+        } else if (node.getElementType() == OpenSCADTypes.LET_OP_REF) {
+            return node.findChildByType(OpenSCADTypes.LET_KEYWORD);
+        } else if (node.getElementType() == OpenSCADTypes.ECHO_OP_REF) {
+            return node.findChildByType(OpenSCADTypes.ECHO_KEYWORD);
+        } else if (node.getElementType() == OpenSCADTypes.ASSERT_ELEMENT_REF) {
+            return node.findChildByType(OpenSCADTypes.ASSERT_KEYWORD);
         } else if (node.getElementType() == OpenSCADTypes.IMPORT) {
             final PsiElement pathElement = PsiTreeUtil.findChildOfType(node.getPsi(), OpenSCADImportPathRef.class);
             if (pathElement != null) {

@@ -17,6 +17,6 @@ public interface OpenSCADBuiltinExpr extends OpenSCADExpr {
   OpenSCADExpr getExpr();
 
   @Nullable
-  OpenSCADFullArgDeclarationList getFullArgDeclarationList();
+  OpenSCADLetOp getLetOp();
 
 }

@@ -35,7 +35,7 @@ public class OpenSCADFullArgDeclarationImpl extends OpenSCADNamedElementImpl imp
 
   @Override
   public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
+    return OpenSCADPsiUtils.getNameIdentifier(this);
   }
 
 }

@@ -11,7 +11,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.javampire.openscad.OpenSCADLanguage;
-import com.javampire.openscad.lexer.OpenSCADLexerAdapter;
 import com.javampire.openscad.psi.OpenSCADFile;
 import org.jetbrains.annotations.NotNull;
 

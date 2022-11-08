@@ -14,6 +14,7 @@ public interface OpenSCADTypes {
   IElementType ARG_DECLARATION = OpenSCADElementFactory.getElementType("ARG_DECLARATION");
   IElementType ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("ARG_DECLARATION_LIST");
   IElementType ASSERT_ELEMENT = OpenSCADElementFactory.getElementType("ASSERT_ELEMENT");
+  IElementType ASSERT_ELEMENT_REF = OpenSCADElementFactory.getElementType("ASSERT_ELEMENT_REF");
   IElementType ASSERT_EXPR = OpenSCADElementFactory.getElementType("ASSERT_EXPR");
   IElementType BACKGROUND_OP = OpenSCADElementFactory.getElementType("BACKGROUND_OP");
   IElementType BIND_ELSE_ELEMENT = OpenSCADElementFactory.getElementType("BIND_ELSE_ELEMENT");
@@ -28,9 +29,9 @@ public interface OpenSCADTypes {
   IElementType DEBUG_OP = OpenSCADElementFactory.getElementType("DEBUG_OP");
   IElementType DISABLE_OP = OpenSCADElementFactory.getElementType("DISABLE_OP");
   IElementType DIV_EXPR = OpenSCADElementFactory.getElementType("DIV_EXPR");
-  IElementType ECHO_ARG_LIST = OpenSCADElementFactory.getElementType("ECHO_ARG_LIST");
-  IElementType ECHO_ELEMENT = OpenSCADElementFactory.getElementType("ECHO_ELEMENT");
   IElementType ECHO_EXPR = OpenSCADElementFactory.getElementType("ECHO_EXPR");
+  IElementType ECHO_OP = OpenSCADElementFactory.getElementType("ECHO_OP");
+  IElementType ECHO_OP_REF = OpenSCADElementFactory.getElementType("ECHO_OP_REF");
   IElementType ELSE_ELEMENT = OpenSCADElementFactory.getElementType("ELSE_ELEMENT");
   IElementType ELVIS_EXPR = OpenSCADElementFactory.getElementType("ELVIS_EXPR");
   IElementType EMPTY_OBJ = OpenSCADElementFactory.getElementType("EMPTY_OBJ");
@@ -52,7 +53,8 @@ public interface OpenSCADTypes {
   IElementType IMPORT_PATH_REF = OpenSCADElementFactory.getElementType("IMPORT_PATH_REF");
   IElementType INCLUDE_IMPORT = OpenSCADElementFactory.getElementType("INCLUDE_IMPORT");
   IElementType INDEX_EXPR = OpenSCADElementFactory.getElementType("INDEX_EXPR");
-  IElementType LET_ELEMENT = OpenSCADElementFactory.getElementType("LET_ELEMENT");
+  IElementType LET_OP = OpenSCADElementFactory.getElementType("LET_OP");
+  IElementType LET_OP_REF = OpenSCADElementFactory.getElementType("LET_OP_REF");
   IElementType LIST_EXPR = OpenSCADElementFactory.getElementType("LIST_EXPR");
   IElementType LITERAL_EXPR = OpenSCADElementFactory.getElementType("LITERAL_EXPR");
   IElementType MINUS_EXPR = OpenSCADElementFactory.getElementType("MINUS_EXPR");
@@ -232,6 +234,9 @@ public interface OpenSCADTypes {
       else if (type == ASSERT_ELEMENT) {
         return new OpenSCADAssertElementImpl(node);
       }
+      else if (type == ASSERT_ELEMENT_REF) {
+        return new OpenSCADAssertElementRefImpl(node);
+      }
       else if (type == ASSERT_EXPR) {
         return new OpenSCADAssertExprImpl(node);
       }
@@ -274,14 +279,14 @@ public interface OpenSCADTypes {
       else if (type == DIV_EXPR) {
         return new OpenSCADDivExprImpl(node);
       }
-      else if (type == ECHO_ARG_LIST) {
-        return new OpenSCADEchoArgListImpl(node);
-      }
-      else if (type == ECHO_ELEMENT) {
-        return new OpenSCADEchoElementImpl(node);
-      }
       else if (type == ECHO_EXPR) {
         return new OpenSCADEchoExprImpl(node);
+      }
+      else if (type == ECHO_OP) {
+        return new OpenSCADEchoOpImpl(node);
+      }
+      else if (type == ECHO_OP_REF) {
+        return new OpenSCADEchoOpRefImpl(node);
       }
       else if (type == ELSE_ELEMENT) {
         return new OpenSCADElseElementImpl(node);
@@ -343,8 +348,11 @@ public interface OpenSCADTypes {
       else if (type == INDEX_EXPR) {
         return new OpenSCADIndexExprImpl(node);
       }
-      else if (type == LET_ELEMENT) {
-        return new OpenSCADLetElementImpl(node);
+      else if (type == LET_OP) {
+        return new OpenSCADLetOpImpl(node);
+      }
+      else if (type == LET_OP_REF) {
+        return new OpenSCADLetOpRefImpl(node);
       }
       else if (type == LIST_EXPR) {
         return new OpenSCADListExprImpl(node);

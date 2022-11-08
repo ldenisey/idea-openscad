@@ -14,9 +14,6 @@ public interface OpenSCADVectorExpr extends OpenSCADExpr {
   List<OpenSCADBindElseElement> getBindElseElementList();
 
   @NotNull
-  List<OpenSCADEchoElement> getEchoElementList();
-
-  @NotNull
   List<OpenSCADElseElement> getElseElementList();
 
   @NotNull
@@ -29,6 +26,6 @@ public interface OpenSCADVectorExpr extends OpenSCADExpr {
   List<OpenSCADIfElement> getIfElementList();
 
   @NotNull
-  List<OpenSCADLetElement> getLetElementList();
+  List<OpenSCADOperator> getOperatorList();
 
 }

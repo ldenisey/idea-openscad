@@ -35,6 +35,10 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAssertElementRef(@NotNull OpenSCADAssertElementRef o) {
+    visitResolvableElement(o);
+  }
+
   public void visitAssertExpr(@NotNull OpenSCADAssertExpr o) {
     visitExpr(o);
   }
@@ -91,16 +95,16 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitEchoArgList(@NotNull OpenSCADEchoArgList o) {
-    visitPsiElement(o);
-  }
-
-  public void visitEchoElement(@NotNull OpenSCADEchoElement o) {
-    visitPsiElement(o);
-  }
-
   public void visitEchoExpr(@NotNull OpenSCADEchoExpr o) {
     visitExpr(o);
+  }
+
+  public void visitEchoOp(@NotNull OpenSCADEchoOp o) {
+    visitOperator(o);
+  }
+
+  public void visitEchoOpRef(@NotNull OpenSCADEchoOpRef o) {
+    visitResolvableElement(o);
   }
 
   public void visitElseElement(@NotNull OpenSCADElseElement o) {
@@ -177,7 +181,7 @@ public class OpenSCADVisitor extends PsiElementVisitor {
   }
 
   public void visitImportPathRef(@NotNull OpenSCADImportPathRef o) {
-    visitPsiElement(o);
+    visitResolvableElement(o);
   }
 
   public void visitIncludeImport(@NotNull OpenSCADIncludeImport o) {
@@ -188,8 +192,12 @@ public class OpenSCADVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitLetElement(@NotNull OpenSCADLetElement o) {
-    visitPsiElement(o);
+  public void visitLetOp(@NotNull OpenSCADLetOp o) {
+    visitOperator(o);
+  }
+
+  public void visitLetOpRef(@NotNull OpenSCADLetOpRef o) {
+    visitResolvableElement(o);
   }
 
   public void visitListExpr(@NotNull OpenSCADListExpr o) {

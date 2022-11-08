@@ -8,6 +8,8 @@ t2var = var1; // code completions should work
 
 function t2function(t2arg1, t2arg2) = [t2arg1 * t2arg2];
 
+// Documentation can be set using
+// at least two following single line comments
 module t2module(t2arg1, t2arg2) {
     echo(t2arg1) ; // code completions should work
     echo(t2var) ; // code completion should work

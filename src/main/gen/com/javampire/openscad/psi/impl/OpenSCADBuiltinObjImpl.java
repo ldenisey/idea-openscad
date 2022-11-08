@@ -47,6 +47,12 @@ public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSC
 
   @Override
   @Nullable
+  public OpenSCADEchoOp getEchoOp() {
+    return findChildByClass(OpenSCADEchoOp.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADFunctionDeclaration getFunctionDeclaration() {
     return findChildByClass(OpenSCADFunctionDeclaration.class);
   }
@@ -55,6 +61,12 @@ public class OpenSCADBuiltinObjImpl extends OpenSCADObjectImpl implements OpenSC
   @Nullable
   public OpenSCADImport getImport() {
     return findChildByClass(OpenSCADImport.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADLetOp getLetOp() {
+    return findChildByClass(OpenSCADLetOp.class);
   }
 
   @Override
