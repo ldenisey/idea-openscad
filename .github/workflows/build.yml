@@ -186,7 +186,7 @@ jobs:
       # Delete existing release if needed
       - name: Delete previous release
         id: deletePreviousRelease
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
