@@ -9,13 +9,11 @@
 ### Changed
 - [Issue-45](https://github.com/ldenisey/idea-openscad/issues/45) Preview should not be computed when editor is in text only view
 
-### Removed
-
 ### Fixed
 - [Issue-46](https://github.com/ldenisey/idea-openscad/issues/46) Some keywords are parsed as identifiers
 - [Issue-41](https://github.com/ldenisey/idea-openscad/issues/41) Show preview activation popup only on OpenSCAD projects
 - Bump dependencies
-- Github set-output action migration
+- GitHub set-output action migration
 
 ## 2.3.2
 ### Added
