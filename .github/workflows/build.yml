@@ -30,7 +30,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1.0.5
+      - uses: gradle/wrapper-validation-action@v1.0.6
 
       # CodeQL initialization
       - name: Initialize CodeQL
