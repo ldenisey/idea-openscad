@@ -40,14 +40,14 @@ jobs:
 
       # Cache Gradle dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
@@ -93,21 +93,21 @@ jobs:
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ./build/distributions
           key: ${{ runner.os }}-plugin-distribution
@@ -149,14 +149,14 @@ jobs:
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
@@ -177,7 +177,7 @@ jobs:
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.2.6
         with:
           path: ./build/distributions
           key: ${{ runner.os }}-plugin-distribution
