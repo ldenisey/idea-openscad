@@ -40,7 +40,8 @@ public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyle
                     "SPACE_AROUND_EQUALITY_OPERATORS",
                     "SPACE_AROUND_RELATIONAL_OPERATORS",
                     "SPACE_AROUND_ADDITIVE_OPERATORS",
-                    "SPACE_AROUND_MULTIPLICATIVE_OPERATORS"
+                    "SPACE_AROUND_MULTIPLICATIVE_OPERATORS",
+                    "SPACE_AROUND_UNARY_OPERATOR"
             );
             consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Assignment operator (=)");
 
@@ -68,6 +69,7 @@ public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyle
                     "SPACE_WITHIN_FOR_PARENTHESES"
             );
             consumer.renameStandardOption("SPACE_WITHIN_FOR_PARENTHESES", "'for', 'intersect_for', 'assign', 'let' parentheses");
+            consumer.renameStandardOption("SPACE_AROUND_UNARY_OPERATOR", "Unary operators (!, -, +)");
 
             // Other
             consumer.showStandardOptions(
@@ -105,7 +107,7 @@ public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyle
                 "\n" +
                 "function some_function(var1, var2 = \"string value\") = foo + sin(1.128e+10);\n" +
                 "\n" +
-                "if (x < max([1, 10]) || (x > 20 && x == 15)) {\n" +
+                "if (x < max([1, 10]) || !(x > -20 && x == 15)) {\n" +
                 "    some_module(x * 2, 42, \"string\");\n" +
                 "    \n" +
                 "} else if (x >= 42) {\n" +

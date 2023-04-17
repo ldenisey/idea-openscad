@@ -44,6 +44,11 @@ public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
                 .after(IF_KEYWORD).spaceIf(settings.SPACE_BEFORE_IF_PARENTHESES)
                 .after(FOR_KEYWORD).spaceIf(settings.SPACE_BEFORE_FOR_PARENTHESES)
 
+                // Unary operators
+                .afterInside(PLUS, UNARY_PLUS_EXPR).spaceIf(settings.SPACE_AROUND_UNARY_OPERATOR)
+                .afterInside(MINUS, UNARY_MIN_EXPR).spaceIf(settings.SPACE_AROUND_UNARY_OPERATOR)
+                .afterInside(EXCL, UNARY_NEGATE_EXPR).spaceIf(settings.SPACE_AROUND_UNARY_OPERATOR)
+
                 // Around operators
                 .around(EQUALS).spaceIf(settings.SPACE_AROUND_ASSIGNMENT_OPERATORS)
                 .around(LOGICAL_OPERATORS).spaceIf(settings.SPACE_AROUND_LOGICAL_OPERATORS)
