@@ -30,7 +30,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1.0.5
+      - uses: gradle/wrapper-validation-action@v1.0.6
 
       # CodeQL initialization
       - name: Initialize CodeQL
@@ -40,14 +40,14 @@ jobs:
 
       # Cache Gradle dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
@@ -93,21 +93,21 @@ jobs:
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ./build/distributions
           key: ${{ runner.os }}-plugin-distribution
@@ -149,14 +149,14 @@ jobs:
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
 
       # Cache Gradle Wrapper
       - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
@@ -177,7 +177,7 @@ jobs:
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.2.3
+        uses: actions/cache@v3.3.1
         with:
           path: ./build/distributions
           key: ${{ runner.os }}-plugin-distribution
@@ -185,11 +185,10 @@ jobs:
       # Delete existing release if needed
       - name: Delete previous release
         id: deletePreviousRelease
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@v1.0.1
         continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ needs.build.outputs.version }}
 
       # Create new pre-release - which is not publicly visible and requires manual acceptance
