@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.intellij' version '1.11.0'
+    id 'org.jetbrains.intellij' version '1.16.0'
     id 'org.jetbrains.changelog' version '2.0.0'
     id 'com.github.ldenisey.setversions' version '1.0.3'
 }
@@ -18,13 +18,13 @@ ext {
             "IIC-2021.2.1, " +
                     "IIC-2022.3, " +
                     "PCC-2021.2.1, " +
-                    "PCC-2022.3, " +
-                    "CL-2021.2.1, " +
-                    "CL-2022.3, " +
-                    "PS-2021.2.1, " +
-                    "PS-2022.3, " +
-                    "WS-2021.2.1," +
-                    "WS-2022.3"
+                    "PCC-2022.3"//, " +
+                    //"CL-2021.2.1, " +
+                    //"CL-2022.3, " +
+                    //"PS-2021.2.1, " +
+                    //"PS-2022.3, " +
+                    //"WS-2021.2.1," +
+                    //"WS-2022.3"
 }
 
 repositories {
