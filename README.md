@@ -1,4 +1,4 @@
-![Workflow build](https://github.com/ldenisey/idea-openscad/workflows/Java%20CI/badge.svg)
+![Workflow build](https://github.com/ldenisey/idea-openscad/actions/workflows/build.yml/badge.svg)
 [![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/11198-openscad-language-support?label=Latest%20Plugin%20Release)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support/versions)
 [![JetBrains Plugin Rating](https://img.shields.io/jetbrains/plugin/r/rating/11198-openscad-language-support)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support/reviews)
 [![JetBrains Plugin Downloads](https://img.shields.io/jetbrains/plugin/d/11198-openscad-language-support)](https://plugins.jetbrains.com/plugin/11198-openscad-language-support)

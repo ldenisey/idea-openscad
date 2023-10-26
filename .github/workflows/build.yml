@@ -2,15 +2,12 @@
 # - validate Gradle Wrapper,
 # - run test and verifyPlugin tasks,
 # - run buildPlugin task and prepare artifact for the further tests,
-# - run IntelliJ Plugin Verifier,
 # - create a draft release.
 #
 # Workflow is triggered on push and pull_request events.
 #
 # Docs:
 # - GitHub Actions: https://help.github.com/en/actions
-# - IntelliJ Plugin Verifier GitHub Action: https://github.com/ChrisCarini/intellij-platform-plugin-verifier-action
-#
 ##
 
 name: Build
@@ -134,43 +131,12 @@ jobs:
       - name: Build Plugin
         run: ./gradlew buildPlugin
 
-  # Verify built plugin using IntelliJ Plugin Verifier tool
-  # Requires build job to be passed
-  verify:
-    name: Verify
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 17
-      - uses: actions/checkout@v3
-
-      # Cache Gradle Dependencies
-      - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.3.1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-
-      # Cache Gradle Wrapper
-      - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.3.1
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-
-      # Run IntelliJ Plugin Verifier action using GitHub Action
-      - name: Verify Plugin
-        run: ./gradlew runPluginVerifier -Pplugin.verifier.home.dir=~/.pluginVerifier
-
   # Prepare a pre-release for GitHub Releases page for the manual verification
   # Use manual promote release workflow to create final release
   preRelease:
     name: Pre release
     if: github.event_name != 'pull_request' && contains(github.ref, 'master')
-    needs: [ build, verify ]
+    needs: [ build ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

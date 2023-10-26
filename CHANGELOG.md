@@ -7,6 +7,7 @@
 ### Added
 
 ### Changed
+- Refactor Build Github action to move Jetbrain plugin verification into a dedicated worflow that will automatically compute versions to test in parallel
 
 ### Removed
 
