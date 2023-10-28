@@ -7,10 +7,10 @@ plugins {
 apply plugin: 'org.jetbrains.changelog'
 
 group = 'com.javampire'
-version = '2.3.4-SNAPSHOT'
+version = '2.4.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+//sourceCompatibility = 1.17
+//targetCompatibility = 1.17
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
 repositories {
@@ -25,7 +25,7 @@ intellij {
     updateSinceUntilBuild.set(false)
 
     patchPluginXml {
-        sinceBuild.set('212.5080')
+        sinceBuild.set('223')
         untilBuild.set('')
 
         changeNotes.set(provider { changelog.getLatest().toHTML() })
