@@ -13,20 +13,6 @@ sourceCompatibility = 1.11
 targetCompatibility = 1.11
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
-ext {
-    pluginVerifierIdeVersions =
-            "IIC-2021.2.1, " +
-                    "IIC-2022.3, " +
-                    "PCC-2021.2.1, " +
-                    "PCC-2022.3"//, " +
-                    //"CL-2021.2.1, " +
-                    //"CL-2022.3, " +
-                    //"PS-2021.2.1, " +
-                    //"PS-2022.3, " +
-                    //"WS-2021.2.1," +
-                    //"WS-2022.3"
-}
-
 repositories {
     mavenCentral()
 }
@@ -45,19 +31,41 @@ intellij {
         changeNotes.set(provider { changelog.getLatest().toHTML() })
     }
 
-    // IntelliJ configuration
-    //type ='IU'// Default is 'IC'
-    plugins.set([
-            'java'
-            //,'psiviewer:223-SNAPSHOT'  // For debugging the parser only
-    ])
+    // Type automatic setting, needed for command line configuration. Default type is 'IC'.
+    if (project.findProperty("intellij.type")) {
+        println("intellij.type set to : ${project.findProperty("intellij.type")}")
+        type = project.findProperty("intellij.type")
+    }
+    //type = 'IU'// 'PY' // 'PC'
 
-    // PyCharm configuration
-    //type = 'PY' // 'PC'
-    //plugins.set([
-    //        'Pythonid' // 'PythonCore'
-    //        ,'psiviewer:223-SNAPSHOT'  // For debugging the parser only
-    //])
+    // Plugins configuration
+    switch (type.getOrNull()) {
+        case ["IC", "UC", "", null]:
+            plugins = [ 'java' ]
+            break
+
+        case "PY":
+            plugins = [ 'Pythonid' ]
+            break
+
+        case "PC":
+            plugins = [ 'PythonCore' ]
+            break
+
+        default:
+            plugins = []
+            break
+    }
+
+    // For parser debugging only
+    //plugins.add('psiviewer:223-SNAPSHOT')
+}
+
+runPluginVerifier {
+    if (project.findProperty("runPluginVerifier.ideVersions")) {
+        println("runPluginVerifier.ideVersions set to : ${project.findProperty("runPluginVerifier.ideVersions")}")
+        ideVersions = new groovy.json.JsonSlurper().parseText(project.findProperty("runPluginVerifier.ideVersions"))
+    }
 }
 
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -67,10 +75,6 @@ changelog {
     headerParserRegex.set(~/\d\.\d\.\d(-SNAPSHOT)?/)
     unreleasedTerm.set("Unreleased")
     groups.set(["Added", "Changed", "Removed", "Fixed"])
-}
-
-runPluginVerifier {
-    ideVersions = (List) pluginVerifierIdeVersions.split(',')
 }
 
 publishPlugin {

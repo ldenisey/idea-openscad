@@ -1,0 +1,130 @@
+# GitHub Actions Workflow created for checking that the plugin is compatible with various Jetbrains ide versions:
+# - run IntelliJ Plugin Verifier
+#
+# Workflow is triggered manually.
+#
+# Docs:
+# - GitHub Actions: https://help.github.com/en/actions
+##
+
+name: Verify plugin
+on: [ workflow_dispatch ]
+jobs:
+
+  # Build plugin with buildPlugin Gradle task and provide the artifact for the next workflow jobs
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      - uses: actions/checkout@v3
+
+      # Cache Gradle Dependencies
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
+
+      # Cache Gradle Wrapper
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+
+      # Cache Plugin distribution
+      - name: Setup Plugin distribution Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ./build/distributions
+          key: ${{ runner.os }}-plugin-distribution
+
+      # Build artifact using buildPlugin Gradle task
+      - name: Build Plugin
+        run: ./gradlew buildPlugin
+        
+  analyze:
+    name: Analyze
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      productsReleases: ${{ steps.properties.outputs.productsReleases }}
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      - uses: actions/checkout@v3
+      
+      # Export IDE versions list
+      - name: Export IDE versions
+        id: properties
+        shell: bash
+        env:
+          # List of IDEs to test compatibility with
+          ideVersions: "IU PY PC IC AI CL PS GO RD"
+          releasesFile: "./build/listProductsReleases.txt"
+          resultFile:  "./build/allProductsReleases.txt"
+        run: |
+          mkdir -p "$(dirname $resultFile)"
+          echo -n '["' > ${resultFile}
+          for ideVersion in ${ideVersions}
+          do
+            rm -f ${releasesFile}
+            echo "Listing ${ideVersion} versions"
+            ./gradlew listProductsReleases "-Pintellij.type=${ideVersion}"
+            cat ${releasesFile} | sed -z 's/\n/", "/g' >> ${resultFile}
+            echo -n '", "' >> ${resultFile}
+          done
+          sed -i 's/, "$/]/' ${resultFile}
+          cat ${resultFile}          
+          
+          echo 'productsReleases<<EOF' >> $GITHUB_OUTPUT
+          echo "$(cat ${resultFile})" >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  # Verify built plugin using IntelliJ Plugin Verifier tool
+  # Requires build job to be passed
+  verify:
+    name: Verify
+    needs: analyze
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ideVersion: ${{ fromJson(needs.analyze.outputs.productsReleases) }}
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      - uses: actions/checkout@v3
+
+      # Cache Gradle Dependencies
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
+
+      # Cache Gradle Wrapper
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+
+      # Cache Plugin distribution
+      - name: Setup Plugin distribution Cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: ./build/distributions
+          key: ${{ runner.os }}-plugin-distribution
+
+      # Run IntelliJ Plugin Verifier action using GitHub Action
+      - name: Verify Plugin
+        run: ./gradlew runPluginVerifier "-PrunPluginVerifier.ideVersions=[\"${{ matrix.ideVersion }}\"]"
