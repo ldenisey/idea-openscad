@@ -14,10 +14,10 @@ import com.intellij.psi.PsiFile;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import com.javampire.openscad.settings.OpenSCADSettings;
-import org.apache.commons.lang.WordUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 public abstract class OpenSCADExecutableAction extends AnAction {
@@ -45,7 +45,7 @@ public abstract class OpenSCADExecutableAction extends AnAction {
         performing = true;
         ProgressManager.getInstance().run(new Task.Backgroundable(
                 event.getProject(),
-                WordUtils.capitalizeFully(event.getPresentation().getText()),
+                capitalizeFully(event.getPresentation().getText()),
                 true,
                 null
         ) {
@@ -62,7 +62,7 @@ public abstract class OpenSCADExecutableAction extends AnAction {
                     final Notification notification = new Notification(
                             OpenSCADPreviewFileEditor.class.getSimpleName(),
                             "OpenSCAD execution exception",
-                            String.format(OpenSCADExecutor.ERROR_EXCEPTION, executor.getCommand()) + ExceptionUtils.getFullStackTrace(executor.getException()),
+                            String.format(OpenSCADExecutor.ERROR_EXCEPTION, executor.getCommand()) + getFullStackTrace(executor.getException()),
                             NotificationType.ERROR
                     );
                     notification.notify(event.getProject());
@@ -97,5 +97,25 @@ public abstract class OpenSCADExecutableAction extends AnAction {
      */
     protected void postSuccessfulExecutionAction(@NotNull final AnActionEvent event) {
 
+    }
+
+    private String capitalizeFully(final String str) {
+        final char[] chars = str.toLowerCase().toCharArray();
+        boolean capitalizeNext = true;
+        for (int i = 0; i < str.length(); i++) {
+            if (capitalizeNext) {
+                chars[i] = Character.toTitleCase(chars[i]);
+                capitalizeNext = false;
+            } else if (Character.isWhitespace(chars[i])) {
+                capitalizeNext = true;
+            }
+        }
+        return new String(chars);
+    }
+
+    private String getFullStackTrace(final Throwable throwable) {
+        final StringWriter sw = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 }

@@ -9,18 +9,19 @@ apply plugin: 'org.jetbrains.changelog'
 group = 'com.javampire'
 version = '2.4.0-SNAPSHOT'
 
-//sourceCompatibility = 1.17
-//targetCompatibility = 1.17
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
 repositories {
     mavenCentral()
 }
 
+dependencies {
+    testImplementation 'org.json:json:20230618'
+}
+
 intellij {
-    //version.set("2021.2.1")
-    version.set("2022.3.1")
-    //version.set("LATEST-EAP-SNAPSHOT")
+    //version.set("2023.3.1")
+    version.set("LATEST-EAP-SNAPSHOT")
 
     updateSinceUntilBuild.set(false)
 
