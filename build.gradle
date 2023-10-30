@@ -7,8 +7,10 @@ plugins {
 apply plugin: 'org.jetbrains.changelog'
 
 group = 'com.javampire'
-version = '2.4.0-SNAPSHOT'
+version = '2.3.4-SNAPSHOT'
 
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 
 repositories {
@@ -20,13 +22,15 @@ dependencies {
 }
 
 intellij {
+    //version.set("2021.2.1")
+    //version.set("2022.3.1")
     //version.set("2023.3.1")
     version.set("LATEST-EAP-SNAPSHOT")
 
     updateSinceUntilBuild.set(false)
 
     patchPluginXml {
-        sinceBuild.set('223')
+        sinceBuild.set('212.5080')
         untilBuild.set('')
 
         changeNotes.set(provider { changelog.getLatest().toHTML() })
