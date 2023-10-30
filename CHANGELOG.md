@@ -7,11 +7,10 @@
 ### Added
 
 ### Changed
-- [Issue-85](https://github.com/ldenisey/idea-openscad/pull/85) Refactor Build Github action to move Jetbrain plugin verification into a dedicated worflow that will automatically compute versions to test in parallel
-- [Issue-86](https://github.com/ldenisey/idea-openscad/pull/86) Migration to Java 17, following [Jetbrains instruction](https://blog.jetbrains.com/platform/2022/08/intellij-project-migrates-to-java-17/). Main consequence is end of support of version lower than 2022.3 (223).
+- [Issue-85](https://github.com/ldenisey/idea-openscad/pull/85) Refactor Build Github action to move Jetbrains plugin verification into a dedicated worflow that will automatically compute versions to test in parallel
+- [Issue-86](https://github.com/ldenisey/idea-openscad/pull/86) Fix EAP incompatibilities : removal of third party library
 
 ### Removed
-- [Issue-86](https://github.com/ldenisey/idea-openscad/pull/86) Support of IDE versions lower than 2022.3 (223)
 
 ### Fixed
 

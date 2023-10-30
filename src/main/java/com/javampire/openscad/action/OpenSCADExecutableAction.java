@@ -99,6 +99,11 @@ public abstract class OpenSCADExecutableAction extends AnAction {
 
     }
 
+    /**
+     * Capitalize first letter of each word.
+     * @param str String to capitalize.
+     * @return Capitalized string.
+     */
     private String capitalizeFully(final String str) {
         final char[] chars = str.toLowerCase().toCharArray();
         boolean capitalizeNext = true;
@@ -113,6 +118,11 @@ public abstract class OpenSCADExecutableAction extends AnAction {
         return new String(chars);
     }
 
+    /**
+     * Pretty print stack trace.
+     * @param throwable Exception.
+     * @return Pretty printed stack trace.
+     */
     private String getFullStackTrace(final Throwable throwable) {
         final StringWriter sw = new StringWriter();
         throwable.printStackTrace(new PrintWriter(sw));
