@@ -39,7 +39,7 @@
         <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider"/>
         <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage"/>
-        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault"/>
+        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" id="OpenSCAD default" />
         <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
         <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder"/>
         <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
