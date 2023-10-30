@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
@@ -58,7 +58,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       # Export IDE versions list
       - name: Export IDE versions
@@ -102,7 +102,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache

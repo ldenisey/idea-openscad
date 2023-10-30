@@ -26,7 +26,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v1.0.6
 
       # CodeQL initialization
@@ -86,7 +86,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
@@ -139,7 +139,7 @@ jobs:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
