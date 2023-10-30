@@ -67,7 +67,7 @@ jobs:
 
       # Commit patched changelog and release version
       - name: Commit files
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Release ${{ steps.properties.outputs.version }}"
           skip_fetch: true
@@ -109,6 +109,6 @@ jobs:
 
       # Commit dev version
       - name: Commit files
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "To dev version"
