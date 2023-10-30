@@ -13,10 +13,10 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: gradle/wrapper-validation-action@v1.0.6
+      - uses: gradle/wrapper-validation-action@v1.1.0
 
       # Export pre-release (snapshot) version
       - name: Export base version properties
@@ -67,7 +67,7 @@ jobs:
 
       # Commit patched changelog and release version
       - name: Commit files
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Release ${{ steps.properties.outputs.version }}"
           skip_fetch: true
@@ -95,7 +95,7 @@ jobs:
       # Delete promoted pre-release
       - name: Delete previous release
         id: deletePreviousRelease
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -109,6 +109,6 @@ jobs:
 
       # Commit dev version
       - name: Commit files
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "To dev version"
