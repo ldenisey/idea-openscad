@@ -89,10 +89,6 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
         allowPreviewEditor.setSelected(openSCADSettings.isAllowPreviewEditor());
     }
 
-    @Override
-    public void disposeUIResources() {
-    }
-
     private void createUIComponents() {
         openSCADExecutablePath = new TextFieldWithBrowseButton();
 
@@ -109,7 +105,7 @@ public class OpenSCADSettingsConfigurable implements SearchableConfigurable.Pare
 
     @NotNull
     @Override
-    public Configurable[] getConfigurables() {
+    public Configurable @NotNull [] getConfigurables() {
         return new Configurable[0];
     }
 

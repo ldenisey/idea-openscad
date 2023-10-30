@@ -69,7 +69,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull final Project project) {
-        if (FilenameIndex.getAllFilesByExt(project, OpenSCADFileType.INSTANCE.getDefaultExtension()).size() > 0) {
+        if (!FilenameIndex.getAllFilesByExt(project, OpenSCADFileType.INSTANCE.getDefaultExtension()).isEmpty()) {
             final OpenSCADSettings settings = OpenSCADSettings.getInstance();
             if (!settings.hasExecutable()) {
                 ProgressManager.getInstance().runProcessWithProgressSynchronously(
@@ -94,7 +94,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                                 ).notify(project);
                             }
                         },
-                        "Configuring OpenSCAD executable",
+                        "Configuring OpenSCAD Executable",
                         false,
                         project
                 );
@@ -218,7 +218,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                     if (!executablePath.isEmpty()) {
                         break;
                     }
-                } catch (ExecutionException e) {
+                } catch (final ExecutionException e) {
                     e.printStackTrace();
                 }
             }
@@ -250,7 +250,7 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
                 pathEntry = pathEntry.substring(1, pathEntry.length() - 1);
             }
             for (String executableName : WINDOWS_EXECUTABLE_NAMES) {
-                File f = new File(pathEntry, executableName);
+                final File f = new File(pathEntry, executableName);
                 if (f.exists()) {
                     try {
                         return f.getCanonicalPath();
@@ -264,9 +264,9 @@ public class OpenSCADSettingsStartupActivity implements StartupActivity {
     }
 
     private static String filterUnixPathOptions(final List<String> pathOptions) {
-        for (String pathEntry : pathOptions) {
-            for (String executableName : UNIX_EXECUTABLE_NAMES) {
-                File f = new File(pathEntry, executableName);
+        for (final String pathEntry : pathOptions) {
+            for (final String executableName : UNIX_EXECUTABLE_NAMES) {
+                final File f = new File(pathEntry, executableName);
                 if (f.isFile() && f.canExecute()) {
                     try {
                         return f.getCanonicalPath();
