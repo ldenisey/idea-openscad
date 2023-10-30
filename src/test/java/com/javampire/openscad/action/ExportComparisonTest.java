@@ -2,7 +2,7 @@ package com.javampire.openscad.action;
 
 import com.intellij.openapi.diagnostic.Logger;
 import junit.framework.TestCase;
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 import org.junit.Ignore;
 
 import java.io.File;
@@ -56,7 +56,7 @@ public class ExportComparisonTest extends TestCase {
             }
             result.put(ext, innerResult);
         }
-        LOG.info(new JSONObject(result).toJSONString());
+        LOG.info(new JSONObject(result).toString());
     }
 
     private long executeAndGetTime(final OpenSCADExecutor executor) {

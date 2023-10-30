@@ -17,10 +17,15 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    testImplementation 'org.json:json:20230618'
+}
+
 intellij {
     //version.set("2021.2.1")
-    version.set("2022.3.1")
-    //version.set("LATEST-EAP-SNAPSHOT")
+    //version.set("2022.3.1")
+    //version.set("2023.3.1")
+    version.set("LATEST-EAP-SNAPSHOT")
 
     updateSinceUntilBuild.set(false)
 
