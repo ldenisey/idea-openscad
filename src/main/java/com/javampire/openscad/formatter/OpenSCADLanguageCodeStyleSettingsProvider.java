@@ -10,6 +10,44 @@ import org.jetbrains.annotations.Nullable;
 
 public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
+    public final static String CONF_EXAMPLE = "/*\n" +
+            "You are reading the \".scad\" entry\n" +
+            "for OpenSCAD files.\n" +
+            "*/\n" +
+            "use <some/path/used_file.scad>\n" +
+            "include </another/path/included_file.scad>\n" +
+            "\n" +
+            "$fn=64; // line-end comment about some_var\n" +
+            "some_var = 127; // [1:127]\n" +
+            "\n" +
+            "/**\n" +
+            " * some_module has a very nice documentation.\n" +
+            " */\n" +
+            "module some_module(var1 = 1, var2, foo) {\n" +
+            "    for (i = [0, var2]) {\n" +
+            "        let (j = 3) {\n" +
+            "            translate([1, 2, j]) {\n" +
+            "                rotate([0, 0, 90])\n" +
+            "                    color(\"red\") cylinder(1, 2, j);\n" +
+            "\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "\n" +
+            "    foo = \"string_value\";\n" +
+            "}\n" +
+            "\n" +
+            "function some_function(var1, var2 = \"string value\") = foo + sin(1.128e+10);\n" +
+            "\n" +
+            "if (x < max([1, 10]) || !(x > -20 && x == 15)) {\n" +
+            "    some_module(x * 2, 42, \"string\");\n" +
+            "\n" +
+            "} else if (x >= 42) {\n" +
+            "    some_function(var1 = x - 3, var2 = \"dummy string\");\n" +
+            "\n" +
+            "} else \n" +
+            "    square(cos(x % 2));\n";
+
     @NotNull
     @Override
     public Language getLanguage() {
@@ -86,33 +124,6 @@ public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyle
     @Nullable
     @Override
     public String getCodeSample(@NotNull SettingsType settingsType) {
-        return "use <some/path/used_file.scad>\n" +
-                "include </another/path/included_file.scad>\n" +
-                "\n" +
-                "$fn = 64;\n" +
-                "some_var = 127;  // line-end comment about some_var\n" +
-                "module some_module(var1 = 1, var2, foo) {\n" +
-                "    for (i = [0, var2]) {\n" +
-                "        let (j = 3) {\n" +
-                "            translate([1, 2, j]) {\n" +
-                "                rotate([0, 0, 90])\n" +
-                "                    color(\"red\") cylinder(1, 2, j);\n" +
-                "                    \n" +
-                "            }\n" +
-                "        }\n" +
-                "    }\n" +
-                "    \n" +
-                "    foo = \"string_value\";\n" +
-                "}\n" +
-                "\n" +
-                "function some_function(var1, var2 = \"string value\") = foo + sin(1.128e+10);\n" +
-                "\n" +
-                "if (x < max([1, 10]) || !(x > -20 && x == 15)) {\n" +
-                "    some_module(x * 2, 42, \"string\");\n" +
-                "    \n" +
-                "} else if (x >= 42) {\n" +
-                "    some_function(var1 = x - 3, var2 = \"dummy string\");\n" +
-                "    \n" +
-                "} else {square(cos(x % 2));}\n";
+        return CONF_EXAMPLE;
     }
 }
