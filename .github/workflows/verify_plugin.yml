@@ -16,7 +16,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -54,7 +54,7 @@ jobs:
     outputs:
       productsReleases: ${{ steps.properties.outputs.productsReleases }}
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -98,7 +98,7 @@ jobs:
       matrix:
         ideVersion: ${{ fromJson(needs.analyze.outputs.productsReleases) }}
     steps:
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
