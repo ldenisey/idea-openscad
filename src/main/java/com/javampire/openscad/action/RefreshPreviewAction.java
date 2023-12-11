@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.AnimatedIcon;
+import com.javampire.openscad.editor.OpenSCADPreviewFileEditorConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,11 +18,13 @@ public class RefreshPreviewAction extends ExportAction {
     @Override
     public void update(@NotNull final AnActionEvent event) {
         super.update(event);
-        final Presentation presentation = event.getPresentation();
-        if (presentation.isEnabled() && ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            presentation.setIcon(performing ? new AnimatedIcon.Default() : AllIcons.Actions.Refresh);
-            presentation.setText("Refresh Preview");
-            presentation.setDescription("Generate a new STL file to update preview");
+        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+            final Presentation presentation = event.getPresentation();
+            if (presentation.isEnabled()) {
+                presentation.setIcon(performing ? new AnimatedIcon.Default() : AllIcons.Actions.Refresh);
+                presentation.setText("Refresh Preview");
+                presentation.setDescription("Generate a new STL file to update preview");
+            }
         }
     }
 
@@ -33,10 +36,25 @@ public class RefreshPreviewAction extends ExportAction {
     }
 
     @Override
-    protected void postSuccessfulExecutionAction(@NotNull final AnActionEvent event) {
+    protected Boolean preExecution(@NotNull final AnActionEvent event) {
+        final OpenSCADPreviewFileEditorConfiguration editorConfig = event.getData(OpenSCADDataKeys.EDITOR_CONFIG);
+        if (editorConfig != null) {
+            editorConfig.saveConfiguration();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void postExecution(@NotNull final AnActionEvent event) {
         final VirtualFile destinationFile = event.getData(OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE);
         if (destinationFile != null) {
-            destinationFile.refresh(true, false);
+            destinationFile.refresh(true, false, () -> {
+                final OpenSCADPreviewFileEditorConfiguration editorConfig = event.getData(OpenSCADDataKeys.EDITOR_CONFIG);
+                if (editorConfig != null) {
+                    editorConfig.loadConfiguration();
+                }
+            });
         }
     }
 }
