@@ -39,7 +39,7 @@
         <codeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="com.javampire.openscad.formatter.OpenSCADLanguageCodeStyleSettingsProvider"/>
         <colorSettingsPage implementation="com.javampire.openscad.highlighting.OpenSCADColorSettingsPage"/>
-        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" id="OpenSCAD default" />
+        <bundledColorScheme path="com/javampire/openscad/color_schemes/OpenSCADDefault" id="OpenSCAD default"/>
         <colorProvider implementation="com.javampire.openscad.color.OpenSCADColorProvider"/>
         <lang.formatter language="OpenSCAD" implementationClass="com.javampire.openscad.formatter.OpenSCADFormattingModelBuilder"/>
         <lang.braceMatcher language="OpenSCAD" implementationClass="com.javampire.openscad.highlighting.OpenSCADBraceMatcher"/>
@@ -51,15 +51,14 @@
     </extensions>
 
     <actions>
-        <action class="com.javampire.openscad.action.OpenAction" description="Open selected file in OpenSCAD"
-                id="OpenIn" text="Open in OpenSCAD"/>
-        <action class="com.javampire.openscad.action.ExportAction" description="Export selected file as ..."
-                id="ExportAs" text="Export as ..."/>
+        <action class="com.javampire.openscad.action.OpenAction" id="OpenIn"/>
+        <action class="com.javampire.openscad.action.ExportAction" id="ExportAs"/>
+        <action class="com.javampire.openscad.action.RefreshPreviewAction" id="RefreshPreview"/>
 
-        <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD"
-               icon="/com/javampire/openscad/icons/openscad.png">
+        <group id="OpenSCADEditorPopupMenuEntries" popup="true" text="OpenSCAD" icon="/com/javampire/openscad/icons/openscad.png">
             <reference ref="OpenIn"/>
             <reference ref="ExportAs"/>
+            <reference ref="RefreshPreview"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="EditorTabPopupMenu" anchor="last"/>
         </group>

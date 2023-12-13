@@ -13,6 +13,7 @@
 - [Issue-86](https://github.com/ldenisey/idea-openscad/pull/86) Fix EAP incompatibilities : removal of third party library
 - Unifying settings code example
 - [Issue-98](https://github.com/ldenisey/idea-openscad/pull/98) Migrate JS script to vanilla THREE.js
+- [Issue-81](https://github.com/ldenisey/idea-openscad/issues/81) Keyboard shortcut to refresh preview
 
 ### Removed
 

@@ -43,12 +43,13 @@ import static com.intellij.openapi.fileEditor.TextEditorWithPreview.Layout.SHOW_
  */
 public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements FileEditor {
     private static final Logger LOG = Logger.getInstance(OpenSCADPreviewFileEditor.class);
-
+    private final Project project;
     private final OpenSCADPreviewSite previewSite;
     private final MainPanel mainPanel;
     private @Nullable JCEFHtmlPanel htmlPanel;
     private ActionToolbar previewToolbar;
     private final Alarm mySwingAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
+
     private OpenSCADPreviewFileEditorConfiguration editorConfig = new OpenSCADPreviewFileEditorConfiguration(this);
 
     public JCEFHtmlPanel getHtmlPanel() {
@@ -56,6 +57,7 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     }
 
     public OpenSCADPreviewFileEditor(@NotNull final Project project, @NotNull final VirtualFile scadFile) {
+        this.project = project;
         this.previewSite = OpenSCADPreviewSiteFactory.getInstance(project).createSite(scadFile);
         this.mainPanel = new MainPanel();
         this.mainPanel.addComponentListener(new ComponentAdapter() {
@@ -83,8 +85,16 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
         }
     }
 
+    public OpenSCADPreviewSite getPreviewSite() {
+        return previewSite;
+    }
+
     public VirtualFile getFile() {
         return previewSite.htmlFile.getOriginalFile();
+    }
+
+    public OpenSCADPreviewFileEditorConfiguration getEditorConfig() {
+        return editorConfig;
     }
 
     @Override
@@ -110,6 +120,10 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
         // No history for the file, getting the last known layout, whatever the file
         final String lastUsed = PropertiesComponent.getInstance().getValue("OpenSCADTextEditorWithPreviewLayout");
         return TextEditorWithPreview.Layout.fromId(lastUsed, TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW) != SHOW_EDITOR;
+    }
+
+    public Boolean isPreviewShown() {
+        return isPreviewShown(project, previewSite.previewFile);
     }
 
     private void attachHtmlPanel() {
@@ -158,17 +172,16 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
      * Fake an action event to initialize the preview on editor startup.
      */
     private void forcePreviewRefresh() {
-        final AnAction refreshAction = new RefreshPreviewAction();
+        final AnAction generatePreviewAction = new GeneratePreviewAction();
         final AnActionEvent event = AnActionEvent.createFromDataContext(
                 ActionPlaces.EDITOR_TOOLBAR,
-                new Presentation("Refresh Preview"),
+                new Presentation("Generate Preview"),
                 SimpleDataContext.builder()
                         .add(CommonDataKeys.VIRTUAL_FILE, previewSite.scadFile)
                         .add(OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE, previewSite.previewFile)
-                        .add(OpenSCADDataKeys.EDITOR_CONFIG, editorConfig)
                         .build()
         );
-        ActionUtil.performActionDumbAwareWithCallbacks(refreshAction, event);
+        ActionUtil.performActionDumbAwareWithCallbacks(generatePreviewAction, event);
     }
 
     @Override
