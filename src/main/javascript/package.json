@@ -1,0 +1,8 @@
+{
+  "name": "stl-previewer",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "three": "0.159.0"
+  }
+}

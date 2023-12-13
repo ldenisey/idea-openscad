@@ -2,6 +2,7 @@ plugins {
     id 'org.jetbrains.intellij' version '1.16.1'
     id 'org.jetbrains.changelog' version '2.2.0'
     id 'com.github.ldenisey.setversions' version '1.0.4'
+    id "com.github.node-gradle.node" version "7.0.1"
 }
 
 apply plugin: 'org.jetbrains.changelog'
@@ -12,6 +13,7 @@ version = '2.4.0-SNAPSHOT'
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
+sourceSets.main.resources.srcDirs = ['src/main/resources', 'src/main/generated-resources']
 
 repositories {
     mavenCentral()
@@ -21,11 +23,16 @@ dependencies {
     testImplementation 'org.json:json:20231013'
 }
 
+clean {
+    delete "./node_modules"
+    delete "./src/main/generated-resources"
+}
+
 intellij {
     //version.set("2021.2.1")
     //version.set("2022.3.1")
-    //version.set("2023.3.1")
-    version.set("LATEST-EAP-SNAPSHOT")
+    version.set("2023.2.1")
+    //version.set("LATEST-EAP-SNAPSHOT")
 
     updateSinceUntilBuild.set(false)
 
@@ -46,15 +53,15 @@ intellij {
     // Plugins configuration
     switch (type.getOrNull()) {
         case ["IC", "UC", "", null]:
-            plugins = [ 'java' ]
+            plugins = ['java']
             break
 
         case "PY":
-            plugins = [ 'Pythonid' ]
+            plugins = ['Pythonid']
             break
 
         case "PC":
-            plugins = [ 'PythonCore' ]
+            plugins = ['PythonCore']
             break
 
         default:
@@ -86,52 +93,8 @@ publishPlugin {
     token = System.getenv("intellijPublishToken")
 }
 
-task downloadJSDeps() {
-    description "Download latest version of the JS dependencies"
-
-    ext.downloadLatestAndFilter = { url, filter ->
-        // Get latest release build zip link
-        File tempDir = getTemporaryDir()
-        File releaseInfo = File.createTempFile('deps_info', '.txt', tempDir)
-        new URL(url).withInputStream { i ->
-            releaseInfo.withOutputStream { it << i }
-        }
-        def releaseInfoJson = new groovy.json.JsonSlurper().parse(releaseInfo)
-        String latestReleaseUrl
-        if (url.contains('/releases/')) {
-            latestReleaseUrl = releaseInfoJson.zipball_url
-        } else {
-            String lastTag = releaseInfoJson[releaseInfoJson.size - 1].ref
-            latestReleaseUrl = url.replaceAll('api\\.', '').replaceAll('/repos', '').replaceAll('git/refs/tags', 'archive/' + lastTag + '.zip')
-        }
-
-        // Download latest release
-        File depZip = File.createTempFile('dep', '.zip', tempDir)
-        new URL(latestReleaseUrl).withInputStream { i ->
-            depZip.withOutputStream { it << i }
-        }
-
-        // Extract build dir
-        copy {
-            from(zipTree(depZip)) {
-                include filter
-                eachFile { fcd ->
-                    fcd.relativePath = new org.gradle.api.file.RelativePath(true, fcd.relativePath.segments.drop(2))
-                }
-                includeEmptyDirs = false
-            }
-            into new File('src/main/resources/html/deps/')
-        }
-    }
-
-    // View STL
-    downloadLatestAndFilter('https://api.github.com/repos/omrips/viewstl/releases/latest', '**/build/**')
-
-    /*
-     * JSZip and JSZip Utils
-     * Needed for 3mf files preview. Ignored for now, OpenSCAD 3MF generated files seems incompatible for now.
-     */
-    //downloadLatestAndFilter('https://api.github.com/repos/Stuk/jszip/git/refs/tags', '**/dist/jszip.min.js')
-    //downloadLatestAndFilter('https://api.github.com/repos/Stuk/jszip-utils/git/refs/tags', '**/dist/jszip-utils.min.js')
+tasks.register('webpack', NpxTask) {
+    command = 'webpack'
+    dependsOn 'npmInstall'
 }
-setupDependencies.finalizedBy downloadJSDeps
+processResources.dependsOn('webpack')

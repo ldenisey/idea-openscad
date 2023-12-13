@@ -10,3 +10,6 @@ out
 /Check/
 /src/main/java/com/javampire/openscad/grammar/_OpenSCADLexer.flex
 *.stl
+node_modules/
+/src/main/generated-resources/
+package-lock.json

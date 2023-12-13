@@ -13,13 +13,16 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.jcef.JCEFHtmlPanel;
 import com.intellij.util.Alarm;
 import com.intellij.util.ui.components.BorderLayoutPanel;
-import com.javampire.openscad.action.ExportAction;
-import com.javampire.openscad.action.OpenAction;
-import com.javampire.openscad.action.OpenSCADDataKeys;
-import com.javampire.openscad.action.RefreshPreviewAction;
+import com.javampire.openscad.action.*;
+import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
+import org.cef.browser.CefMessageRouter;
+import org.cef.callback.CefQueryCallback;
+import org.cef.handler.CefMessageRouterHandlerAdapter;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +49,11 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     private @Nullable JCEFHtmlPanel htmlPanel;
     private ActionToolbar previewToolbar;
     private final Alarm mySwingAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
+    private OpenSCADPreviewFileEditorConfiguration editorConfig = new OpenSCADPreviewFileEditorConfiguration(this);
+
+    public JCEFHtmlPanel getHtmlPanel() {
+        return htmlPanel;
+    }
 
     public OpenSCADPreviewFileEditor(@NotNull final Project project, @NotNull final VirtualFile scadFile) {
         this.previewSite = OpenSCADPreviewSiteFactory.getInstance(project).createSite(scadFile);
@@ -107,6 +115,9 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     private void attachHtmlPanel() {
         if (htmlPanel == null) {
             htmlPanel = new JCEFHtmlPanel(true, null, previewSite.htmlFile.getPreviewUrl().toExternalForm());
+            final CefMessageRouter messageRouter = CefMessageRouter.create();
+            messageRouter.addHandler(new CefMessageRouterHandler(), true);
+            htmlPanel.getJBCefClient().getCefClient().addMessageRouter(messageRouter);
             previewToolbar = createToolbar(htmlPanel.getComponent());
             mainPanel.add(previewToolbar.getComponent(), BorderLayout.NORTH);
             mainPanel.add(htmlPanel.getComponent(), BorderLayout.CENTER);
@@ -130,8 +141,15 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     private ActionToolbar createToolbar(final JComponent targetComponent) {
         ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar(
                 ActionPlaces.EDITOR_TOOLBAR,
-                new DefaultActionGroup(new RefreshPreviewAction(), new Separator(), new OpenAction(), new ExportAction()),
-                true);
+                new DefaultActionGroup(
+                        new RefreshPreviewAction(),
+                        new ToggleGridAction(),
+                        new ToggleAxisAction(),
+                        new SetModelColorAction(),
+                        new Separator(),
+                        new OpenAction(),
+                        new ExportAction()
+                ), true);
         actionToolbar.setTargetComponent(targetComponent);
         return actionToolbar;
     }
@@ -147,6 +165,7 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
                 SimpleDataContext.builder()
                         .add(CommonDataKeys.VIRTUAL_FILE, previewSite.scadFile)
                         .add(OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE, previewSite.previewFile)
+                        .add(OpenSCADDataKeys.EDITOR_CONFIG, editorConfig)
                         .build()
         );
         ActionUtil.performActionDumbAwareWithCallbacks(refreshAction, event);
@@ -202,10 +221,36 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     private class MainPanel extends BorderLayoutPanel implements DataProvider {
         @Override
         public @Nullable Object getData(@NotNull @NonNls final String dataId) {
-            if (OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE.is(dataId)) {
+            if (OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE.is(dataId))
                 return previewSite.previewFile;
-            }
+            else if (OpenSCADDataKeys.PREVIEW_BROWSER.is(dataId))
+                return htmlPanel != null ? htmlPanel.getCefBrowser() : null;
+            else if (OpenSCADDataKeys.EDITOR_CONFIG.is(dataId))
+                return editorConfig;
             return null;
+        }
+    }
+
+    private class CefMessageRouterHandler extends CefMessageRouterHandlerAdapter {
+
+        private final static String DELIMITER = "=";
+        private final static String SHOW_AXIS = "showAxis";
+        private final static String SHOW_GRID = "showGrid";
+        private final static String MODEL_COLOR = "modelColor";
+
+        @Override
+        public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent, CefQueryCallback callback) {
+            final String[] parsed = request.split(DELIMITER);
+            if (SHOW_AXIS.equals(parsed[0])) {
+                editorConfig.setShowAxis(Boolean.valueOf(parsed[1]));
+            } else if (SHOW_GRID.equals(parsed[0])) {
+                editorConfig.setShowGrid(Boolean.valueOf(parsed[1]));
+            } else if (MODEL_COLOR.equals(parsed[0])) {
+                editorConfig.setModelColor(JBColor.decode(parsed[1]));
+            } else {
+                return false;
+            }
+            return true;
         }
     }
 }

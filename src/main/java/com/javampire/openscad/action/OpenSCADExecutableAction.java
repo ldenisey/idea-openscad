@@ -2,43 +2,31 @@ package com.javampire.openscad.action;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.psi.PsiFile;
-import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
-import com.javampire.openscad.settings.OpenSCADSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-public abstract class OpenSCADExecutableAction extends AnAction {
+public abstract class OpenSCADExecutableAction extends OpenSCADAction {
 
     protected boolean performing = false;
-
-    @Override
-    public void update(@NotNull final AnActionEvent event) {
-        if (!OpenSCADSettings.getInstance().hasExecutable()) {
-            event.getPresentation().setEnabledAndVisible(false);
-        } else if (ActionPlaces.isPopupPlace(event.getPlace()) || ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            final PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
-            event.getPresentation().setEnabledAndVisible(psiFile != null && psiFile.getLanguage() == OpenSCADLanguage.INSTANCE);
-        }
-    }
 
     @Override
     public void actionPerformed(@NotNull final AnActionEvent event) {
         // Check arguments
         final List<String> arguments = getArguments(event);
         if (arguments == null) {
+            return;
+        }
+
+        if (!preExecution(event)) {
             return;
         }
 
@@ -75,7 +63,7 @@ public abstract class OpenSCADExecutableAction extends AnAction {
                     );
                     notification.notify(event.getProject());
                 }
-                postSuccessfulExecutionAction(event);
+                postExecution(event);
                 performing = false;
             }
         });
@@ -91,16 +79,27 @@ public abstract class OpenSCADExecutableAction extends AnAction {
     abstract protected List<String> getArguments(@NotNull final AnActionEvent event);
 
     /**
+     * Actions that will be executed before the execution of the command.
+     *
+     * @param event Event.
+     * @return True to proceed with the action, false to cancel it.
+     */
+    protected Boolean preExecution(@NotNull final AnActionEvent event) {
+        return true;
+    }
+
+    /**
      * Actions that will be executed after the execution of the command.
      *
      * @param event Event.
      */
-    protected void postSuccessfulExecutionAction(@NotNull final AnActionEvent event) {
+    protected void postExecution(@NotNull final AnActionEvent event) {
 
     }
 
     /**
      * Capitalize first letter of each word.
+     *
      * @param str String to capitalize.
      * @return Capitalized string.
      */
@@ -120,6 +119,7 @@ public abstract class OpenSCADExecutableAction extends AnAction {
 
     /**
      * Pretty print stack trace.
+     *
      * @param throwable Exception.
      * @return Pretty printed stack trace.
      */
