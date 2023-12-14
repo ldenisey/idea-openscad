@@ -26,23 +26,24 @@ public class ExportAction extends OpenSCADExecutableAction {
 
     @Override
     public void update(@NotNull final AnActionEvent event) {
-        super.update(event);
-        final Presentation presentation = event.getPresentation();
-        presentation.setText("Export As ...");
-        presentation.setDescription("Export selected file as ...");
-        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            presentation.setIcon(AllIcons.Actions.Download);
+        final Presentation presentation = checkOpenSCADPrerequisites(event);
+        if (presentation.isVisible()) {
+            presentation.setText("Export As ...");
+            presentation.setDescription("Export selected file as ...");
+            if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+                presentation.setIcon(AllIcons.Actions.Download);
+            }
         }
     }
 
     @Override
     protected List<String> getArguments(@NotNull final AnActionEvent event) {
-        final VirtualFile sourceFile = event.getData(CommonDataKeys.VIRTUAL_FILE);
+        final VirtualFile sourceFile = getScadFile(event);
         if (sourceFile == null) {
             return null;
         }
 
-        final String destinationFilePath = getDestinationFilePath(event);
+        final String destinationFilePath = getPreviewFilePath(event);
         if (destinationFilePath == null) {
             return null;
         }
@@ -51,8 +52,13 @@ public class ExportAction extends OpenSCADExecutableAction {
     }
 
     @Nullable
-    protected String getDestinationFilePath(@NotNull final AnActionEvent event) {
-        final VirtualFile sourceFile = event.getData(CommonDataKeys.VIRTUAL_FILE);
+    protected VirtualFile getScadFile(@NotNull final AnActionEvent event) {
+        return event.getData(CommonDataKeys.VIRTUAL_FILE);
+    }
+
+    @Nullable
+    protected String getPreviewFilePath(@NotNull final AnActionEvent event) {
+        final VirtualFile sourceFile = getScadFile(event);
         final FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor("Save File", "Choose destination file.", getAvailableExtensions());
         final FileSaverDialog dialog = FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, event.getProject());
         final VirtualFileWrapper vfw = dialog.save(sourceFile.getParent(), sourceFile.getNameWithoutExtension());

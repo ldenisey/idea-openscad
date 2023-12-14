@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class OpenSCADPreviewFileEditorConfiguration {
 
+    private Boolean autoRefresh = false;
     private Boolean showAxis = true;
     private Boolean showGrid = true;
     private Color modelColor = JBColor.YELLOW;
@@ -25,6 +26,14 @@ public class OpenSCADPreviewFileEditorConfiguration {
             browser = editor.getHtmlPanel().getCefBrowser();
         }
         return browser;
+    }
+
+    public Boolean getAutoRefresh() {
+        return autoRefresh;
+    }
+
+    public void toggleAutoRefresh() {
+        autoRefresh = !autoRefresh;
     }
 
     public Boolean getShowAxis() {
