@@ -138,7 +138,7 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
             if (mainPanel.isShowing()) mainPanel.validate();
             mainPanel.repaint();
             htmlPanel.getCefBrowser().reload();
-            forcePreviewRefresh();
+            generatePreview();
         }
     }
 
@@ -157,6 +157,8 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
                 ActionPlaces.EDITOR_TOOLBAR,
                 new DefaultActionGroup(
                         new RefreshPreviewAction(),
+                        new ToggleAutoRefreshAction(),
+                        new Separator(),
                         new ToggleGridAction(),
                         new ToggleAxisAction(),
                         new SetModelColorAction(),
@@ -169,16 +171,15 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     }
 
     /**
-     * Fake an action event to initialize the preview on editor startup.
+     * Fake an action event to generate the preview.
      */
-    private void forcePreviewRefresh() {
+    private void generatePreview() {
         final AnAction generatePreviewAction = new GeneratePreviewAction();
         final AnActionEvent event = AnActionEvent.createFromDataContext(
-                ActionPlaces.EDITOR_TOOLBAR,
-                new Presentation("Generate Preview"),
+                ActionPlaces.UNKNOWN,
+                new Presentation(GeneratePreviewAction.TEXT),
                 SimpleDataContext.builder()
-                        .add(CommonDataKeys.VIRTUAL_FILE, previewSite.scadFile)
-                        .add(OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE, previewSite.previewFile)
+                        .add(OpenSCADDataKeys.PREVIEW_EDITOR, OpenSCADPreviewFileEditor.this)
                         .build()
         );
         ActionUtil.performActionDumbAwareWithCallbacks(generatePreviewAction, event);
@@ -234,12 +235,8 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
     private class MainPanel extends BorderLayoutPanel implements DataProvider {
         @Override
         public @Nullable Object getData(@NotNull @NonNls final String dataId) {
-            if (OpenSCADDataKeys.DESTINATION_VIRTUAL_FILE.is(dataId))
-                return previewSite.previewFile;
-            else if (OpenSCADDataKeys.PREVIEW_BROWSER.is(dataId))
-                return htmlPanel != null ? htmlPanel.getCefBrowser() : null;
-            else if (OpenSCADDataKeys.EDITOR_CONFIG.is(dataId))
-                return editorConfig;
+            if (OpenSCADDataKeys.PREVIEW_EDITOR.is(dataId))
+                return OpenSCADPreviewFileEditor.this;
             return null;
         }
     }

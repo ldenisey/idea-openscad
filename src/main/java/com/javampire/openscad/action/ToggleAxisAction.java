@@ -3,7 +3,7 @@ package com.javampire.openscad.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.util.IconLoader;
-import com.javampire.openscad.editor.OpenSCADPreviewFileEditorConfiguration;
+import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,8 +17,8 @@ public class ToggleAxisAction extends OpenSCADAction {
         if (presentation.isVisible()) {
             presentation.setText("Toggle Axis");
             presentation.setDescription("Show or hide the preview axis");
-            final OpenSCADPreviewFileEditorConfiguration editorConfig = event.getData(OpenSCADDataKeys.EDITOR_CONFIG);
-            if (editorConfig != null && Boolean.TRUE.equals(editorConfig.getShowAxis())) {
+            final OpenSCADPreviewFileEditor previewEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
+            if (previewEditor != null && Boolean.TRUE.equals(previewEditor.getEditorConfig().getShowAxis())) {
                 presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/axis.svg", getClass()));
             } else {
                 presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/axis_grayed.svg", getClass()));
@@ -27,10 +27,10 @@ public class ToggleAxisAction extends OpenSCADAction {
     }
 
     @Override
-    public void actionPerformed(@NotNull AnActionEvent event) {
-        final OpenSCADPreviewFileEditorConfiguration editorConfig = event.getData(OpenSCADDataKeys.EDITOR_CONFIG);
-        if (editorConfig != null) {
-            editorConfig.toggleShowAxis();
+    public void actionPerformed(@NotNull final AnActionEvent event) {
+        final OpenSCADPreviewFileEditor previewEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
+        if (previewEditor != null) {
+            previewEditor.getEditorConfig().toggleShowAxis();
         }
     }
 }
