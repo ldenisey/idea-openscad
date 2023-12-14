@@ -1,6 +1,5 @@
 package com.javampire.openscad.action;
 
-import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -13,15 +12,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GeneratePreviewAction extends ExportAction {
 
+    public final static String TEXT = "Generate Preview";
+
     @Override
     public void update(@NotNull final AnActionEvent event) {
-        super.update(event);
-        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            final Presentation presentation = event.getPresentation();
-            if (presentation.isEnabled()) {
-                presentation.setText("Generate Preview");
-                presentation.setDescription("Generate a new STL preview file");
-            }
+        final Presentation presentation = checkOpenSCADPrerequisites(event);
+        if (presentation.isVisible()) {
+            presentation.setText(TEXT);
+            presentation.setDescription("Generate a new STL preview file");
         }
     }
 

@@ -1,9 +1,6 @@
 package com.javampire.openscad.action;
 
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.psi.PsiFile;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.settings.OpenSCADSettings;
@@ -11,13 +8,20 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class OpenSCADAction extends AnAction {
 
-    @Override
-    public void update(@NotNull final AnActionEvent event) {
-        if (!OpenSCADSettings.getInstance().hasExecutable()) {
-            event.getPresentation().setEnabledAndVisible(false);
-        } else if (ActionPlaces.isPopupPlace(event.getPlace()) || ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+    /**
+     * Set the presentation enable and visible if OpenSCAD executable is found and if the target file is an OpenSCAD one.
+     * @param event Action event.
+     * @return Event presentation.
+     */
+    protected Presentation checkOpenSCADPrerequisites(@NotNull final AnActionEvent event) {
+        final Presentation presentation = event.getPresentation();
+        if (OpenSCADSettings.getInstance().hasExecutable()
+                && (ActionPlaces.isPopupPlace(event.getPlace()) || ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace()))) {
             final PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
-            event.getPresentation().setEnabledAndVisible(psiFile != null && psiFile.getLanguage() == OpenSCADLanguage.INSTANCE);
+            presentation.setEnabledAndVisible(psiFile != null && psiFile.getLanguage() == OpenSCADLanguage.INSTANCE);
+        } else {
+            presentation.setEnabledAndVisible(false);
         }
+        return presentation;
     }
 }

@@ -1,12 +1,12 @@
 package com.javampire.openscad.action;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.TextEditorWithPreview;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.AnimatedIcon;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import org.jetbrains.annotations.NotNull;
@@ -17,19 +17,20 @@ import org.jetbrains.annotations.Nullable;
  */
 public class RefreshPreviewAction extends ExportAction {
 
+    public final static String TEXT = "Refresh Preview";
+
     @Override
     public void update(@NotNull final AnActionEvent event) {
-        super.update(event);
-        final Presentation presentation = event.getPresentation();
-        presentation.setText("Refresh Preview");
-        presentation.setDescription("Generate a new STL file to update preview");
-        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            if (presentation.isEnabled()) {
-                presentation.setIcon(performing ? new AnimatedIcon.Default() : AllIcons.Actions.Refresh);
+        final Presentation presentation = checkOpenSCADPrerequisites(event);
+        if (presentation.isVisible()) {
+            presentation.setText(TEXT);
+            presentation.setDescription("Generate a new STL file to update preview");
+            if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+                presentation.setIcon(performing ? new AnimatedIcon.Default() : IconLoader.getIcon("/com/javampire/openscad/icons/refresh.svg", getClass()));
+            } else if (ActionPlaces.EDITOR_TAB_POPUP.equals(event.getPlace()) || ActionPlaces.EDITOR_POPUP.equals(event.getPlace())) {
+                final OpenSCADPreviewFileEditor openSCADPreviewFileEditor = getOpenSCADPreviewFileEditor(event);
+                presentation.setVisible(openSCADPreviewFileEditor != null && openSCADPreviewFileEditor.isPreviewShown());
             }
-        } else if (ActionPlaces.EDITOR_POPUP.equals(event.getPlace())) {
-            final OpenSCADPreviewFileEditor openSCADPreviewFileEditor = getOpenSCADPreviewFileEditor(event);
-            presentation.setVisible(openSCADPreviewFileEditor != null && openSCADPreviewFileEditor.isPreviewShown());
         }
     }
 

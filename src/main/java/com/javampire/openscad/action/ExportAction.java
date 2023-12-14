@@ -26,12 +26,13 @@ public class ExportAction extends OpenSCADExecutableAction {
 
     @Override
     public void update(@NotNull final AnActionEvent event) {
-        super.update(event);
-        final Presentation presentation = event.getPresentation();
-        presentation.setText("Export As ...");
-        presentation.setDescription("Export selected file as ...");
-        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            presentation.setIcon(AllIcons.Actions.Download);
+        final Presentation presentation = checkOpenSCADPrerequisites(event);
+        if (presentation.isVisible()) {
+            presentation.setText("Export As ...");
+            presentation.setDescription("Export selected file as ...");
+            if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+                presentation.setIcon(AllIcons.Actions.Download);
+            }
         }
     }
 

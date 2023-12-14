@@ -17,12 +17,13 @@ public class OpenAction extends OpenSCADExecutableAction {
 
     @Override
     public void update(@NotNull final AnActionEvent event) {
-        super.update(event);
-        final Presentation presentation = event.getPresentation();
-        presentation.setText("Open In OpenSCAD");
-        presentation.setDescription("Open this model in OpenSCAD");
-        if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-            presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/openscad.png", getClass()));
+        final Presentation presentation = checkOpenSCADPrerequisites(event);
+        if (presentation.isVisible()) {
+            presentation.setText("Open In OpenSCAD");
+            presentation.setDescription("Open this model in OpenSCAD");
+            if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
+                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/openscad.png", getClass()));
+            }
         }
     }
 
