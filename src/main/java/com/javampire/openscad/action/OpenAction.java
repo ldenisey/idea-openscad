@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.util.IconLoader;
+import com.javampire.openscad.OpenSCADIcons;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class OpenAction extends OpenSCADExecutableAction {
             presentation.setText("Open In OpenSCAD");
             presentation.setDescription("Open this model in OpenSCAD");
             if (ActionPlaces.EDITOR_TOOLBAR.equals(event.getPlace())) {
-                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/openscad.png", getClass()));
+                presentation.setIcon(OpenSCADIcons.OPENSCAD_LOGO);
             }
         }
     }

@@ -7,11 +7,11 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileListener;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,9 +30,9 @@ public class ToggleAutoRefreshAction extends OpenSCADAction {
             presentation.setDescription("Toggle auto refresh on save");
             final OpenSCADPreviewFileEditor previewEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
             if (previewEditor != null && Boolean.TRUE.equals(previewEditor.getEditorConfig().getAutoRefresh())) {
-                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/autoRefresh.svg", getClass()));
+                presentation.setIcon(OpenSCADIcons.AUTO_REFRESH);
             } else {
-                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/autoRefresh_grayed.svg", getClass()));
+                presentation.setIcon(OpenSCADIcons.AUTO_REFRESH_GRAYED);
             }
         }
     }

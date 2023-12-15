@@ -2,7 +2,7 @@ package com.javampire.openscad.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.util.IconLoader;
+import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,9 +19,9 @@ public class ToggleAxisAction extends OpenSCADAction {
             presentation.setDescription("Show or hide the preview axis");
             final OpenSCADPreviewFileEditor previewEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
             if (previewEditor != null && Boolean.TRUE.equals(previewEditor.getEditorConfig().getShowAxis())) {
-                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/axis.svg", getClass()));
+                presentation.setIcon(OpenSCADIcons.TOGGLE_AXIS);
             } else {
-                presentation.setIcon(IconLoader.getIcon("/com/javampire/openscad/icons/axis_grayed.svg", getClass()));
+                presentation.setIcon(OpenSCADIcons.TOGGLE_AXIS_GRAYED);
             }
         }
     }

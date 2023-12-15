@@ -59,7 +59,7 @@ public class OpenSCADPsiImplUtil {
                     return PlatformIcons.VARIABLE_ICON;
                 }
                 if (element.getNode().getElementType() == OpenSCADTypes.IMPORT) {
-                    return OpenSCADIcons.FILE;
+                    return OpenSCADIcons.OPENSCAD_LOGO;
                 }
                 return null;
             }

@@ -34,6 +34,6 @@ public class OpenSCADFileType extends LanguageFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return OpenSCADIcons.FILE;
+        return OpenSCADIcons.OPENSCAD_LOGO;
     }
 }

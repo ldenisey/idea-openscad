@@ -30,7 +30,7 @@ public class OpenSCADElementGrouper implements Grouper {
 
     private static final ItemPresentation IMPORT_GROUP_ITEM = new GroupPresentation(
             OpenSCADBundle.message("com.javampire.openscad.grouper.imports"),
-            OpenSCADIcons.FILE
+            OpenSCADIcons.OPENSCAD_LOGO
     );
 
     private static final ItemPresentation VARIABLE_GROUP_ITEM = new GroupPresentation(
