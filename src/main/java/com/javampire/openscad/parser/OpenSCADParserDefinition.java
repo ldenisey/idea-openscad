@@ -20,7 +20,7 @@ import static com.javampire.openscad.psi.OpenSCADTypes.Factory;
 
 public class OpenSCADParserDefinition implements ParserDefinition {
 
-    public static final IStubFileElementType FILE = new IStubFileElementType(OpenSCADLanguage.INSTANCE);
+    public static final IStubFileElementType FILE = new IStubFileElementType("OpenSCADStubFile", OpenSCADLanguage.INSTANCE);
 
     @NotNull
     @Override
