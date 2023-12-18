@@ -54,7 +54,7 @@ jobs:
         run: ./gradlew check
 
       # upload test results in case of tests failure
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results
