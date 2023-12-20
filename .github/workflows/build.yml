@@ -35,20 +35,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      # Cache Gradle dependencies
-      - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.3.2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-
-      # Cache Gradle Wrapper
-      - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.3.2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-
       # Run detekt, ktlint and tests
       - name: Run Linters and Test
         run: ./gradlew check
@@ -70,6 +56,15 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
+      # Cache Gradle dependencies
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache/save@v3.3.2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
   # Build plugin with buildPlugin Gradle task and provide the artifact for the next workflow jobs
   # Requires test job to be passed
   build:
@@ -90,24 +85,12 @@ jobs:
 
       # Cache Gradle Dependencies
       - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache/restore@v3.3.2
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
-
-      # Cache Gradle Wrapper
-      - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v3.3.2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-
-      # Cache Plugin distribution
-      - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.3.2
-        with:
-          path: ./build/distributions
-          key: ${{ runner.os }}-plugin-distribution
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       # Set environment variables
       - name: Export Properties
@@ -131,6 +114,13 @@ jobs:
       - name: Build Plugin
         run: ./gradlew buildPlugin
 
+      # Cache Plugin distribution
+      - name: Setup Plugin distribution Cache
+        uses: actions/cache/save@v3.3.2
+        with:
+          path: ./build/distributions
+          key: ${{ runner.os }}-gradle-distribution-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
   # Prepare a pre-release for GitHub Releases page for the manual verification
   # Use manual promote release workflow to create final release
   preRelease:
@@ -143,10 +133,10 @@ jobs:
 
       # Cache Plugin distribution
       - name: Setup Plugin distribution Cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache/restore@v3.3.2
         with:
           path: ./build/distributions
-          key: ${{ runner.os }}-plugin-distribution
+          key: ${{ runner.os }}-gradle-distribution-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       # Delete existing release if needed
       - name: Delete previous release
