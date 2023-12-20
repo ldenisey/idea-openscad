@@ -93,8 +93,19 @@ publishPlugin {
     token = System.getenv("intellijPublishToken")
 }
 
+npmInstall {
+    inputs.file('package.json')
+    inputs.file('src/main/javascript/index.js')
+    inputs.file('src/main/javascript/package.json')
+    inputs.file('src/main/javascript/dist/demo.html')
+    outputs.dir("node_modules/")
+}
+
 tasks.register('webpack', NpxTask) {
     command = 'webpack'
     dependsOn 'npmInstall'
+    onlyIf {
+        !npmInstall.state.getSkipped()
+    }
 }
 processResources.dependsOn('webpack')
