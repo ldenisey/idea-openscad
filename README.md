@@ -7,7 +7,7 @@
 
 [OpenSCAD](https://openscad.org/index.html) language plugin for IntelliJ Platform IDEs (Idea, PyCharm, etc). It provides :
 
-* Preview split panel, based on [OpenSCAD](https://openscad.org/index.html) rendering with [viewstl](https://github.com/omrips/viewstl)
+* Preview split panel, based on [OpenSCAD](https://openscad.org/index.html) rendering
 * Syntax highlighting
 * Code completion
 * Code navigation
@@ -42,21 +42,22 @@ The formatting options are located in *Settings* -> *Editor* -> *Code Style* -> 
 
 The OpenSCAD color scheme can be loaded in *Settings* -> *Editor* -> *Color Scheme* -> *OpenSCAD* -> *Scheme* -> *OpenSCAD.Default*.
 
+### Shortcuts
+
+You can add shortcuts in *Settings* -> *Keymap* -> *Plugins* -> *OpenSCAD Language Support*.
+
 ## Preview panel
 
 The plugin split preview editor will allow you to modify your code and easily check its result in the IDE.
 
-The preview is done with an STL file, generated using OpenSCAD command line, then displayed in an HTML page using [viewstl](https://github.com/omrips/viewstl).
-Due to the conversion into an STL file, some information like colors are lost.
+The preview is done through an OpenSCAD STL file generation hence some information like colors are lost.
 
-You can refresh the preview by clicking on the refresh button at the top right of the preview panel.
-The STL file generation can take some time if your model is complex. For faster preview,
-you can temporarily lower the [$fn variable](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#.24fa.2C_.24fs_and_.24fn).
+You can manually refresh the preview by clicking on the ![Refresh icon](/src/main/resources/com/javampire/openscad/icons/refresh.svg) button in the preview panel or in the editor context menu.
+Alternatively, you can activate the auto refresh with the button ![Autorefresh icon](/src/main/resources/com/javampire/openscad/icons/autoRefresh.svg) which refresh the preview at every file save.
+If your model is complex you can temporarily lower the [$fn variable](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features#.24fa.2C_.24fs_and_.24fn) to speed up the preview generation.
 
 Temporary files are kept in a temporary folder (*out*, *temp*, *tmp* or *.tmp* folder depending on your IDE) at your project root.
 If you are using a CVS (i.e. git), best is to ignore this folder.
-The plugins automatically deletes the temporary files. If your IDE has crashed or if you encounter preview errors, you can close all scad editors and
-delete the temporary folder to restart from scratch.
 
 ## Context menu
 
@@ -64,6 +65,7 @@ Right-clicking on a scad file will give you access to two context menu actions :
 
 * *Open in OpenSCAD* : To open an OpenSCAD instance for the given file.
 * *Export as...* : To export your model in various format using OpenSCAD command line.
+* *Refresh Preview* : If preview is enabled, execute its refresh.
 
 ## Issues and requests
 
