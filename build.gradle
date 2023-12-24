@@ -70,7 +70,7 @@ intellij {
     }
 
     // For parser debugging only
-    //plugins.add('psiviewer:223-SNAPSHOT')
+    //plugins.add('psiviewer:232.2')
 }
 
 runPluginVerifier {

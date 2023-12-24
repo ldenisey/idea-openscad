@@ -9,6 +9,9 @@
 
  */
 
+// https://github.com/ldenisey/idea-openscad/issues/72
+/* **/
+
 // Single line comment can be chained and folded together
 // Customizer parameters
 /* [Drop down box:] */

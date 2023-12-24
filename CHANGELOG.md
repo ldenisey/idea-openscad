@@ -11,7 +11,9 @@
 ### Removed
 
 ### Fixed
+
 - Changelog plugin configuration
+- [PR-104](https://github.com/ldenisey/idea-openscad/pull/104) Bug: parsing of multi-line comment ending with 2 stars
 
 ## 2.4.0
 
