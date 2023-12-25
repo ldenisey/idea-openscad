@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class OpenAction extends OpenSCADExecutableAction {
 
+    public OpenAction() {
+        withProgressIndicator = false;
+    }
+
     @Override
     public void update(@NotNull final AnActionEvent event) {
         final Presentation presentation = checkOpenSCADPrerequisites(event);

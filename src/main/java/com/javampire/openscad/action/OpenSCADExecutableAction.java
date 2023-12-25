@@ -3,6 +3,7 @@ package com.javampire.openscad.action;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.progress.EmptyProgressIndicator;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -17,6 +18,7 @@ import java.util.List;
 public abstract class OpenSCADExecutableAction extends OpenSCADAction {
 
     protected boolean performing = false;
+    protected boolean withProgressIndicator = true;
 
     @Override
     public void actionPerformed(@NotNull final AnActionEvent event) {
@@ -31,42 +33,62 @@ public abstract class OpenSCADExecutableAction extends OpenSCADAction {
         }
 
         performing = true;
-        ProgressManager.getInstance().run(new Task.Backgroundable(
-                event.getProject(),
-                capitalizeFully(event.getPresentation().getText()),
-                true,
-                null
-        ) {
-            @Override
-            public void run(@NotNull ProgressIndicator progressIndicator) {
-                // Execute command
-                final OpenSCADExecutor executor = OpenSCADExecutor.execute(arguments);
-                if (executor == null) {
-                    Messages.showErrorDialog(
-                            OpenSCADExecutor.ERROR_NO_EXE,
-                            "OpenSCAD Executable not Set"
-                    );
-                } else if (executor.getException() != null) {
-                    final Notification notification = new Notification(
-                            OpenSCADPreviewFileEditor.class.getSimpleName(),
-                            "OpenSCAD execution exception",
-                            String.format(OpenSCADExecutor.ERROR_EXCEPTION, executor.getCommand()) + getFullStackTrace(executor.getException()),
-                            NotificationType.ERROR
-                    );
-                    notification.notify(event.getProject());
-                } else if (executor.getReturnCode() != 0) {
-                    final Notification notification = new Notification(
-                            OpenSCADPreviewFileEditor.class.getSimpleName(),
-                            "OpenSCAD execution error",
-                            String.format(OpenSCADExecutor.ERROR_RETURN_CODE, executor.getCommand(), executor.getReturnCode(), executor.getStderr()),
-                            NotificationType.ERROR
-                    );
-                    notification.notify(event.getProject());
-                }
-                postExecution(event);
-                performing = false;
+        if (withProgressIndicator) {
+            ProgressManager.getInstance().run(new OpenSCADExecutionTask(event, arguments));
+        } else {
+            ProgressManager.getInstance().runProcessWithProgressAsynchronously(
+                    new OpenSCADExecutionTask(event, arguments),
+                    new EmptyProgressIndicator()
+            );
+        }
+    }
+
+    class OpenSCADExecutionTask extends Task.Backgroundable {
+
+        final List<String> arguments;
+        final AnActionEvent event;
+
+        public OpenSCADExecutionTask(@NotNull final AnActionEvent event, final List<String> arguments) {
+            super(
+                    event.getProject(),
+                    capitalizeFully(event.getPresentation().getText()),
+                    true,
+                    null
+            );
+            this.arguments = arguments;
+            this.event = event;
+        }
+
+        @Override
+        public void run(@NotNull ProgressIndicator progressIndicator) {
+            // Execute command
+            final OpenSCADExecutor executor = OpenSCADExecutor.execute(arguments);
+            if (executor == null) {
+                Messages.showErrorDialog(
+                        OpenSCADExecutor.ERROR_NO_EXE,
+                        "OpenSCAD Executable Not Set"
+                );
+                progressIndicator.stop();
+            } else if (executor.getException() != null) {
+                final Notification notification = new Notification(
+                        OpenSCADPreviewFileEditor.class.getSimpleName(),
+                        "OpenSCAD execution exception",
+                        String.format(OpenSCADExecutor.ERROR_EXCEPTION, executor.getCommand()) + getFullStackTrace(executor.getException()),
+                        NotificationType.ERROR
+                );
+                notification.notify(event.getProject());
+            } else if (executor.getReturnCode() != 0) {
+                final Notification notification = new Notification(
+                        OpenSCADPreviewFileEditor.class.getSimpleName(),
+                        "OpenSCAD execution error",
+                        String.format(OpenSCADExecutor.ERROR_RETURN_CODE, executor.getCommand(), executor.getReturnCode(), executor.getStderr()),
+                        NotificationType.ERROR
+                );
+                notification.notify(event.getProject());
             }
-        });
+            postExecution(event);
+            performing = false;
+        }
     }
 
     /**
