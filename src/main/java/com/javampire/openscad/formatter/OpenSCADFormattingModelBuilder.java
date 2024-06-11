@@ -39,8 +39,10 @@ public class OpenSCADFormattingModelBuilder implements FormattingModelBuilder {
                 .afterInside(IDENTIFIER, OpenSCADModuleStubElementType.INSTANCE).spaceIf(settings.SPACE_BEFORE_METHOD_PARENTHESES)
                 .beforeInside(ARG_ASSIGNMENT_LIST, MODULE_CALL_OBJ).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
                 .afterInside(BUILTIN_OBJ_REF, BUILTIN_OBJ).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
+                .afterInside(BUILTIN_OVERRIDABLE_OBJ_REF, BUILTIN_OBJ).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
                 .afterInside(COMMON_OP_REF, BUILTIN_OP).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
                 .afterInside(BUILTIN_EXPR_REF, BUILTIN_EXPR).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
+                .afterInside(BUILTIN_OVERRIDABLE_EXPR_REF, BUILTIN_EXPR).spaceIf(settings.SPACE_BEFORE_METHOD_CALL_PARENTHESES)
                 .after(IF_KEYWORD).spaceIf(settings.SPACE_BEFORE_IF_PARENTHESES)
                 .after(FOR_KEYWORD).spaceIf(settings.SPACE_BEFORE_FOR_PARENTHESES)
 

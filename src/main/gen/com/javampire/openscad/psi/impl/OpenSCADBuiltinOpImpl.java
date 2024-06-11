@@ -34,9 +34,21 @@ public class OpenSCADBuiltinOpImpl extends OpenSCADOperatorImpl implements OpenS
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public OpenSCADBuiltinOverridableOpAsFunctionRef getBuiltinOverridableOpAsFunctionRef() {
+    return findChildByClass(OpenSCADBuiltinOverridableOpAsFunctionRef.class);
+  }
+
+  @Override
+  @Nullable
+  public OpenSCADBuiltinOverridableOpRef getBuiltinOverridableOpRef() {
+    return findChildByClass(OpenSCADBuiltinOverridableOpRef.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADCommonOpRef getCommonOpRef() {
-    return findNotNullChildByClass(OpenSCADCommonOpRef.class);
+    return findChildByClass(OpenSCADCommonOpRef.class);
   }
 
 }

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface OpenSCADFullArgDeclaration extends OpenSCADNamedElement {
 
   @NotNull
-  OpenSCADExpr getExpr();
+  List<OpenSCADExpr> getExprList();
 
   PsiElement getNameIdentifier();
 

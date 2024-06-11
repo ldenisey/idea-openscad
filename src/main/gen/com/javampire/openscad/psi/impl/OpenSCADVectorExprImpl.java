@@ -29,20 +29,8 @@ public class OpenSCADVectorExprImpl extends OpenSCADExprImpl implements OpenSCAD
 
   @Override
   @NotNull
-  public List<OpenSCADAssertElement> getAssertElementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADAssertElement.class);
-  }
-
-  @Override
-  @NotNull
   public List<OpenSCADBindElseElement> getBindElseElementList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADBindElseElement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<OpenSCADEchoElement> getEchoElementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADEchoElement.class);
   }
 
   @Override
@@ -73,6 +61,12 @@ public class OpenSCADVectorExprImpl extends OpenSCADExprImpl implements OpenSCAD
   @NotNull
   public List<OpenSCADLetElement> getLetElementList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADLetElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<OpenSCADReportingElement> getReportingElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADReportingElement.class);
   }
 
 }

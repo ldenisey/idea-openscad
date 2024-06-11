@@ -33,6 +33,8 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey OPERATOR_KEYWORD = createTextAttributesKey("OPENSCAD_OPERATOR_KEYWORD", KEYWORD);
     public static final TextAttributesKey OBJECT_KEYWORD = createTextAttributesKey("OPENSCAD_OBJECT_KEYWORD", KEYWORD);
     public static final TextAttributesKey FUNCTION_KEYWORD = createTextAttributesKey("OPENSCAD_FUNCTION_KEYWORD", KEYWORD);
+    public static final TextAttributesKey OVERRIDABLE_OBJECT_KEYWORD = createTextAttributesKey("OPENSCAD_OVERRIDABLE_OBJECT_KEYWORD", KEYWORD);
+    public static final TextAttributesKey OVERRIDABLE_OPERATOR_KEYWORD = createTextAttributesKey("OPENSCAD_OVERRIDABLE_OPERATOR_KEYWORD", KEYWORD);
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
@@ -53,6 +55,8 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] OBJECT_KEYWORD_KEYS = new TextAttributesKey[]{OBJECT_KEYWORD};
     private static final TextAttributesKey[] FUNCTION_KEYWORD_KEYS = new TextAttributesKey[]{FUNCTION_KEYWORD};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+    private static final TextAttributesKey[] OVERRIDABLE_OBJECT_KEYWORDS_KEYS = new TextAttributesKey[]{OVERRIDABLE_OBJECT_KEYWORD};
+    private static final TextAttributesKey[] OVERRIDABLE_OPERATOR_KEYWORDS_KEYS = new TextAttributesKey[]{OVERRIDABLE_OPERATOR_KEYWORD};
 
     @NotNull
     @Override
@@ -87,6 +91,10 @@ public class OpenSCADSyntaxHighlighter extends SyntaxHighlighterBase {
             return OPERATOR_KEYWORD_KEYS;
         } else if (OBJECT_KEYWORDS.contains(tokenType)) {
             return OBJECT_KEYWORD_KEYS;
+        } else if (OVERRIDABLE_OBJECT_KEYWORDS.contains(tokenType)) {
+            return OVERRIDABLE_OBJECT_KEYWORDS_KEYS;
+        } else if (OVERRIDABLE_OPERATOR_KEYWORDS.contains(tokenType)) {
+            return OVERRIDABLE_OPERATOR_KEYWORDS_KEYS;
         } else if (FUNCTION_KEYWORDS.contains(tokenType)) {
             return FUNCTION_KEYWORD_KEYS;
         } else if (LANGUAGE_KEYWORDS.contains(tokenType)) {

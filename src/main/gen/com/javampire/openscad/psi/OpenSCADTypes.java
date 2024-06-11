@@ -13,6 +13,7 @@ public interface OpenSCADTypes {
   IElementType ARG_ASSIGNMENT_LIST = OpenSCADElementFactory.getElementType("ARG_ASSIGNMENT_LIST");
   IElementType ARG_DECLARATION = OpenSCADElementFactory.getElementType("ARG_DECLARATION");
   IElementType ARG_DECLARATION_LIST = OpenSCADElementFactory.getElementType("ARG_DECLARATION_LIST");
+  IElementType ASSERT_ARG_LIST = OpenSCADElementFactory.getElementType("ASSERT_ARG_LIST");
   IElementType ASSERT_ELEMENT = OpenSCADElementFactory.getElementType("ASSERT_ELEMENT");
   IElementType ASSERT_EXPR = OpenSCADElementFactory.getElementType("ASSERT_EXPR");
   IElementType BACKGROUND_OP = OpenSCADElementFactory.getElementType("BACKGROUND_OP");
@@ -23,11 +24,16 @@ public interface OpenSCADTypes {
   IElementType BUILTIN_OBJ = OpenSCADElementFactory.getElementType("BUILTIN_OBJ");
   IElementType BUILTIN_OBJ_REF = OpenSCADElementFactory.getElementType("BUILTIN_OBJ_REF");
   IElementType BUILTIN_OP = OpenSCADElementFactory.getElementType("BUILTIN_OP");
+  IElementType BUILTIN_OVERRIDABLE_EXPR_REF = OpenSCADElementFactory.getElementType("BUILTIN_OVERRIDABLE_EXPR_REF");
+  IElementType BUILTIN_OVERRIDABLE_OBJ_REF = OpenSCADElementFactory.getElementType("BUILTIN_OVERRIDABLE_OBJ_REF");
+  IElementType BUILTIN_OVERRIDABLE_OP_AS_FUNCTION_REF = OpenSCADElementFactory.getElementType("BUILTIN_OVERRIDABLE_OP_AS_FUNCTION_REF");
+  IElementType BUILTIN_OVERRIDABLE_OP_REF = OpenSCADElementFactory.getElementType("BUILTIN_OVERRIDABLE_OP_REF");
   IElementType COMMON_OP_REF = OpenSCADElementFactory.getElementType("COMMON_OP_REF");
   IElementType CONDITIONAL_EXPR = OpenSCADElementFactory.getElementType("CONDITIONAL_EXPR");
   IElementType DEBUG_OP = OpenSCADElementFactory.getElementType("DEBUG_OP");
   IElementType DISABLE_OP = OpenSCADElementFactory.getElementType("DISABLE_OP");
   IElementType DIV_EXPR = OpenSCADElementFactory.getElementType("DIV_EXPR");
+  IElementType EACH_EXPR = OpenSCADElementFactory.getElementType("EACH_EXPR");
   IElementType ECHO_ARG_LIST = OpenSCADElementFactory.getElementType("ECHO_ARG_LIST");
   IElementType ECHO_ELEMENT = OpenSCADElementFactory.getElementType("ECHO_ELEMENT");
   IElementType ECHO_EXPR = OpenSCADElementFactory.getElementType("ECHO_EXPR");
@@ -73,6 +79,7 @@ public interface OpenSCADTypes {
   IElementType POWER_EXPR = OpenSCADElementFactory.getElementType("POWER_EXPR");
   IElementType QUALIFICATION_EXPR = OpenSCADElementFactory.getElementType("QUALIFICATION_EXPR");
   IElementType RANGE_EXPR = OpenSCADElementFactory.getElementType("RANGE_EXPR");
+  IElementType REPORTING_ELEMENT = OpenSCADElementFactory.getElementType("REPORTING_ELEMENT");
   IElementType ROOT_OP = OpenSCADElementFactory.getElementType("ROOT_OP");
   IElementType TEST_EXPR = OpenSCADElementFactory.getElementType("TEST_EXPR");
   IElementType TEST_EXP_REF = OpenSCADElementFactory.getElementType("TEST_EXP_REF");
@@ -229,6 +236,9 @@ public interface OpenSCADTypes {
       else if (type == ARG_DECLARATION_LIST) {
         return new OpenSCADArgDeclarationListImpl(node);
       }
+      else if (type == ASSERT_ARG_LIST) {
+        return new OpenSCADAssertArgListImpl(node);
+      }
       else if (type == ASSERT_ELEMENT) {
         return new OpenSCADAssertElementImpl(node);
       }
@@ -259,6 +269,18 @@ public interface OpenSCADTypes {
       else if (type == BUILTIN_OP) {
         return new OpenSCADBuiltinOpImpl(node);
       }
+      else if (type == BUILTIN_OVERRIDABLE_EXPR_REF) {
+        return new OpenSCADBuiltinOverridableExprRefImpl(node);
+      }
+      else if (type == BUILTIN_OVERRIDABLE_OBJ_REF) {
+        return new OpenSCADBuiltinOverridableObjRefImpl(node);
+      }
+      else if (type == BUILTIN_OVERRIDABLE_OP_AS_FUNCTION_REF) {
+        return new OpenSCADBuiltinOverridableOpAsFunctionRefImpl(node);
+      }
+      else if (type == BUILTIN_OVERRIDABLE_OP_REF) {
+        return new OpenSCADBuiltinOverridableOpRefImpl(node);
+      }
       else if (type == COMMON_OP_REF) {
         return new OpenSCADCommonOpRefImpl(node);
       }
@@ -273,6 +295,9 @@ public interface OpenSCADTypes {
       }
       else if (type == DIV_EXPR) {
         return new OpenSCADDivExprImpl(node);
+      }
+      else if (type == EACH_EXPR) {
+        return new OpenSCADEachExprImpl(node);
       }
       else if (type == ECHO_ARG_LIST) {
         return new OpenSCADEchoArgListImpl(node);
@@ -399,6 +424,9 @@ public interface OpenSCADTypes {
       }
       else if (type == RANGE_EXPR) {
         return new OpenSCADRangeExprImpl(node);
+      }
+      else if (type == REPORTING_ELEMENT) {
+        return new OpenSCADReportingElementImpl(node);
       }
       else if (type == ROOT_OP) {
         return new OpenSCADRootOpImpl(node);

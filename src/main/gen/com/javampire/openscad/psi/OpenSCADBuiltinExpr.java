@@ -14,6 +14,9 @@ public interface OpenSCADBuiltinExpr extends OpenSCADExpr {
   OpenSCADBuiltinExprRef getBuiltinExprRef();
 
   @Nullable
+  OpenSCADBuiltinOverridableExprRef getBuiltinOverridableExprRef();
+
+  @Nullable
   OpenSCADExpr getExpr();
 
   @Nullable

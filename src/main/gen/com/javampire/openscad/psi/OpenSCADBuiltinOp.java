@@ -10,7 +10,13 @@ public interface OpenSCADBuiltinOp extends OpenSCADOperator {
   @NotNull
   OpenSCADArgAssignmentList getArgAssignmentList();
 
-  @NotNull
+  @Nullable
+  OpenSCADBuiltinOverridableOpAsFunctionRef getBuiltinOverridableOpAsFunctionRef();
+
+  @Nullable
+  OpenSCADBuiltinOverridableOpRef getBuiltinOverridableOpRef();
+
+  @Nullable
   OpenSCADCommonOpRef getCommonOpRef();
 
 }
