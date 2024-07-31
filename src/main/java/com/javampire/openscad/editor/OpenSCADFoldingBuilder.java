@@ -1,7 +1,7 @@
 package com.javampire.openscad.editor;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.folding.FoldingBuilderEx;
+import com.intellij.lang.folding.CustomFoldingBuilder;
 import com.intellij.lang.folding.FoldingDescriptor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
@@ -11,32 +11,32 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.javampire.openscad.parser.OpenSCADParserTokenSets.IMPORT_FOLDING_TOKENS;
 import static com.javampire.openscad.parser.OpenSCADParserTokenSets.LINE_COMMENT_TOKENS;
 
-public class OpenSCADFoldingBuilder extends FoldingBuilderEx {
-    @NotNull
+public class OpenSCADFoldingBuilder extends CustomFoldingBuilder {
+
     @Override
-    public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
-        List<FoldingDescriptor> descriptors = new ArrayList<>();
+    public void buildLanguageFoldRegions(@NotNull List<FoldingDescriptor> descriptors,
+                                         @NotNull PsiElement root,
+                                         @NotNull Document document,
+                                         boolean quick)
+    {
         addFoldsForElement(descriptors, root, document, quick);
-        return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
-    }
-
-    @Nullable
-    @Override
-    public String getPlaceholderText(@NotNull ASTNode node) {
-        return "...";
     }
 
     @Override
-    public boolean isCollapsedByDefault(@NotNull ASTNode node) {
+    public String getLanguagePlaceholderText(@NotNull ASTNode node, @NotNull TextRange range)
+    {
+        return "//...";
+    }
+
+    @Override
+    protected boolean isRegionCollapsedByDefault(@NotNull ASTNode node) {
         return false;
     }
 
