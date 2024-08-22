@@ -40,3 +40,15 @@ function result(x) = echo(result = x) x;
 function sum(x, i = 0) = echo(str("x[", i, "]=", x[i])) result(len(x) > i ? x[i] + sum(x, i + 1) : 0);
 echo("sum(v) = ", sum(v));
 
+// Echo doesn't need to be followed by an expr in the elvis_expr
+dummy = true ? echo("Is true") : 0;
+// ECHO: "Is true"
+echo(dummy);
+// ECHO: undef
+
+function echo_row(matstr) =
+let(
+    dummy=[for(row=matstr) echo(row) ]
+)
+dummy;
+

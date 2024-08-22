@@ -6,7 +6,7 @@ for (i = [10:50])
     {
         rotate(angle, [1, 0, 0])
             translate([0, distance, 0])
-                sphere(r = r);
+            sphere(r = r);
     }
 }
 
@@ -19,3 +19,14 @@ function quicksort(arr) = !(len(arr) > 0) ? [] : let(
     equal = [for (y = arr) if (y == pivot) y],
     greater = [for (y = arr) if (y > pivot) y]
 ) concat(quicksort(lesser), equal, quicksort(greater));
+
+geom = [0, 1, 2, [0, 1], [0, 1, 2], quicksort];
+for (i = [10:50])
+{
+    let(
+        size=geom[1], size2=geom[2],
+        shift=point2d(geom[3]), axis=point3d(geom[4]),
+        override = geom[5]([2, 3, 4])
+    )
+    cylinder(h=size, r=size2);
+}

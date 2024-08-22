@@ -41,6 +41,12 @@ public class OpenSCADBuiltinExprImpl extends OpenSCADExprImpl implements OpenSCA
 
   @Override
   @Nullable
+  public OpenSCADBuiltinOverridableExprRef getBuiltinOverridableExprRef() {
+    return findChildByClass(OpenSCADBuiltinOverridableExprRef.class);
+  }
+
+  @Override
+  @Nullable
   public OpenSCADExpr getExpr() {
     return findChildByClass(OpenSCADExpr.class);
   }

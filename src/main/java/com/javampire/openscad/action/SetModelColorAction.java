@@ -1,11 +1,12 @@
 package com.javampire.openscad.action;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.ColorPicker;
+import com.intellij.ui.ColorChooserService;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditorConfiguration;
@@ -28,6 +29,11 @@ public class SetModelColorAction extends OpenSCADAction {
     }
 
     @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
+
+    @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         OpenSCADPreviewFileEditor previewFileEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
 
@@ -41,11 +47,8 @@ public class SetModelColorAction extends OpenSCADAction {
 
         if (previewFileEditor != null) {
             final OpenSCADPreviewFileEditorConfiguration editorConfig = previewFileEditor.getEditorConfig();
-            ColorPicker.showColorPickerPopup(
-                    event.getProject(),
-                    editorConfig.getModelColor(),
-                    (color, source) -> editorConfig.updateModelColor(color)
-            );
+            ColorChooserService.getInstance().showPopup(event.getProject(), editorConfig.getModelColor(),
+                    (color, source) -> editorConfig.updateModelColor(color));
         }
     }
 }

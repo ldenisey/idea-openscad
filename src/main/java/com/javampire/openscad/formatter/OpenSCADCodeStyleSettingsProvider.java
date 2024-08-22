@@ -15,7 +15,7 @@ public class OpenSCADCodeStyleSettingsProvider extends CodeStyleSettingsProvider
 
     @Nullable
     @Override
-    public CustomCodeStyleSettings createCustomSettings(CodeStyleSettings settings) {
+    public CustomCodeStyleSettings createCustomSettings(@NotNull CodeStyleSettings settings) {
         return new OpenSCADCodeStyleSettings(settings);
     }
 
@@ -36,7 +36,7 @@ public class OpenSCADCodeStyleSettingsProvider extends CodeStyleSettingsProvider
     public CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings modelSettings) {
         return new CodeStyleAbstractConfigurable(settings, modelSettings, this.getConfigurableDisplayName()) {
             @Override
-            protected CodeStyleAbstractPanel createPanel(CodeStyleSettings settings) {
+            protected @NotNull CodeStyleAbstractPanel createPanel(@NotNull CodeStyleSettings settings) {
                 return new OpenSCADCodeStyleMainPanel(getCurrentSettings(), settings);
             }
         };

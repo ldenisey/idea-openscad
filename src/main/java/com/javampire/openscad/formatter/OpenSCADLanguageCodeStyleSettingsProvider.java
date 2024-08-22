@@ -10,43 +10,45 @@ import org.jetbrains.annotations.Nullable;
 
 public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
-    public final static String CONF_EXAMPLE = "/*\n" +
-            "You are reading the \".scad\" entry\n" +
-            "for OpenSCAD files.\n" +
-            "*/\n" +
-            "use <some/path/used_file.scad>\n" +
-            "include </another/path/included_file.scad>\n" +
-            "\n" +
-            "$fn=64; // line-end comment about some_var\n" +
-            "some_var = 127; // [1:127]\n" +
-            "\n" +
-            "/**\n" +
-            " * some_module has a very nice documentation.\n" +
-            " */\n" +
-            "module some_module(var1 = 1, var2, foo) {\n" +
-            "    for (i = [0, var2]) {\n" +
-            "        let (j = 3) {\n" +
-            "            translate([1, 2, j]) {\n" +
-            "                rotate([0, 0, 90])\n" +
-            "                    color(\"red\") cylinder(1, 2, j);\n" +
-            "\n" +
-            "            }\n" +
-            "        }\n" +
-            "    }\n" +
-            "\n" +
-            "    foo = \"string_value\";\n" +
-            "}\n" +
-            "\n" +
-            "function some_function(var1, var2 = \"string value\") = foo + sin(1.128e+10);\n" +
-            "\n" +
-            "if (x < max([1, 10]) || !(x > -20 && x == 15)) {\n" +
-            "    some_module(x * 2, 42, \"string\");\n" +
-            "\n" +
-            "} else if (x >= 42) {\n" +
-            "    some_function(var1 = x - 3, var2 = \"dummy string\");\n" +
-            "\n" +
-            "} else \n" +
-            "    square(cos(x % 2));\n";
+    public final static String CONF_EXAMPLE = """
+            /*
+            You are reading the ".scad" entry
+            for OpenSCAD files.
+            */
+            use <some/path/used_file.scad>
+            include </another/path/included_file.scad>
+
+            $fn=64; // line-end comment about some_var
+            some_var = 127; // [1:127]
+
+            /**
+             * some_module has a very nice documentation.
+             */
+            module some_module(var1 = 1, var2, foo) {
+                for (i = [0, var2]) {
+                    let (j = 3) {
+                        translate([1, 2, j]) {
+                            rotate([0, 0, 90])
+                                color("red") cylinder(1, 2, j);
+
+                        }
+                    }
+                }
+
+                foo = "string_value";
+            }
+
+            function some_function(var1, var2 = "string value") = foo + sin(1.128e+10);
+
+            if (x < max([1, 10]) || !(x > -20 && x == 15)) {
+                some_module(x * 2, 42, "string");
+
+            } else if (x >= 42) {
+                some_function(var1 = x - 3, var2 = "dummy string");
+
+            } else\s
+                square(cos(x % 2));
+            """;
 
     @NotNull
     @Override
@@ -114,9 +116,23 @@ public class OpenSCADLanguageCodeStyleSettingsProvider extends LanguageCodeStyle
                     "SPACE_AFTER_COMMA",
                     "SPACE_BEFORE_COMMA"
             );
+            consumer.showCustomOption(OpenSCADCodeStyleSettings.class, "SPACE_AROUND_EQ_IN_NAMED_PARAMETER",
+                    "Around = in named parameter", "Other");
+            consumer.showCustomOption(OpenSCADCodeStyleSettings.class, "SPACE_AROUND_EQ_IN_ARG_ASSIGNMENT",
+                    "Around = in argument assignment", "Other");
+
         } else if (settingsType == SettingsType.WRAPPING_AND_BRACES_SETTINGS) {
             consumer.showStandardOptions(
-                    "RIGHT_MARGIN"
+                    "RIGHT_MARGIN",
+                    "CALL_PARAMETERS_WRAP",
+                    "METHOD_PARAMETERS_WRAP",
+                    ""
+            );
+        } else if (settingsType == SettingsType.INDENT_SETTINGS) {
+            consumer.showCustomOption(OpenSCADCodeStyleSettings.class,
+                    "INDENT_CASCADING_TRANSFORMATIONS",
+                    "Indent cascading transformations",
+                    "Tabs and Indents"
             );
         }
     }

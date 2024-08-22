@@ -35,7 +35,7 @@
     </option>
     <option name="OPENSCAD_OPERATION_SIGN">
       <value>
-        <option name="FOREGROUND" value="ff" />
+        <option name="FOREGROUND" value="A9B7C6" />
       </value>
     </option>
     <option name="OPENSCAD_OPERATOR_KEYWORD">
@@ -43,9 +43,19 @@
         <option name="FOREGROUND" value="80" />
       </value>
     </option>
+    <option name="OPENSCAD_OVERRIDABLE_OBJECT_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="FFC66D" />
+      </value>
+    </option>
+    <option name="OPENSCAD_OVERRIDABLE_OPERATOR_KEYWORD">
+      <value>
+        <option name="FOREGROUND" value="CC7832" />
+      </value>
+    </option>
     <option name="OPENSCAD_SEPARATOR">
       <value>
-        <option name="FOREGROUND" value="ff" />
+        <option name="FOREGROUND" value="A9B7C6" />
       </value>
     </option>
     <option name="OPENSCAD_STRING">

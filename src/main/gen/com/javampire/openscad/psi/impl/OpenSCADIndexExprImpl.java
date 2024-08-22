@@ -29,8 +29,8 @@ public class OpenSCADIndexExprImpl extends OpenSCADExprImpl implements OpenSCADI
 
   @Override
   @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+  public List<OpenSCADExpr> getExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, OpenSCADExpr.class);
   }
 
 }

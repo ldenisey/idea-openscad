@@ -1,5 +1,6 @@
 package com.javampire.openscad.action;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -14,6 +15,8 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.javampire.openscad.OpenSCADIcons;
 import com.javampire.openscad.editor.OpenSCADPreviewFileEditor;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Can be called from preview toolbar. Toggles on and off the preview axis.
@@ -43,11 +46,16 @@ public class ToggleAutoRefreshAction extends OpenSCADAction {
         if (previewEditor != null) {
             previewEditor.getEditorConfig().toggleAutoRefresh();
             if (previewEditor.getEditorConfig().getAutoRefresh()) {
-                createListener(event.getProject(), event.getData(CommonDataKeys.VIRTUAL_FILE));
+                createListener(Objects.requireNonNull(event.getProject()), Objects.requireNonNull(event.getData(CommonDataKeys.VIRTUAL_FILE)));
             } else {
                 deleteListener();
             }
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     private void createListener(final @NotNull Project project, final @NotNull VirtualFile scadFile) {

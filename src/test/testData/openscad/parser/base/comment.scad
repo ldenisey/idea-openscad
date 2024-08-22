@@ -44,6 +44,9 @@ Variable = true;
 // spinbox with step size 1
 Spinbox = 5;
 
+// spinbox with step size 0.5
+Spinbox= 5.5; // .5
+
 /* [Textbox]*/
 
 //Text box for vector with more than 4 elements

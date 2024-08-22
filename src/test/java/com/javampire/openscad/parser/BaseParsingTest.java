@@ -25,6 +25,10 @@ public class BaseParsingTest extends ParsingTestCase {
         return true;
     }
 
+    public void testassert() throws IOException {
+        doTest("_psidump");
+    }
+
     @Test
     public void testassign() throws IOException {
         doTest("_psidump");

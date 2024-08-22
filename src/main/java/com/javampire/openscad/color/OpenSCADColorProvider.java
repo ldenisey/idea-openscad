@@ -20,11 +20,10 @@ class OpenSCADColorProvider implements ElementColorProvider {
     public Color getColorFrom(@NotNull PsiElement element) {
         if (element.getNode().getElementType() == OpenSCADTypes.COLOR_KEYWORD) {
             final PsiElement grandParentBlock = element.getParent().getParent();
-            if (grandParentBlock instanceof OpenSCADBuiltinOp) {
-                final OpenSCADBuiltinOp colorBlock = (OpenSCADBuiltinOp) grandParentBlock;
+            if (grandParentBlock instanceof OpenSCADBuiltinOp colorBlock) {
                 String colorDef = null;
                 final List<OpenSCADArgAssignment> assignmentList = colorBlock.getArgAssignmentList().getArgAssignmentList();
-                if (assignmentList.size() > 0) {
+                if (!assignmentList.isEmpty()) {
                     // Testing if first element is a parameter reference ("c" of "alpha")
                     PsiElement colorDefElement = assignmentList.get(0).getFirstChild();
                     if (colorDefElement instanceof OpenSCADParameterReference) {
@@ -84,7 +83,7 @@ class OpenSCADColorProvider implements ElementColorProvider {
         final OpenSCADBuiltinOp colorBlock = (OpenSCADBuiltinOp) element.getParent().getParent();
         final List<OpenSCADArgAssignment> assignmentList = colorBlock.getArgAssignmentList().getArgAssignmentList();
 
-        // Testing if first element is a parameter reference ("c" of "alpha")
+        // Testing if first element is a parameter reference ("c" or "alpha")
         PsiElement colorDefElement = assignmentList.get(0).getFirstChild();
         if (colorDefElement instanceof OpenSCADParameterReference) {
             colorDefElement = getColorFromParameterReferencedAssignment(assignmentList);
@@ -94,16 +93,16 @@ class OpenSCADColorProvider implements ElementColorProvider {
         if (colorDefElement instanceof OpenSCADVectorExpr) {
             final OpenSCADDivExpr[] divElements = PsiTreeUtil.getChildrenOfType(colorDefElement, OpenSCADDivExpr.class);
             if (divElements != null && divElements.length == 3) {
-                divElements[0].getFirstChild().replace(getColorIntLitteral(colorDefElement, color.getRed()));
-                divElements[1].getFirstChild().replace(getColorIntLitteral(colorDefElement, color.getGreen()));
-                divElements[2].getFirstChild().replace(getColorIntLitteral(colorDefElement, color.getBlue()));
+                divElements[0].getFirstChild().replace(getColorIntLiteral(colorDefElement, color.getRed()));
+                divElements[1].getFirstChild().replace(getColorIntLiteral(colorDefElement, color.getGreen()));
+                divElements[2].getFirstChild().replace(getColorIntLiteral(colorDefElement, color.getBlue()));
             }
         } else {
-            colorDefElement.getFirstChild().replace(getColorStringLitteral(colorDefElement, color));
+            colorDefElement.getFirstChild().replace(getColorStringLiteral(colorDefElement, color));
         }
     }
 
-    private PsiElement getColorStringLitteral(PsiElement element, Color color) {
+    private PsiElement getColorStringLiteral(PsiElement element, Color color) {
         final String newColorHex = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         final String newText = "color(\"#" + newColorHex + "\");";
         return PsiFileFactory.getInstance(element.getProject())
@@ -117,7 +116,7 @@ class OpenSCADColorProvider implements ElementColorProvider {
                 .getFirstChild();
     }
 
-    private PsiElement getColorIntLitteral(PsiElement element, int colorValue) {
+    private PsiElement getColorIntLiteral(PsiElement element, int colorValue) {
         PsiElement returnElement = PsiFileFactory.getInstance(element.getProject())
                 .createFileFromText(String.valueOf(colorValue), OpenSCADFileType.INSTANCE, "a = " + colorValue + ";")
                 .getFirstChild();

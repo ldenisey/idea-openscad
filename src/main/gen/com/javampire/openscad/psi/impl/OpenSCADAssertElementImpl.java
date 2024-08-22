@@ -29,8 +29,8 @@ public class OpenSCADAssertElementImpl extends ASTWrapperPsiElement implements O
 
   @Override
   @NotNull
-  public OpenSCADExpr getExpr() {
-    return findNotNullChildByClass(OpenSCADExpr.class);
+  public OpenSCADAssertArgList getAssertArgList() {
+    return findNotNullChildByClass(OpenSCADAssertArgList.class);
   }
 
 }
