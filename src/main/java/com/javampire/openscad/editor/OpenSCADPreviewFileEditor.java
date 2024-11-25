@@ -18,6 +18,7 @@ import com.intellij.ui.jcef.JCEFHtmlPanel;
 import com.intellij.util.Alarm;
 import com.intellij.util.ui.components.BorderLayoutPanel;
 import com.javampire.openscad.action.*;
+import com.jetbrains.cef.JCefAppConfig;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.browser.CefMessageRouter;
@@ -128,6 +129,14 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
 
     private void attachHtmlPanel() {
         if (htmlPanel == null) {
+            var args = JCefAppConfig.getInstance().getAppArgsAsList();
+            if (!args.contains("--disable-web-security")) {
+                args.add("--disable-web-security");
+            }
+            if (!args.contains("--allow-file-access-from-files")) {
+                args.add("--allow-file-access-from-files");
+            }
+
             htmlPanel = new JCEFHtmlPanel(true, null, previewSite.htmlFile.getPreviewUrl().toExternalForm());
             final CefMessageRouter messageRouter = CefMessageRouter.create();
             messageRouter.addHandler(new CefMessageRouterHandler(), true);
