@@ -159,6 +159,7 @@ public class OpenSCADPreviewFileEditor extends UserDataHolderBase implements Fil
                         new RefreshPreviewAction(),
                         new ToggleAutoRefreshAction(),
                         new Separator(),
+                        new Toggle3DPreviewAction(),
                         new ToggleGridAction(),
                         new ToggleAxisAction(),
                         new SetModelColorAction(),

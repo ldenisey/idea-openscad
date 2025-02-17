@@ -23,6 +23,7 @@ public class ToggleAxisAction extends OpenSCADAction {
             } else {
                 presentation.setIcon(OpenSCADIcons.TOGGLE_AXIS_GRAYED);
             }
+            presentation.setVisible(previewEditor.getEditorConfig().getDynamicPreview());
         }
     }
 

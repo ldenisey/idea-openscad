@@ -23,6 +23,7 @@ public class ToggleGridAction extends OpenSCADAction {
             } else {
                 presentation.setIcon(OpenSCADIcons.TOGGLE_GRID_GRAYED);
             }
+            presentation.setVisible(previewEditor.getEditorConfig().getDynamicPreview());
         }
     }
 

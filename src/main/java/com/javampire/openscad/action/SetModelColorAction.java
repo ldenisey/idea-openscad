@@ -25,6 +25,10 @@ public class SetModelColorAction extends OpenSCADAction {
             presentation.setDescription("Set preview model color");
             presentation.setIcon(OpenSCADIcons.COLOR_PICKER);
         }
+        final OpenSCADPreviewFileEditor previewEditor = event.getData(OpenSCADDataKeys.PREVIEW_EDITOR);
+        if (previewEditor != null) {
+            presentation.setVisible(previewEditor.getEditorConfig().getDynamicPreview());
+        }
     }
 
     @Override
