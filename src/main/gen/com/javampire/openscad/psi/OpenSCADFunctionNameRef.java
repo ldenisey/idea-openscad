@@ -4,12 +4,7 @@ package com.javampire.openscad.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADFunctionNameRef extends OpenSCADResolvableElement {
-
-  ItemPresentation getPresentation();
-
-  PsiElement getNameIdentifier();
 
 }

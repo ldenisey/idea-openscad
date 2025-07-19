@@ -10,6 +10,4 @@ public interface OpenSCADArgDeclaration extends OpenSCADNamedElement {
   @Nullable
   OpenSCADExpr getExpr();
 
-  PsiElement getNameIdentifier();
-
 }

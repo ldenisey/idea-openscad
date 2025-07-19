@@ -13,7 +13,7 @@ import com.javampire.openscad.psi.*;
 
 public class OpenSCADFullArgDeclarationImpl extends OpenSCADNamedElementImpl implements OpenSCADFullArgDeclaration {
 
-  public OpenSCADFullArgDeclarationImpl(@NotNull ASTNode node) {
+  public OpenSCADFullArgDeclarationImpl(ASTNode node) {
     super(node);
   }
 
@@ -31,11 +31,6 @@ public class OpenSCADFullArgDeclarationImpl extends OpenSCADNamedElementImpl imp
   @NotNull
   public OpenSCADExpr getExpr() {
     return findNotNullChildByClass(OpenSCADExpr.class);
-  }
-
-  @Override
-  public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }

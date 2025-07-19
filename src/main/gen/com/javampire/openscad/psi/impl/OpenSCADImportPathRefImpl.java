@@ -13,7 +13,7 @@ import com.javampire.openscad.psi.*;
 
 public class OpenSCADImportPathRefImpl extends OpenSCADImportPathRefElementImpl implements OpenSCADImportPathRef {
 
-  public OpenSCADImportPathRefImpl(@NotNull ASTNode node) {
+  public OpenSCADImportPathRefImpl(ASTNode node) {
     super(node);
   }
 

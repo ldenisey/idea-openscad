@@ -7,8 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface OpenSCADTestExpRef extends OpenSCADResolvableElement {
 
-  PsiElement setName(String newName);
-
-  PsiElement getNameIdentifier();
-
 }

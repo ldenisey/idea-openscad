@@ -3,10 +3,12 @@ package com.javampire.openscad.psi.stub.variable;
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.javampire.openscad.OpenSCADLanguage;
 import com.javampire.openscad.psi.OpenSCADElementFactory;
+import com.javampire.openscad.psi.OpenSCADPsiImplUtil;
 import com.javampire.openscad.psi.OpenSCADTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,5 +53,14 @@ public class OpenSCADVariableDeclarationStubElementImpl extends StubBasedPsiElem
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" + getNode().getElementType() + ")";
+    }
+
+    @Override
+    public ItemPresentation getPresentation() {
+        return OpenSCADPsiImplUtil.getPresentation(this);
+    }
+
+    public PsiElement getNameIdentifier() {
+        return OpenSCADPsiImplUtil.getNameIdentifier(this);
     }
 }

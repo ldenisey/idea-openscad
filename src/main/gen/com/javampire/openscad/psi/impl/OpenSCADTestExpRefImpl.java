@@ -13,7 +13,7 @@ import com.javampire.openscad.psi.*;
 
 public class OpenSCADTestExpRefImpl extends OpenSCADResolvableElementImpl implements OpenSCADTestExpRef {
 
-  public OpenSCADTestExpRefImpl(@NotNull ASTNode node) {
+  public OpenSCADTestExpRefImpl(ASTNode node) {
     super(node);
   }
 
@@ -25,16 +25,6 @@ public class OpenSCADTestExpRefImpl extends OpenSCADResolvableElementImpl implem
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof OpenSCADVisitor) accept((OpenSCADVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  public PsiElement setName(String newName) {
-    return OpenSCADPsiImplUtil.setName(this, newName);
-  }
-
-  @Override
-  public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }
