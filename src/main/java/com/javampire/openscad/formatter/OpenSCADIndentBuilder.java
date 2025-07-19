@@ -8,7 +8,19 @@ import com.intellij.psi.tree.IElementType;
 
 import static com.javampire.openscad.parser.OpenSCADParserTokenSets.BRACES_TOKENS;
 import static com.javampire.openscad.parser.OpenSCADParserTokenSets.MATHEMATICAL_EXPR;
-import static com.javampire.openscad.psi.OpenSCADTypes.*;
+import static com.javampire.openscad.psi.OpenSCADTypes.ARG_ASSIGNMENT_LIST;
+import static com.javampire.openscad.psi.OpenSCADTypes.ARG_DECLARATION_LIST;
+import static com.javampire.openscad.psi.OpenSCADTypes.BLOCK_OBJ;
+import static com.javampire.openscad.psi.OpenSCADTypes.BUILTIN_OBJ;
+import static com.javampire.openscad.psi.OpenSCADTypes.BUILTIN_OBJ_REF;
+import static com.javampire.openscad.psi.OpenSCADTypes.BUILTIN_OP;
+import static com.javampire.openscad.psi.OpenSCADTypes.COLON;
+import static com.javampire.openscad.psi.OpenSCADTypes.ELVIS_EXPR;
+import static com.javampire.openscad.psi.OpenSCADTypes.FOR_OBJ;
+import static com.javampire.openscad.psi.OpenSCADTypes.FULL_ARG_DECLARATION_LIST;
+import static com.javampire.openscad.psi.OpenSCADTypes.IF_OBJ;
+import static com.javampire.openscad.psi.OpenSCADTypes.RPARENTH;
+import static com.javampire.openscad.psi.OpenSCADTypes.VECTOR_EXPR;
 
 public class OpenSCADIndentBuilder {
 
@@ -49,7 +61,7 @@ public class OpenSCADIndentBuilder {
                 }
             }
             return Indent.getNormalIndent();
-        } else if (parentType == FULL_ARG_DECLARATION_LIST && elementType != RPARENTH) {
+        } else if ((parentType == ARG_DECLARATION_LIST || parentType == FULL_ARG_DECLARATION_LIST || parentType == ARG_ASSIGNMENT_LIST) && elementType != RPARENTH) {
             return Indent.getNormalIndent();
         }
 
