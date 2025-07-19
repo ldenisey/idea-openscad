@@ -32,6 +32,11 @@ public abstract class OpenSCADNamedElementImpl extends ASTWrapperPsiElement impl
         return getName(this);
     }
 
+    @Override
+    public PsiElement getNameIdentifier() {
+        return OpenSCADPsiImplUtil.getNameIdentifier(this);
+    }
+
     public static PsiElement setName(@NotNull final PsiElement element, @NotNull final String newName) {
         final ASTNode elementNode = element.getNode();
         final ASTNode nameNode = getNameNode(elementNode);

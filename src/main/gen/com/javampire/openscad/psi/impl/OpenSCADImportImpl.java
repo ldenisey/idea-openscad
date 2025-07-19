@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.javampire.openscad.psi.*;
-import com.intellij.navigation.ItemPresentation;
 
 public class OpenSCADImportImpl extends ASTWrapperPsiElement implements OpenSCADImport {
 
@@ -38,11 +37,6 @@ public class OpenSCADImportImpl extends ASTWrapperPsiElement implements OpenSCAD
   @Nullable
   public OpenSCADUseImport getUseImport() {
     return findChildByClass(OpenSCADUseImport.class);
-  }
-
-  @Override
-  public ItemPresentation getPresentation() {
-    return OpenSCADPsiImplUtil.getPresentation(this);
   }
 
 }

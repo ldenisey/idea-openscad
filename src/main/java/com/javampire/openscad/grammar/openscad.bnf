@@ -16,7 +16,6 @@
     extends(".*obj")=object
     extends(".*op")=operator
 
-    psiImplUtilClass="com.javampire.openscad.psi.OpenSCADPsiImplUtil"
     parserUtilClass="com.javampire.openscad.parser.OpenSCADParserUtil"
 }
 
@@ -35,7 +34,6 @@ import ::= (
     include_import
     | use_import
 ){
-     methods=[getPresentation]
  }
 
 include_import ::= INCLUDE_KEYWORD IMPORT_START import_path_ref IMPORT_END
@@ -74,14 +72,12 @@ builtin_obj_ref ::= ASSERT_KEYWORD
                   | TEXT_KEYWORD {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements=["com.javampire.openscad.psi.OpenSCADResolvableElement"]
-    methods=[setName getNameIdentifier]
 }
 
 module_call_obj ::= module_obj_name_ref arg_assignment_list SEMICOLON
 module_obj_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[getPresentation getNameIdentifier]
 }
 
 block_obj ::= LBRACE statement* RBRACE
@@ -100,7 +96,6 @@ variable_declaration ::= IDENTIFIER EQUALS expr SEMICOLON {
         "com.javampire.openscad.psi.OpenSCADNamedElement"
         "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.variable.OpenSCADVariableStub>"
     ]
-    methods=[getPresentation getNameIdentifier]
 }
 
 module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement {
@@ -110,7 +105,6 @@ module_declaration ::= MODULE_KEYWORD IDENTIFIER arg_declaration_list statement 
         "com.javampire.openscad.psi.OpenSCADNamedElement"
         "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.module.OpenSCADModuleStub>"
     ]
-    methods=[getPresentation getNameIdentifier]
 }
 
 function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS expr SEMICOLON {
@@ -120,7 +114,6 @@ function_declaration ::= FUNCTION_KEYWORD IDENTIFIER arg_declaration_list EQUALS
         "com.javampire.openscad.psi.OpenSCADNamedElement"
         "com.intellij.psi.StubBasedPsiElement<com.javampire.openscad.psi.stub.function.OpenSCADFunctionStub>"
     ]
-    methods=[getPresentation getNameIdentifier]
 }
 
 private compound_obj ::= operator object;
@@ -133,7 +126,6 @@ module_call_op ::= module_op_name_ref arg_assignment_list
 module_op_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[getPresentation getNameIdentifier]
 }
 
 modifier_op ::= background_op
@@ -167,7 +159,6 @@ common_op_ref ::= COLOR_KEYWORD
                 | UNION_KEYWORD {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[setName getNameIdentifier]
 }
 
 private full_arg_op_identifier ::= INTERSECTION_FOR_KEYWORD
@@ -229,7 +220,6 @@ test_exp_ref ::= IS_UNDEF_KEYWORD
                | IS_FUNCTION_KEYWORD {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[setName getNameIdentifier]
 }
 function_literal_expr ::= FUNCTION_KEYWORD arg_declaration_list expr
 paren_expr ::= LPARENTH expr RPARENTH
@@ -283,13 +273,11 @@ builtin_expr_ref ::= ABS_KEYWORD
                    | VERSION_NUM_KEYWORD {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[setName getNameIdentifier]
 }
 
 qualification_expr ::= expr DOT IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[getPresentation getNameIdentifier]
 }
 
 literal_expr ::= TRUE_KEYWORD
@@ -302,10 +290,10 @@ function_call_expr ::= function_name_ref arg_assignment_list+
 function_name_ref ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[getPresentation getNameIdentifier]
 }
 
-arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ arg_assignment )* RPARENTH {pin(".*")=1}
+arg_assignment_list ::= LPARENTH arg_assignment? ( COMMA+ ( arg_assignment | &RPARENTH ) )* RPARENTH {pin(".*")=1}
+
 arg_assignment ::= [ parameter_reference EQUALS ] expr {
     recoverWhile=recover_arg
 }
@@ -313,27 +301,23 @@ private recover_arg ::= ! (COMMA | RPARENTH)
 parameter_reference ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
-    methods=[getPresentation getNameIdentifier getReference]
 }
 
 arg_declaration_list ::= LPARENTH arg_declaration? ( COMMA arg_declaration? )* RPARENTH {pin(".*")=1}
 arg_declaration ::= IDENTIFIER [EQUALS expr] {
     mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
-    methods=[getNameIdentifier]
     recoverWhile=recover_arg
 }
 
-full_arg_declaration_list ::= LPARENTH full_arg_declaration? ( COMMA+ full_arg_declaration )* RPARENTH {pin(".*")=1}
+full_arg_declaration_list ::= LPARENTH full_arg_declaration? ( COMMA+ ( full_arg_declaration | &RPARENTH ) )* RPARENTH {pin(".*")=1}
 full_arg_declaration ::= IDENTIFIER EQUALS expr {
     mixin="com.javampire.openscad.psi.OpenSCADNamedElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADNamedElement"
-    methods=[getNameIdentifier]
     recoverWhile=recover_arg
 }
 
 variable_ref_expr ::= IDENTIFIER {
     mixin="com.javampire.openscad.psi.OpenSCADResolvableElementImpl"
     implements="com.javampire.openscad.psi.OpenSCADResolvableElement"
-    methods=[getPresentation getNameIdentifier]
 }

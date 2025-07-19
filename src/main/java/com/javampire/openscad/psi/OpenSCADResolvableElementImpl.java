@@ -3,6 +3,7 @@ package com.javampire.openscad.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.javampire.openscad.psi.stub.function.OpenSCADFunctionIndex;
 import com.javampire.openscad.psi.stub.module.OpenSCADModuleIndex;
@@ -42,4 +43,8 @@ public abstract class OpenSCADResolvableElementImpl extends OpenSCADNamedElement
         return new OpenSCADCallReference(this, new TextRange(0, getTextLength()));
     }
 
+    @Override
+    public PsiElement setName(String newName) {
+        return OpenSCADPsiImplUtil.setName(this, newName);
+    }
 }

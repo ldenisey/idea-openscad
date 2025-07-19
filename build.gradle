@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.changelog' version '2.2.0'
     id 'com.github.ldenisey.setversions' version '1.0.4'
     id "com.github.node-gradle.node" version "7.0.1"
+    id "org.jetbrains.grammarkit" version "2022.3.2.2"
 }
 
 apply plugin: 'org.jetbrains.changelog'
@@ -10,8 +11,8 @@ apply plugin: 'org.jetbrains.changelog'
 group = 'com.javampire'
 version = '2.4.1-SNAPSHOT'
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/gen']
 sourceSets.main.resources.srcDirs = ['src/main/resources', 'src/main/generated-resources']
 
@@ -109,3 +110,21 @@ tasks.register('webpack', NpxTask) {
     }
 }
 processResources.dependsOn('webpack')
+
+
+tasks {
+    generateParser {
+        purgeOldFiles.set(true)
+        sourceFile.set(file("src/main/java/com/javampire/openscad/grammar/openscad.bnf"))
+        targetRootOutputDir.set(file("src/main/gen"))
+        pathToParser.set("com/javampire/openscad/parser/OpenSCADParser.java")
+        pathToPsiRoot.set("com/javampire/openscad//psi")
+    }
+    generateLexer {
+        purgeOldFiles.set(false)
+        sourceFile.set(file("src/main/java/com/javampire/openscad/lexer/openscad.flex"))
+        targetOutputDir.set(file("src/main/gen/com/javampire/openscad/lexer"))
+
+        dependsOn("generateParser")
+    }
+}

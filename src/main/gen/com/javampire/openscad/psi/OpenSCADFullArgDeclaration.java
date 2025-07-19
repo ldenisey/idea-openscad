@@ -10,6 +10,4 @@ public interface OpenSCADFullArgDeclaration extends OpenSCADNamedElement {
   @NotNull
   OpenSCADExpr getExpr();
 
-  PsiElement getNameIdentifier();
-
 }

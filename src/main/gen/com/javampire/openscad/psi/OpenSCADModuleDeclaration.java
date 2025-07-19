@@ -6,7 +6,6 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import com.javampire.openscad.psi.stub.module.OpenSCADModuleStub;
-import com.intellij.navigation.ItemPresentation;
 
 public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBasedPsiElement<OpenSCADModuleStub> {
 
@@ -27,9 +26,5 @@ public interface OpenSCADModuleDeclaration extends OpenSCADNamedElement, StubBas
 
   @Nullable
   OpenSCADVariableDeclaration getVariableDeclaration();
-
-  ItemPresentation getPresentation();
-
-  PsiElement getNameIdentifier();
 
 }

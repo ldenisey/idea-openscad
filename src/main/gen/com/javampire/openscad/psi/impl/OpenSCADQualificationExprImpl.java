@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.javampire.openscad.psi.OpenSCADTypes.*;
 import com.javampire.openscad.psi.OpenSCADResolvableElementImpl;
 import com.javampire.openscad.psi.*;
-import com.intellij.navigation.ItemPresentation;
 
 public class OpenSCADQualificationExprImpl extends OpenSCADResolvableElementImpl implements OpenSCADQualificationExpr {
 
@@ -32,16 +31,6 @@ public class OpenSCADQualificationExprImpl extends OpenSCADResolvableElementImpl
   @NotNull
   public OpenSCADExpr getExpr() {
     return findNotNullChildByClass(OpenSCADExpr.class);
-  }
-
-  @Override
-  public ItemPresentation getPresentation() {
-    return OpenSCADPsiImplUtil.getPresentation(this);
-  }
-
-  @Override
-  public PsiElement getNameIdentifier() {
-    return OpenSCADPsiImplUtil.getNameIdentifier(this);
   }
 
 }
